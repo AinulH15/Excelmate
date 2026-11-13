@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pink: #FFCACA;
+  --color-yellow: #FFE89A;
+  --color-lavender: #DCD2FF;
+  --color-blue: #C7E7FF;
+  --color-mint: #C9F2D0;
+  --color-cream: #FFF9ED;
+  --color-ink: #222222;
+
+  --shadow-neo: 4px 4px 0px #222222;
+  --shadow-neo-sm: 2px 2px 0px #222222;
+}

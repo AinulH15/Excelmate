@@ -24,17 +24,18 @@ class ExcelmateSeeder extends Seeder
         $catDasar = Category::create(['name' => 'Fungsi Dasar', 'slug' => 'fungsi-dasar', 'color' => 'mint', 'icon' => 'Calculator']);
         $catLogika = Category::create(['name' => 'Fungsi Logika', 'slug' => 'fungsi-logika', 'color' => 'pink', 'icon' => 'GitBranch']);
 
-        // 3. Materi: Fungsi SUM
+        // 3. Materi: Fungsi SUM (Materi Lengkap)
         $lesson = Lesson::create([
             'category_id' => $catDasar->id,
             'learning_level_id' => $lvl1->id,
             'title' => 'Fungsi SUM',
             'slug' => 'fungsi-sum',
-            'intro' => 'SUM menjumlahkan semua angka dalam rentang.',
+            'intro' => 'SUM adalah salah satu fungsi bawaan Microsoft Excel yang digunakan untuk menjumlahkan dua atau lebih angka.',
             'order' => 1,
             'content' => [
-                'why' => 'SUM adalah fungsi paling dasar dan paling sering dipakai untuk menghitung total.',
-                'when' => 'Gunakan saat perlu menjumlahkan banyak sel tanpa menulis + berulang.',
+                'apa_itu' => "Misalnya kamu memiliki sebuah toko alat tulis. Dalam satu hari, toko tersebut menjual:\n\nBuku: Rp50.000\nPulpen: Rp30.000\nPensil: Rp20.000\nPenghapus: Rp10.000\n\nKamu ingin mengetahui berapa total pendapatan dari seluruh barang tersebut.\n\nCara pertama: menghitung secara manual\n50.000 + 30.000 + 20.000 + 10.000 = 110.000\n\nCara kedua: menggunakan Excel\nKamu cukup menuliskan rumus =SUM(B2:B5). Excel akan menjumlahkan seluruh angka pada cell B2 sampai B5. Hasilnya adalah Rp110.000.",
+                'mengapa' => "Bayangkan kamu mempunyai 500 baris data penjualan. Jika dihitung satu per satu, tentu akan membutuhkan waktu lama. Dengan SUM, Excel bisa menjumlahkan seluruh data hanya menggunakan satu rumus.\n\nKeuntungan menggunakan SUM:\n- Menghemat waktu perhitungan.\n- Mengurangi kesalahan menghitung manual.\n- Hasil otomatis berubah ketika data sumber berubah.\n- Dapat digunakan untuk data sedikit maupun banyak.\n- Dapat menjumlahkan data dari beberapa cell atau range.",
+                'sintaks' => "Bentuk penulisan fungsi SUM adalah:\n\n=SUM(number1, [number2], ...)\n\nPenjelasannya:\n- Tanda = : Menandakan bahwa kita akan menuliskan rumus.\n- SUM : Nama fungsi penjumlahan.\n- Tanda ( : Awal argumen fungsi.\n- number1 : Angka atau cell pertama.\n- number2 : Angka atau cell berikutnya, opsional.\n- Tanda ) : Akhir fungsi.\n\nContoh:\n=SUM(A1:A5)\n\nArtinya, jumlahkan seluruh angka dari cell A1 sampai A5. Tanda titik dua (:) menunjukkan rentang cell. Jadi, A1:A5 berarti A1, A2, A3, A4, dan A5."
             ],
         ]);
 
