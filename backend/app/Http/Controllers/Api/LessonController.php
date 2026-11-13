@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Lesson;
+use Illuminate\Http\Request;
+
+class LessonController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = Lesson::with(['category:id,name,slug,color,icon', 'level:id,name,slug'])
+            ->where('is_published', true);
+
+        // Fitur pencarian
+        if ($search = $request->query('search')) {
+            $query->where('title', 'like', "%{$search}%");
+        }
+
+        // Filter kategori
+        if ($category = $request->query('category')) {
+            $query->whereHas('category', fn($q) => $q->where('slug', $category));
+        }
+
+        return response()->json([
+            'data' => $query->orderBy('order')->get(),
+        ]);
+    }
+
+    public function show($slug)
+    {
+        $lesson = Lesson::with([
+            'category', 
+            'level', 
+            'examples',
+            // Mengambil exercises dan options, TAPI jangan kirim is_correct ke frontend
+            'exercises.options' => function($q) {
+                $q->select('id', 'exercise_id', 'label', 'text'); 
+            },
+        ])->where('slug', $slug)->firstOrFail();
+
+        // Navigasi Prev/Next
+        $prev = Lesson::where('category_id', $lesson->category_id)
+            ->where('order', '<', $lesson->order)
+            ->orderByDesc('order')->first(['slug', 'title']);
+            
+        $next = Lesson::where('category_id', $lesson->category_id)
+            ->where('order', '>', $lesson->order)
+            ->orderBy('order')->first(['slug', 'title']);
+
+        return response()->json([
+            'data' => $lesson,
+            'prev' => $prev,
+            'next' => $next,
+        ]);
+    }
+}
