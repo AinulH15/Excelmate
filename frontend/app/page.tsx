@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import Spreadsheet from '@/components/Spreadsheet';
@@ -29,7 +31,6 @@ export default function Home() {
           </div>
         </div>
         
-        {/* Ilustrasi Kartun Sederhana */}
         <div className="hidden md:flex justify-center relative">
           <div className="w-72 h-72 bg-mint border-2 border-ink rounded-3xl shadow-neo flex items-center justify-center rotate-3">
             <span className="text-8xl">📊</span>
@@ -44,9 +45,9 @@ export default function Home() {
       </section>
 
       <section className="py-12 border-t-2 border-ink mt-12">
-  <h2 className="text-3xl font-black mb-6 text-center">Coba Langsung: Praktik Fungsi SUM</h2>
-  <Spreadsheet />
-</section>
+        <h2 className="text-3xl font-black mb-6 text-center">Coba Spreadsheet Interaktif!</h2>
+        <Spreadsheet lessonSlug="dasar" />
+      </section>
     </div>
   );
 }

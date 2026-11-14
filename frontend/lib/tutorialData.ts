@@ -1,5 +1,27 @@
 export const tutorialData: Record<string, any[]> = {
   // ==========================================
+  // TUTORIAL DEFAULT (HALAMAN UTAMA)
+  // ==========================================
+  'dasar': [
+    {
+      id: 1,
+      title: "Selamat Datang di ExcelMate!",
+      instruction: "Ini adalah Spreadsheet Interaktif. Kamu bisa mengetik angka atau teks di sini. Coba klik cell **A1**, ketik `Halo`, lalu tekan Enter.",
+      targetCell: "A1",
+      expectedValue: "Halo",
+      hint: "Klik kotak paling kiri atas (A1), ketik Halo, lalu Enter.",
+    },
+    {
+      id: 2,
+      title: "Mencoba Rumus Sederhana",
+      instruction: "Sekarang klik cell **B1**, ketik `=10+20` lalu tekan Enter. Excel akan otomatis menghitungnya menjadi 30.",
+      targetCell: "B1",
+      expectedValue: "=10+20",
+      hint: "Ketik =10+20 di cell B1.",
+    }
+  ],
+
+  // ==========================================
   // LEVEL 1: DASAR EXCEL
   // ==========================================
   'pengenalan-antarmuka-excel': [

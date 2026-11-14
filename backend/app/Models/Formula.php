@@ -10,5 +10,7 @@ class Formula extends Model
 
     protected $casts = [
         'parameters' => 'array',
+        'case_table_before' => 'array',
+        'case_table_after' => 'array',
     ];
 }
