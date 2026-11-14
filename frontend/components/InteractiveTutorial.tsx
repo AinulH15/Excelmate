@@ -2,17 +2,33 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, Lightbulb, RefreshCcw } from 'lucide-react';
-import { sumTutorialSteps } from '@/lib/tutorialData';
 import Button from './ui/Button';
 import Card from './ui/Card';
 
-export default function InteractiveTutorial({ data, onReset }: { data: any, activeCell?: string, onReset: () => void }) {
+export default function InteractiveTutorial({ 
+  steps, 
+  data, 
+  onReset 
+}: { 
+  steps: any[], 
+  data: any, 
+  onReset: () => void 
+}) {
   const [currentStep, setCurrentStep] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [isStepValid, setIsStepValid] = useState(false);
 
-  const step = sumTutorialSteps[currentStep];
-  const isLastStep = currentStep === sumTutorialSteps.length - 1;
+  // Reset step jika steps berubah (misal ganti materi)
+  useEffect(() => {
+    setCurrentStep(0);
+    setShowHint(false);
+  }, [steps]);
+
+  const step = steps[currentStep];
+  
+  if (!step) return null; 
+
+  const isLastStep = currentStep === steps.length - 1;
 
   useEffect(() => {
     if (!step.targetCell) {
@@ -24,7 +40,7 @@ export default function InteractiveTutorial({ data, onReset }: { data: any, acti
   }, [data, step]);
 
   const handleNext = () => {
-    if (currentStep < sumTutorialSteps.length - 1) {
+    if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
       setShowHint(false);
     }
@@ -35,7 +51,7 @@ export default function InteractiveTutorial({ data, onReset }: { data: any, acti
       <div className="flex items-center justify-between mb-4 border-b-2 border-ink pb-4">
         <div>
           <span className="bg-yellow border-2 border-ink rounded-full px-3 py-1 text-xs font-black shadow-neo-sm">
-            Langkah {currentStep + 1} dari {sumTutorialSteps.length}
+            Langkah {currentStep + 1} dari {steps.length}
           </span>
           <h2 className="text-2xl font-black mt-2">{step.title}</h2>
         </div>
@@ -77,7 +93,7 @@ export default function InteractiveTutorial({ data, onReset }: { data: any, acti
           </Button>
         ) : (
           <div className="text-sm font-bold text-gray-500 bg-gray-100 px-4 py-2 rounded-xl border-2 border-dashed border-gray-300">
-            Isi {step.targetCell} dulu ya...
+            {step.targetCell ? `Isi ${step.targetCell} dulu ya...` : 'Klik Lanjut'}
           </div>
         )}
       </div>

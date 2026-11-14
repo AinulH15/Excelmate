@@ -3,14 +3,21 @@
 import { useState } from 'react';
 import { evaluateFormula } from '@/lib/formulaEngine';
 import InteractiveTutorial from './InteractiveTutorial';
+import { tutorialData } from '@/lib/tutorialData';
 
 const ROWS = 10;
-const COLS = 3; // A, B, C
+const COLS = 3; 
 
-export default function Spreadsheet() {
+export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
   const [data, setData] = useState<Record<string, string>>({});
   const [activeCell, setActiveCell] = useState<string>('A1');
   const [formulaInput, setFormulaInput] = useState<string>('');
+
+  // Menentukan tutorial yang akan ditampilkan
+  let currentSteps = tutorialData[lessonSlug];
+  if (!currentSteps) {
+    currentSteps = tutorialData['dasar']; // Default jika belum ada tutorial khusus
+  }
 
   const handleCellClick = (cellId: string) => {
     setActiveCell(cellId);
@@ -20,12 +27,6 @@ export default function Spreadsheet() {
   const commitFormula = () => {
     if (activeCell) {
       setData(prev => ({ ...prev, [activeCell]: formulaInput }));
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      commitFormula();
     }
   };
 
@@ -39,16 +40,14 @@ export default function Spreadsheet() {
 
   return (
     <div className="grid lg:grid-cols-2 gap-8 items-start">
-      {/* Kiri: Tutorial */}
       <div className="sticky top-24">
         <InteractiveTutorial 
+          steps={currentSteps}
           data={data} 
-          activeCell={activeCell} 
           onReset={() => { setData({}); setActiveCell('A1'); setFormulaInput(''); }} 
         />
       </div>
 
-      {/* Kanan: Excel Grid */}
       <div className="border-2 border-ink shadow-neo rounded-xl overflow-hidden bg-white select-none">
         {/* Formula Bar */}
         <div className="flex border-b-2 border-ink bg-cream">
@@ -60,7 +59,7 @@ export default function Spreadsheet() {
             type="text"
             value={formulaInput}
             onChange={(e) => setFormulaInput(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => e.key === 'Enter' && commitFormula()}
             onBlur={commitFormula}
             className="flex-1 px-2 py-2 outline-none font-mono"
             placeholder="Ketik rumus atau teks..."

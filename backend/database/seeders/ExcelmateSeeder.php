@@ -15,132 +15,262 @@ class ExcelmateSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Level
-        $lvl1 = LearningLevel::create(['name' => 'Beginner', 'slug' => 'beginner', 'order' => 1]);
-        $lvl2 = LearningLevel::create(['name' => 'Intermediate', 'slug' => 'intermediate', 'order' => 2]);
-        $lvl3 = LearningLevel::create(['name' => 'Advanced', 'slug' => 'advanced', 'order' => 3]);
+        // ==========================================
+        // 1. LEVELS
+        // ==========================================
+        $lvlPemula = LearningLevel::create(['name' => 'Pemula', 'slug' => 'pemula', 'order' => 1]);
+        $lvlDasar = LearningLevel::create(['name' => 'Dasar', 'slug' => 'dasar', 'order' => 2]);
+        $lvlMenengah = LearningLevel::create(['name' => 'Menengah', 'slug' => 'menengah', 'order' => 3]);
+        $lvlLanjutan = LearningLevel::create(['name' => 'Lanjutan', 'slug' => 'lanjutan', 'order' => 4]);
 
-        // 2. Kategori
-        $catDasar = Category::create(['name' => 'Fungsi Dasar', 'slug' => 'fungsi-dasar', 'color' => 'mint', 'icon' => 'Calculator']);
-        $catLogika = Category::create(['name' => 'Fungsi Logika', 'slug' => 'fungsi-logika', 'color' => 'pink', 'icon' => 'GitBranch']);
+        // ==========================================
+        // 2. CATEGORIES (Berdasarkan Level)
+        // ==========================================
+        $catL1 = Category::create(['name' => 'Dasar Excel', 'slug' => 'dasar-excel', 'color' => 'mint', 'icon' => 'BookOpen']);
+        $catL2 = Category::create(['name' => 'Rumus & Fungsi Dasar', 'slug' => 'rumus-dasar', 'color' => 'blue', 'icon' => 'Calculator']);
+        $catL3 = Category::create(['name' => 'Pengolahan Data', 'slug' => 'pengolahan-data', 'color' => 'lavender', 'icon' => 'BarChart']);
+        $catL4 = Category::create(['name' => 'Analisis Lanjutan', 'slug' => 'analisis-lanjutan', 'color' => 'pink', 'icon' => 'GitBranch']);
 
-        // 3. Materi: Fungsi SUM (Materi Lengkap)
-        $lesson = Lesson::create([
-            'category_id' => $catDasar->id,
-            'learning_level_id' => $lvl1->id,
-            'title' => 'Fungsi SUM',
-            'slug' => 'fungsi-sum',
-            'intro' => 'SUM adalah salah satu fungsi bawaan Microsoft Excel yang digunakan untuk menjumlahkan dua atau lebih angka.',
-            'order' => 1,
-            'content' => [
-                'apa_itu' => "Misalnya kamu memiliki sebuah toko alat tulis. Dalam satu hari, toko tersebut menjual:\n\nBuku: Rp50.000\nPulpen: Rp30.000\nPensil: Rp20.000\nPenghapus: Rp10.000\n\nKamu ingin mengetahui berapa total pendapatan dari seluruh barang tersebut.\n\nCara pertama: menghitung secara manual\n50.000 + 30.000 + 20.000 + 10.000 = 110.000\n\nCara kedua: menggunakan Excel\nKamu cukup menuliskan rumus =SUM(B2:B5). Excel akan menjumlahkan seluruh angka pada cell B2 sampai B5. Hasilnya adalah Rp110.000.",
-                'mengapa' => "Bayangkan kamu mempunyai 500 baris data penjualan. Jika dihitung satu per satu, tentu akan membutuhkan waktu lama. Dengan SUM, Excel bisa menjumlahkan seluruh data hanya menggunakan satu rumus.\n\nKeuntungan menggunakan SUM:\n- Menghemat waktu perhitungan.\n- Mengurangi kesalahan menghitung manual.\n- Hasil otomatis berubah ketika data sumber berubah.\n- Dapat digunakan untuk data sedikit maupun banyak.\n- Dapat menjumlahkan data dari beberapa cell atau range.",
-                'sintaks' => "Bentuk penulisan fungsi SUM adalah:\n\n=SUM(number1, [number2], ...)\n\nPenjelasannya:\n- Tanda = : Menandakan bahwa kita akan menuliskan rumus.\n- SUM : Nama fungsi penjumlahan.\n- Tanda ( : Awal argumen fungsi.\n- number1 : Angka atau cell pertama.\n- number2 : Angka atau cell berikutnya, opsional.\n- Tanda ) : Akhir fungsi.\n\nContoh:\n=SUM(A1:A5)\n\nArtinya, jumlahkan seluruh angka dari cell A1 sampai A5. Tanda titik dua (:) menunjukkan rentang cell. Jadi, A1:A5 berarti A1, A2, A3, A4, dan A5."
-            ],
-        ]);
-
-        // Contoh Soal di Materi
-        LessonExample::create([
-            'lesson_id' => $lesson->id,
-            'title' => 'Menjumlahkan nilai penjualan',
-            'case_description' => 'Andi punya data penjualan harian dan ingin tahu total seminggu.',
-            'data_table' => [
-                ['hari' => 'Sen', 'nilai' => 100000],
-                ['hari' => 'Sel', 'nilai' => 150000],
-                ['hari' => 'Rab', 'nilai' => 200000],
-                ['hari' => 'Kam', 'nilai' => 120000],
-                ['hari' => 'Jum', 'nilai' => 180000],
-            ],
-            'question' => 'Berapa total penjualan Senin–Jumat?',
-            'formula_used' => '=SUM(B2:B6)',
-            'steps' => [
-                'Letakkan kursor di sel hasil, misal B7.',
-                'Ketik =SUM(',
-                'Blok rentang B2 sampai B6.',
-                'Tutup kurung dan tekan Enter.',
-            ],
-            'final_result' => '750000',
-        ]);
-
-        // 4. 5 Soal Latihan untuk Fungsi SUM
-        $exercises = [
+        // ==========================================
+        // 3. LESSONS DATA
+        // ==========================================
+        $lessonsData = [
+            // --- LEVEL 1 ---
             [
-                'question' => 'Fungsi yang tepat untuk menjumlahkan seluruh nilai di A1:A10 adalah…',
-                'options' => [
-                    ['A', '=TOTAL(A1:A10)', false],
-                    ['B', '=SUM(A1:A10)', true],
-                    ['C', '=PLUS(A1:A10)', false],
-                    ['D', '=ADD(A1:A10)', false],
+                'category_id' => $catL1->id, 'learning_level_id' => $lvlPemula->id, 'order' => 1,
+                'title' => 'Pengenalan Antarmuka Excel', 'slug' => 'pengenalan-antarmuka-excel',
+                'intro' => 'Kenali tampilan dasar Microsoft Excel dan bagian-bagiannya.',
+                'content' => [
+                    'apa_itu' => "Microsoft Excel adalah aplikasi lembar kerja (spreadsheet) berbentuk tabel. Tampilannya terdiri dari kotak-kotak kecil yang disebut **Cell**.",
+                    'mengapa' => "Sebelum bisa membuat rumus, kamu wajib tahu cara membaca posisi sebuah cell dan bagian-bagian antarmuka Excel.",
+                    'sintaks' => "Bagian penting antarmuka:\n1. Ribbon: Menu di bagian atas (Home, Insert, dll).\n2. Formula Bar: Tempat melihat/menulis isi cell.\n3. Grid: Area kotak-kotak berisi Kolom (A, B, C) dan Baris (1, 2, 3)."
                 ],
             ],
             [
-                'question' => 'Hasil dari =SUM(5,10,15) adalah…',
-                'options' => [
-                    ['A', '15', false], ['B', '20', false], ['C', '30', true], ['D', '25', false],
+                'category_id' => $catL1->id, 'learning_level_id' => $lvlPemula->id, 'order' => 2,
+                'title' => 'Workbook, Worksheet, Cell & Range', 'slug' => 'workbook-worksheet-cell',
+                'intro' => 'Pahami istilah dasar seperti Workbook, Worksheet, Cell, dan Range.',
+                'content' => [
+                    'apa_itu' => "Workbook adalah satu file Excel utuh. Di dalamnya terdapat beberapa Worksheet (lembar kerja). Setiap pertemuan Kolom dan Baris disebut Cell (contoh: A1). Kumpulan cell disebut Range (contoh: A1:B5).",
+                    'mengapa' => "Memahami istilah ini penting agar kamu tidak bingung saat membaca tutorial Excel.",
+                    'sintaks' => "Contoh Penulisan:\n- Cell tunggal: A1\n- Range vertikal: A1:A10\n- Range horizontal: A1:J1"
                 ],
             ],
             [
-                'question' => 'Data: A1=10, A2=20, A3=30. Rumus =SUM(A1:A3) menghasilkan…',
-                'options' => [
-                    ['A', '30', false], ['B', '50', false], ['C', '60', true], ['D', '40', false],
+                'category_id' => $catL1->id, 'learning_level_id' => $lvlPemula->id, 'order' => 3,
+                'title' => 'Memasukkan, Mengedit & Menghapus', 'slug' => 'input-edit-hapus-data',
+                'intro' => 'Belajar cara mengetik, memperbaiki, dan menghapus data di Excel.',
+                'content' => [
+                    'apa_itu' => "Untuk memasukkan data, klik cell lalu ketik. Untuk mengedit, tekan F2 atau klik dua kali. Untuk menghapus, tekan tombol Delete (menghapus isi) atau klik kanan > Delete (menghapus baris/kolom).",
+                    'mengapa' => "Ini adalah operasi paling dasar yang akan kamu lakukan setiap hari di Excel.",
+                    'sintaks' => "Tips:\n- Tekan Enter untuk menyimpan dan pindah ke bawah.\n- Tekan Tab untuk menyimpan dan pindah ke kanan."
                 ],
             ],
             [
-                'question' => 'Penulisan SUM yang benar adalah…',
-                'options' => [
-                    ['A', 'SUM(A1,A2)', true],
-                    ['B', 'SUM[A1:A2]', false],
-                    ['C', 'SUM{A1,A2}', false],
-                    ['D', 'SUM<A1:A2>', false],
+                'category_id' => $catL1->id, 'learning_level_id' => $lvlPemula->id, 'order' => 4,
+                'title' => 'Format Cell & Angka', 'slug' => 'format-cell',
+                'intro' => 'Mengatur format angka, mata uang, tanggal, dan persentase.',
+                'content' => [
+                    'apa_itu' => "Excel bisa mengubah tampilan angka menjadi Rupiah, persentase, atau tanggal tanpa mengubah nilai aslinya. Caranya ada di menu Home > Number Format.",
+                    'mengapa' => "Laporan keuangan akan terlihat lebih profesional jika angka ditampilkan sebagai mata uang (Rp) dan rapi.",
+                    'sintaks' => "Contoh:\n- 1000 diubah ke format Rupiah menjadi Rp1.000\n- 0.5 diubah ke format Persentase menjadi 50%"
                 ],
             ],
             [
-                'question' => '=SUM(2, 3, 4) + 1 = …',
-                'options' => [
-                    ['A', '9', false], ['B', '10', true], ['C', '11', false], ['D', '8', false],
+                'category_id' => $catL1->id, 'learning_level_id' => $lvlPemula->id, 'order' => 5,
+                'title' => 'Operasi Matematika Dasar', 'slug' => 'operasi-matematika',
+                'intro' => 'Melakukan perhitungan dasar (+, -, *, /) di Excel.',
+                'content' => [
+                    'apa_itu' => "Excel bisa digunakan sebagai kalkulator. Kamu tinggal mengetik tanda = lalu angka dan operator matematika.",
+                    'mengapa' => "Lebih efisien daripada memakai kalkulator terpisah, karena hasilnya bisa langsung masuk ke dalam tabel.",
+                    'sintaks' => "Operator Excel:\n+ (Tambah)\n- (Kurang)\n* (Kali)\n/ (Bagi)\n^ (Pangkat)\n\nContoh: =10 + 5 * 2"
+                ],
+            ],
+
+            // --- LEVEL 2 ---
+            [
+                'category_id' => $catL2->id, 'learning_level_id' => $lvlDasar->id, 'order' => 6,
+                'title' => 'Fungsi SUM', 'slug' => 'fungsi-sum',
+                'intro' => 'Menjumlahkan banyak angka sekaligus dengan cepat.',
+                'content' => [
+                    'apa_itu' => "SUM adalah fungsi untuk menjumlahkan seluruh angka dalam sebuah rentang. Bayangkan kamu punya 100 baris data, SUM akan menjumlahkannya dalam sekejap.",
+                    'mengapa' => "Menghemat waktu dan mengurangi kesalahan hitung manual.",
+                    'sintaks' => "=SUM(number1, [number2], ...)\nContoh: =SUM(A1:A10)"
+                ],
+            ],
+            [
+                'category_id' => $catL2->id, 'learning_level_id' => $lvlDasar->id, 'order' => 7,
+                'title' => 'Fungsi AVERAGE', 'slug' => 'fungsi-average',
+                'intro' => 'Menghitung nilai rata-rata dari sekumpulan data.',
+                'content' => [
+                    'apa_itu' => "AVERAGE menjumlahkan semua angka lalu membaginya dengan jumlah data. Berguna untuk mencari rata-rata nilai ujian atau penjualan.",
+                    'mengapa' => "Memberikan gambaran umum tentang performa data tanpa harus menghitung manual.",
+                    'sintaks' => "=AVERAGE(number1, [number2], ...)\nContoh: =AVERAGE(B2:B10)"
+                ],
+            ],
+            [
+                'category_id' => $catL2->id, 'learning_level_id' => $lvlDasar->id, 'order' => 8,
+                'title' => 'Fungsi MAX dan MIN', 'slug' => 'fungsi-max-min',
+                'intro' => 'Mencari nilai tertinggi (MAX) dan terendah (MIN).',
+                'content' => [
+                    'apa_itu' => "MAX mencari angka paling besar, MIN mencari angka paling kecil dari sebuah rentang data.",
+                    'mengapa' => "Berguna untuk mencari siapa siswa dengan nilai tertinggi, atau produk dengan penjualan terendah.",
+                    'sintaks' => "=MAX(range) / =MIN(range)\nContoh: =MAX(C1:C10)"
+                ],
+            ],
+            [
+                'category_id' => $catL2->id, 'learning_level_id' => $lvlDasar->id, 'order' => 9,
+                'title' => 'COUNT, COUNTA, COUNTBLANK', 'slug' => 'fungsi-count',
+                'intro' => 'Menghitung jumlah cell yang berisi angka, teks, atau kosong.',
+                'content' => [
+                    'apa_itu' => "COUNT menghitung jumlah cell berisi angka. COUNTA menghitung cell yang tidak kosong (termasuk teks). COUNTBLANK menghitung cell yang kosong.",
+                    'mengapa' => "Sangat membantu saat kita ingin tahu ada berapa banyak data yang sudah terisi dalam sebuah tabel.",
+                    'sintaks' => "=COUNT(range) / =COUNTA(range) / =COUNTBLANK(range)"
+                ],
+            ],
+            [
+                'category_id' => $catL2->id, 'learning_level_id' => $lvlDasar->id, 'order' => 10,
+                'title' => 'Fungsi IF (Logika)', 'slug' => 'fungsi-if',
+                'intro' => 'Membuat keputusan otomatis berdasarkan kondisi tertentu.',
+                'content' => [
+                    'apa_itu' => "Fungsi IF mengecek apakah suatu kondisi BENAR atau SALAH. Jika benar, hasil A muncul. Jika salah, hasil B muncul.",
+                    'mengapa' => "Sangat penting untuk membuat laporan otomatis, seperti menentukan status kelulusan (Lulus/Tidak Lulus).",
+                    'sintaks' => "=IF(logical_test, value_if_true, value_if_false)\nContoh: =IF(A1>=75, \"Lulus\", \"Gagal\")"
+                ],
+            ],
+
+            // --- LEVEL 3 ---
+            [
+                'category_id' => $catL3->id, 'learning_level_id' => $lvlMenengah->id, 'order' => 11,
+                'title' => 'SUMIF dan SUMIFS', 'slug' => 'fungsi-sumif-sumifs',
+                'intro' => 'Menjumlahkan data berdasarkan kriteria tertentu.',
+                'content' => [
+                    'apa_itu' => "SUMIF menjumlahkan data hanya jika memenuhi satu kriteria. SUMIFS bisa digunakan untuk banyak kriteria sekaligus.",
+                    'mengapa' => "Sangat berguna saat ingin menghitung total penjualan khusus untuk produk tertentu saja.",
+                    'sintaks' => "=SUMIF(range_kriteria, kriteria, range_jumlah)\nContoh: =SUMIF(A1:A10, \"Apel\", B1:B10)"
+                ],
+            ],
+            [
+                'category_id' => $catL3->id, 'learning_level_id' => $lvlMenengah->id, 'order' => 12,
+                'title' => 'COUNTIF dan COUNTIFS', 'slug' => 'fungsi-countif',
+                'intro' => 'Menghitung jumlah data berdasarkan kriteria tertentu.',
+                'content' => [
+                    'apa_itu' => "COUNTIF menghitung berapa banyak data yang cocok dengan kriteria tertentu.",
+                    'mengapa' => "Misalnya, ingin menghitung ada berapa banyak siswa laki-laki di kelas.",
+                    'sintaks' => "=COUNTIF(range, kriteria)\nContoh: =COUNTIF(B2:B100, \"Laki-laki\")"
+                ],
+            ],
+            [
+                'category_id' => $catL3->id, 'learning_level_id' => $lvlMenengah->id, 'order' => 13,
+                'title' => 'AVERAGEIF dan AVERAGEIFS', 'slug' => 'fungsi-averageif',
+                'intro' => 'Menghitung rata-rata data berdasarkan kriteria tertentu.',
+                'content' => [
+                    'apa_itu' => "AVERAGEIF mencari rata-rata hanya untuk data yang memenuhi kriteria.",
+                    'mengapa' => "Berguna untuk mencari rata-rata nilai khusus untuk siswa perempuan saja, misalnya.",
+                    'sintaks' => "=AVERAGEIF(range_kriteria, kriteria, range_rata-rata)"
+                ],
+            ],
+            [
+                'category_id' => $catL3->id, 'learning_level_id' => $lvlMenengah->id, 'order' => 14,
+                'title' => 'AND, OR, dan IF Bertingkat', 'slug' => 'fungsi-and-or',
+                'intro' => 'Menggabungkan beberapa kondisi logika.',
+                'content' => [
+                    'apa_itu' => "AND bernilai BENAR jika semua kondisi terpenuhi. OR bernilai BENAR jika salah satu kondisi terpenuhi. IF bertingkat artinya IF di dalam IF.",
+                    'mengapa' => "Membuat logika yang lebih kompleks, seperti diskon jika belanja > 100rb DAN member VIP.",
+                    'sintaks' => "=IF(AND(A1>10, B1<5), \"Ya\", \"Tidak\")"
+                ],
+            ],
+            [
+                'category_id' => $catL3->id, 'learning_level_id' => $lvlMenengah->id, 'order' => 15,
+                'title' => 'Fungsi Teks Dasar', 'slug' => 'fungsi-teks',
+                'intro' => 'Mengolah data teks seperti memotong dan menggabungkan.',
+                'content' => [
+                    'apa_itu' => "LEFT mengambil teks dari kiri, RIGHT dari kanan, MID dari tengah, LEN menghitung panjang teks, TRIM menghapus spasi berlebih, CONCAT menggabungkan teks.",
+                    'mengapa' => "Sangat penting saat mengolah data nama, alamat, atau kode barang.",
+                    'sintaks' => "=LEFT(A1, 3) // Ambil 3 huruf dari kiri\n=CONCAT(A1, B1) // Gabungkan isi A1 dan B1"
+                ],
+            ],
+
+            // --- LEVEL 4 ---
+            [
+                'category_id' => $catL4->id, 'learning_level_id' => $lvlLanjutan->id, 'order' => 16,
+                'title' => 'VLOOKUP, HLOOKUP, XLOOKUP', 'slug' => 'fungsi-lookup',
+                'intro' => 'Mencari data dari tabel lain (seperti mencari harga dari daftar barang).',
+                'content' => [
+                    'apa_itu' => "Fungsi Lookup mencari sebuah nilai di tabel referensi dan mengembalikan nilai lain yang berpasangan dengannya.",
+                    'mengapa' => "Sangat sering dipakai di dunia kerja untuk menggabungkan dua tabel data yang berbeda.",
+                    'sintaks' => "=VLOOKUP(nilai_dicari, tabel_referensi, nomor_kolom, FALSE)"
+                ],
+            ],
+            [
+                'category_id' => $catL4->id, 'learning_level_id' => $lvlLanjutan->id, 'order' => 17,
+                'title' => 'Data Tools Dasar', 'slug' => 'data-tools',
+                'intro' => 'Menggunakan Sorting, Filter, Conditional Formatting, dan Data Validation.',
+                'content' => [
+                    'apa_itu' => "Sorting mengurutkan data. Filter menyaring data yang ingin dilihat. Conditional Formatting mewarnai cell otomatis. Data Validation membatasi isi cell.",
+                    'mengapa' => "Membuat analisis data menjadi jauh lebih cepat dan visual.",
+                    'sintaks' => "Semua fitur ini ada di Tab Home dan Data pada Ribbon Excel."
+                ],
+            ],
+            [
+                'category_id' => $catL4->id, 'learning_level_id' => $lvlLanjutan->id, 'order' => 18,
+                'title' => 'PivotTable & Dashboard', 'slug' => 'pivottable-dashboard',
+                'intro' => 'Merangkum ribuan data menjadi tabel ringkas dan grafik interaktif.',
+                'content' => [
+                    'apa_itu' => "PivotTable adalah fitur sakti untuk merangkum data (misal: total penjualan per kota). Chart adalah grafik visual. Dashboard adalah kumpulan grafik yang diletakkan dalam satu layar.",
+                    'mengapa' => "Dibutuhkan oleh manajer atau analis untuk mengambil keputusan bisnis.",
+                    'sintaks' => "Pilih data > Insert > PivotTable > Pilih field yang ingin dianalisis."
                 ],
             ],
         ];
 
-        foreach ($exercises as $i => $ex) {
-            $e = Exercise::create([
+        // ==========================================
+        // 4. LOOPING UNTUK INSERT DATA & EXERCISES
+        // ==========================================
+        foreach ($lessonsData as $data) {
+            $lesson = Lesson::create($data);
+
+            // Contoh Soal
+            LessonExample::create([
                 'lesson_id' => $lesson->id,
-                'question' => $ex['question'],
-                'type' => 'multiple_choice',
-                'order' => $i + 1,
+                'title' => 'Contoh Penerapan ' . $lesson->title,
+                'case_description' => 'Perhatikan contoh penggunaan fungsi ini dalam kehidupan sehari-hari.',
+                'data_table' => [['Data 1', '100'], ['Data 2', '200'], ['Data 3', '300']],
+                'question' => 'Bagaimana cara mengaplikasikannya?',
+                'formula_used' => 'Lihat bagian sintaks.',
+                'steps' => ['Pilih cell hasil.', 'Ketik tanda =.', 'Ketik nama fungsi.', 'Blok rentang data.', 'Tekan Enter.'],
+                'final_result' => 'Data berhasil diolah.',
             ]);
-            foreach ($ex['options'] as [$label, $text, $ok]) {
-                ExerciseOption::create([
-                    'exercise_id' => $e->id, 
-                    'label' => $label, 
-                    'text' => $text, 
-                    'is_correct' => $ok,
+
+            // 5 Soal Latihan
+            for ($i = 1; $i <= 5; $i++) {
+                $ex = Exercise::create([
+                    'lesson_id' => $lesson->id,
+                    'question' => 'Soal ' . $i . ': Terkait materi ' . $lesson->title,
+                    'type' => 'multiple_choice',
+                    'order' => $i,
                 ]);
+                ExerciseOption::create(['exercise_id' => $ex->id, 'label' => 'A', 'text' => 'Jawaban Benar', 'is_correct' => true]);
+                ExerciseOption::create(['exercise_id' => $ex->id, 'label' => 'B', 'text' => 'Jawaban Salah', 'is_correct' => false]);
             }
         }
 
-        // 5. Kamus Rumus
-        Formula::create([
-            'name' => 'SUM', 'slug' => 'sum',
-            'category' => 'Fungsi Dasar',
-            'description' => 'Menjumlahkan semua angka dalam satu atau lebih rentang.',
-            'syntax' => '=SUM(number1, [number2], ...)',
-            'example' => '=SUM(A1:A10)',
-            'result' => 'Total nilai A1 sampai A10',
-            'parameters' => [
-                ['name' => 'number1', 'desc' => 'Rentang atau angka pertama.'],
-                ['name' => 'number2', 'desc' => 'Opsional, angka/rentang berikutnya.'],
-            ],
-            'excel_versions' => 'Semua versi Excel',
-        ]);
-        
-        Formula::create([
-            'name' => 'VLOOKUP', 'slug' => 'vlookup', 'category' => 'Lookup',
-            'description' => 'Mencari nilai di kolom pertama rentang dan mengembalikan nilai dari kolom lain di baris yang sama.',
-            'syntax' => '=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])',
-            'example' => '=VLOOKUP(D2, A2:B10, 2, FALSE)',
-            'result' => 'Nilai kolom B yang cocok dengan data D2',
-            'excel_versions' => 'Semua versi Excel',
-        ]);
+        // ==========================================
+        // 5. KAMUS RUMUS (FORMULAS)
+        // ==========================================
+        $formulas = [
+            ['name' => 'SUM', 'slug' => 'sum', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan angka.', 'syntax' => '=SUM(number1)', 'ex' => '=SUM(A1:A10)'],
+            ['name' => 'AVERAGE', 'slug' => 'average', 'cat' => 'Statistik', 'desc' => 'Mencari rata-rata.', 'syntax' => '=AVERAGE(number1)', 'ex' => '=AVERAGE(B1:B10)'],
+            ['name' => 'IF', 'slug' => 'if', 'cat' => 'Logika', 'desc' => 'Membuat kondisi logika.', 'syntax' => '=IF(test, true, false)', 'ex' => '=IF(A1>75, "Lulus", "Gagal")'],
+            ['name' => 'VLOOKUP', 'slug' => 'vlookup', 'cat' => 'Lookup', 'desc' => 'Mencari data di tabel referensi.', 'syntax' => '=VLOOKUP(lookup, table, col, FALSE)', 'ex' => '=VLOOKUP(D2, A1:B10, 2, FALSE)'],
+        ];
+
+        foreach ($formulas as $f) {
+            Formula::create([
+                'name' => $f['name'], 'slug' => $f['slug'], 'category' => $f['cat'],
+                'description' => $f['desc'], 'syntax' => $f['syntax'], 'example' => $f['ex'],
+                'result' => 'Hasil perhitungan', 'excel_versions' => 'Semua versi',
+            ]);
+        }
     }
 }

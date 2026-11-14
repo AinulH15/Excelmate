@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, BookOpen } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
@@ -21,7 +21,7 @@ export default function MateriPage() {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Gagal mengambil data:", err);
+        console.error(err);
         setLoading(false);
       });
   }, []);
@@ -30,14 +30,24 @@ export default function MateriPage() {
     l.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Kelompokkan materi berdasarkan kategori
+  const groupedLessons: Record<string, any[]> = {};
+  filteredLessons.forEach(lesson => {
+    const catName = lesson.category?.name || 'Lainnya';
+    if (!groupedLessons[catName]) groupedLessons[catName] = [];
+    groupedLessons[catName].push(lesson);
+  });
+
   return (
-    <div className="space-y-8">
-      <div className="bg-lavender border-2 border-ink rounded-2xl shadow-neo p-8 text-center">
-        <h1 className="text-4xl font-black mb-2">Jelajahi Materi Excel</h1>
-        <p className="text-lg">Pilih materi yang ingin kamu pelajari hari ini.</p>
+    <div className="space-y-12">
+      {/* Header */}
+      <div className="bg-lavender border-2 border-ink rounded-2xl shadow-neo p-10 text-center">
+        <h1 className="text-4xl font-black mb-2">Kurikulum ExcelMate</h1>
+        <p className="text-lg">18 Materi terstruktur dari pemula hingga mahir.</p>
       </div>
 
-      <div className="flex items-center bg-white border-2 border-ink rounded-xl px-4 py-3 shadow-neo">
+      {/* Search Bar */}
+      <div className="flex items-center bg-white border-2 border-ink rounded-xl px-4 py-3 shadow-neo max-w-2xl mx-auto">
         <Search className="text-gray-500 mr-2" />
         <input 
           type="text" 
@@ -48,34 +58,49 @@ export default function MateriPage() {
         />
       </div>
 
+      {/* List Materi per Kategori */}
       {loading ? (
-        <div className="text-center font-bold py-10 animate-pulse">Memuat materi dari database...</div>
+        <div className="text-center font-bold py-10 animate-pulse">Memuat kurikulum...</div>
       ) : (
-        <div className="grid md:grid-cols-2 gap-6">
-          {filteredLessons.map((lesson) => (
-            <Card key={lesson.id} className="flex flex-col justify-between hover:-translate-y-1 transition-transform">
-              <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="bg-blue border-2 border-ink rounded-lg px-3 py-1 text-sm font-bold shadow-neo-sm">
-                    {lesson.category?.name || 'Umum'}
-                  </span>
-                </div>
-                <h2 className="text-2xl font-black mb-2">{lesson.title}</h2>
-                <p className="text-gray-700 mb-6">{lesson.intro}</p>
+        <div className="space-y-12">
+          {Object.entries(groupedLessons).map(([categoryName, catLessons]) => (
+            <section key={categoryName}>
+              <div className="flex items-center gap-2 mb-6 border-b-2 border-ink/10 pb-2">
+                <BookOpen className="text-ink" />
+                <h2 className="text-2xl font-black text-ink">{categoryName}</h2>
               </div>
-              <Link href={`/materi/${lesson.slug}`}>
-                <Button variant="mint" className="w-full flex justify-center items-center gap-2">
-                  Mulai Belajar <ChevronRight size={18} />
-                </Button>
-              </Link>
-            </Card>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {catLessons.map((lesson) => (
+                  <Card key={lesson.id} className="flex flex-col justify-between hover:-translate-y-1 transition-transform">
+                    <div>
+                      <div className="flex justify-between items-start mb-2">
+                        <span className="bg-yellow border-2 border-ink rounded-lg px-2 py-0.5 text-xs font-bold shadow-neo-sm">
+                          Materi #{lesson.order}
+                        </span>
+                        <span className="bg-mint border-2 border-ink rounded-lg px-2 py-0.5 text-xs font-bold shadow-neo-sm">
+                          {lesson.level?.name}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-black mb-2">{lesson.title}</h3>
+                      <p className="text-gray-700 text-sm mb-4 line-clamp-2">{lesson.intro}</p>
+                    </div>
+                    <Link href={`/materi/${lesson.slug}`}>
+                      <Button variant="blue" className="w-full flex justify-center items-center gap-2 py-2">
+                        Mulai Belajar <ChevronRight size={16} />
+                      </Button>
+                    </Link>
+                  </Card>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       )}
 
       {!loading && filteredLessons.length === 0 && (
         <div className="text-center bg-pink border-2 border-ink rounded-xl shadow-neo p-10">
-          <p className="text-xl font-bold">Materi tidak ditemukan atau database kosong.</p>
+          <p className="text-xl font-bold">Materi tidak ditemukan.</p>
         </div>
       )}
     </div>
