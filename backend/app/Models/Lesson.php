@@ -8,7 +8,6 @@ class Lesson extends Model
 {
     protected $guarded = ['id'];
     
-    // Casting JSON dari database menjadi array di PHP
     protected $casts = [
         'content' => 'array',
         'is_published' => 'boolean',
