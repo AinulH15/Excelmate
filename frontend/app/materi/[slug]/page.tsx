@@ -19,17 +19,21 @@ import OperasiMatematikaVisual from '@/components/OperasiMatematikaVisual';
 import FormulaVisual from '@/components/FormulaVisual';
 import DataToolsVisual from '@/components/DataToolsVisual';
 import PivotTutorial from '@/components/PivotTutorial';
+import PivotSimulator from '@/components/PivotSimulator';
+import TipsCard from '@/components/TipsCard';
 
 const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
 
 export default function DetailMateriPage() {
   const { slug } = useParams();
   const [lesson, setLesson] = useState<any>(null);
+  const [tips, setTips] = useState<any[]>([]);
   const [mode, setMode] = useState<'belajar' | 'latihan'>('belajar');
   const [activePart, setActivePart] = useState<string | null>(null);
 
   useEffect(() => {
     api.get(`/lessons/${slug}`).then(res => setLesson(res.data.data)).catch(console.error);
+    api.get(`/lessons/${slug}/tips`).then(res => setTips(res.data.data)).catch(console.error);
   }, [slug]);
 
   if (!lesson) return <div className="text-center py-20 font-bold animate-pulse">Memuat materi...</div>;
@@ -266,6 +270,13 @@ export default function DetailMateriPage() {
         )}
       </section>
 
+      {/* TIPS CARD DI SINI */}
+      {tips.length > 0 && (
+        <section className="space-y-8">
+          <TipsCard tips={tips} />
+        </section>
+      )}
+
       <hr className="border-t-2 border-ink/10" />
 
       <section className="space-y-8">
@@ -293,19 +304,24 @@ export default function DetailMateriPage() {
         <div className="mt-8">
           {mode === 'belajar' ? (
             <div className="space-y-6">
-              <div className="text-center mb-8"><h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2"><Calculator /> Guided Practice</h3></div>
-              {slug !== 'data-tools' && slug !== 'pivottable-dashboard' ? (
-                <Spreadsheet lessonSlug={slug as string} />
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2">
+                  <Calculator /> Guided Practice
+                </h3>
+              </div>
+              {slug === 'pivottable-dashboard' ? (
+                <PivotSimulator />
               ) : (
-                <div className="bg-yellow border-2 border-ink rounded-2xl p-8 text-center shadow-neo">
-                  <p className="font-bold text-lg">✅ Simulasi interaktif untuk materi ini sudah ada di bagian "Bagian Penting" di atas.</p>
-                  <p className="text-sm mt-2">Silakan gulir ke atas untuk mencoba simulasi {slug === 'pivottable-dashboard' ? 'PivotTable' : 'Data Tools'}.</p>
-                </div>
+                <Spreadsheet lessonSlug={slug as string} />
               )}
             </div>
           ) : (
             <div className="space-y-6">
-              <div className="text-center mb-8"><h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2"><PlayCircle /> Uji Pemahamanmu</h3></div>
+              <div className="text-center mb-8">
+                <h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2">
+                  <PlayCircle /> Uji Pemahamanmu
+                </h3>
+              </div>
               <ExercisePlayer onComplete={() => alert('Latihan Selesai!')} />
             </div>
           )}

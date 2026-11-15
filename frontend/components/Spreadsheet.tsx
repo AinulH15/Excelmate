@@ -9,7 +9,17 @@ const ROWS = 20;
 const COLS = 5; // A sampai E
 
 export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
-  const [data, setData] = useState<Record<string, string>>({});
+  // PERBAIKAN: Tambahkan anotasi tipe Record<string, string>
+  const initialPivotData: Record<string, string> = lessonSlug === 'pivottable-dashboard' ? {
+    'A1': 'Produk', 'B1': 'Karyawan', 'C1': 'Jumlah', 'D1': 'Harga', 'E1': 'Total',
+    'A2': 'Laptop', 'B2': 'Andi', 'C2': '1', 'D2': '5000000',
+    'A3': 'Mouse', 'B3': 'Budi', 'C3': '5', 'D3': '150000',
+    'A4': 'Laptop', 'B4': 'Andi', 'C4': '1', 'D4': '5000000',
+    'A5': 'Keyboard', 'B5': 'Citra', 'C5': '3', 'D5': '300000',
+    'A6': 'Mouse', 'B6': 'Budi', 'C6': '5', 'D6': '150000',
+  } : {};
+
+  const [data, setData] = useState<Record<string, string>>(initialPivotData);
   const [activeCell, setActiveCell] = useState<string>('A1');
   const [formulaInput, setFormulaInput] = useState<string>('');
   const [activeSheet, setActiveSheet] = useState('Sheet1');
@@ -100,15 +110,12 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
       <div className="bg-gray-50 border-b-2 border-gray-300 px-2 py-2 flex flex-wrap gap-4 items-start text-xs text-gray-700 h-20 overflow-y-auto">
         {activeTab === 'Home' && (
           <>
-            {/* Grup Clipboard */}
             <div className="flex flex-col items-center border-r border-gray-300 pr-4">
               <div className="flex gap-1 mb-1">
                 <div className="bg-white border border-gray-300 p-1 rounded shadow-sm hover:bg-gray-100 cursor-pointer text-lg">📋</div>
               </div>
               <span>Clipboard</span>
             </div>
-
-            {/* Grup Font */}
             <div className="flex flex-col items-center border-r border-gray-300 pr-4">
               <div className="flex gap-1 mb-1">
                 <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow-sm">Calibri</div>
@@ -118,8 +125,6 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
               </div>
               <span>Font</span>
             </div>
-
-            {/* Grup Alignment */}
             <div className="flex flex-col items-center border-r border-gray-300 pr-4">
               <div className="flex gap-1 mb-1">
                 <button onClick={() => applyFormat('align-left')} className={`border border-gray-300 px-2 py-1 rounded shadow-sm ${textAlign === 'left' ? 'bg-gray-300' : 'bg-white'}`}>≡</button>
@@ -128,8 +133,6 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
               </div>
               <span>Alignment</span>
             </div>
-
-            {/* Grup Number */}
             <div className="flex flex-col items-center border-r border-gray-300 pr-4">
               <div className="flex gap-1 mb-1 items-center">
                 <div className="bg-white border border-gray-300 px-2 py-1 rounded shadow-sm flex items-center gap-1 font-bold min-w-[100px] justify-between">
@@ -145,70 +148,25 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
 
         {activeTab === 'Insert' && (
           <div className="flex gap-4 items-start">
-            <div className="flex flex-col items-center">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">📊</div>
-              </div>
-              <span>PivotTable</span>
-            </div>
-            <div className="flex flex-col items-center border-l border-gray-300 pl-4">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">📈</div>
-              </div>
-              <span>Chart</span>
-            </div>
-            <div className="flex flex-col items-center border-l border-gray-300 pl-4">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🔗</div>
-              </div>
-              <span>Link</span>
-            </div>
+            <div className="flex flex-col items-center"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">📊</div><span>PivotTable</span></div>
+            <div className="flex flex-col items-center border-l border-gray-300 pl-4"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">📈</div><span>Chart</span></div>
+            <div className="flex flex-col items-center border-l border-gray-300 pl-4"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🔗</div><span>Link</span></div>
           </div>
         )}
 
         {activeTab === 'Data' && (
           <div className="flex gap-4 items-start">
-            <div className="flex flex-col items-center">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🔽</div>
-              </div>
-              <span>Sort A-Z</span>
-            </div>
-            <div className="flex flex-col items-center border-l border-gray-300 pl-4">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">⏫</div>
-              </div>
-              <span>Sort Z-A</span>
-            </div>
-            <div className="flex flex-col items-center border-l border-gray-300 pl-4">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🔍</div>
-              </div>
-              <span>Filter</span>
-            </div>
-            <div className="flex flex-col items-center border-l border-gray-300 pl-4">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🛡️</div>
-              </div>
-              <span>Validation</span>
-            </div>
+            <div className="flex flex-col items-center"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🔽</div><span>Sort A-Z</span></div>
+            <div className="flex flex-col items-center border-l border-gray-300 pl-4"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">⏫</div><span>Sort Z-A</span></div>
+            <div className="flex flex-col items-center border-l border-gray-300 pl-4"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🔍</div><span>Filter</span></div>
+            <div className="flex flex-col items-center border-l border-gray-300 pl-4"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🛡️</div><span>Validation</span></div>
           </div>
         )}
 
         {activeTab === 'Formulas' && (
           <div className="flex gap-4 items-start">
-            <div className="flex flex-col items-center">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🧮</div>
-              </div>
-              <span>AutoSum</span>
-            </div>
-            <div className="flex flex-col items-center border-l border-gray-300 pl-4">
-              <div className="flex gap-1 mb-1">
-                <div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">📚</div>
-              </div>
-              <span>Function</span>
-            </div>
+            <div className="flex flex-col items-center"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">🧮</div><span>AutoSum</span></div>
+            <div className="flex flex-col items-center border-l border-gray-300 pl-4"><div className="bg-white border border-gray-300 p-1 rounded shadow-sm text-lg">📚</div><span>Function</span></div>
           </div>
         )}
 
@@ -236,16 +194,14 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
 
       {/* 5. LAYOUT UTAMA (Tutorial Kiri, Grid Kanan) */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Panel Kiri: Tutorial */}
         <div className="w-1/3 border-r-2 border-gray-300 overflow-y-auto p-2 bg-gray-50">
           <InteractiveTutorial 
             steps={currentSteps}
             data={data} 
-            onReset={() => { setData({}); setActiveCell('A1'); setFormulaInput(''); setIsBold(false); setIsItalic(false); setBgColor('bg-white'); }} 
+            onReset={() => { setData(initialPivotData); setActiveCell('A1'); setFormulaInput(''); setIsBold(false); setIsItalic(false); setBgColor('bg-white'); }} 
           />
         </div>
 
-        {/* Panel Kanan: Grid Spreadsheet */}
         <div className="w-2/3 overflow-auto bg-white relative">
           <table className="w-full border-collapse">
             <thead className="sticky top-0 bg-gray-100 z-20">
@@ -266,8 +222,6 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
                   </td>
                   {Array.from({ length: COLS }).map((_, colIndex) => {
                     const cellId = `${String.fromCharCode(65 + colIndex)}${rowIndex + 1}`;
-                    const isActive = activeCell === cellId;
-                    
                     return (
                       <td
                         key={cellId}

@@ -55,4 +55,10 @@ class LessonController extends Controller
             'next' => $next,
         ]);
     }
+    public function tips($slug)
+    {
+        $lesson = Lesson::where('slug', $slug)->firstOrFail();
+        $tips = $lesson->tips()->where('is_active', true)->get();
+        return response()->json(['data' => $tips]);
+    }
 }
