@@ -35,7 +35,7 @@ class ExcelmateSeeder extends Seeder
         // 3. LESSONS DATA (18 Materi Lengkap)
         // ==========================================
         $lessonsData = [
-            // --- LEVEL 1 ---
+            // LEVEL 1
             [
                 'category_id' => $catL1->id, 'learning_level_id' => $lvlPemula->id, 'order' => 1,
                 'title' => 'Pengenalan Antarmuka Excel', 'slug' => 'pengenalan-antarmuka-excel',
@@ -86,14 +86,13 @@ class ExcelmateSeeder extends Seeder
                     'sintaks' => "Contoh Penulisan Rumus:\n\n=10 + 5 (Hasil: 15)\n=20 - 8 (Hasil: 12)\n=4 * 5 (Hasil: 20)\n=100 / 4 (Hasil: 25)\n\nBisa juga menggunakan alamat cell:\n=A1 + B1 (Menjumlahkan isi cell A1 dan B1)"
                 ],
             ],
-
-            // --- LEVEL 2 ---
+            // LEVEL 2
             [
                 'category_id' => $catL2->id, 'learning_level_id' => $lvlDasar->id, 'order' => 6,
                 'title' => 'Fungsi SUM', 'slug' => 'fungsi-sum',
                 'intro' => 'Menjumlahkan banyak angka sekaligus dengan cepat.',
                 'content' => [
-                    'apa_itu' => "SUM adalah fungsi untuk menjumlahkan seluruh angka dalam sebuah rentang. Bayangkan kamu punya 100 baris data, SUM akan menjumlahkannya dalam sekejap.",
+                    'apa_itu' => "SUM adalah fungsi untuk menjumlahkan seluruh angka dalam sebuah rentang.",
                     'mengapa' => "Menghemat waktu dan mengurangi kesalahan hitung manual.",
                     'sintaks' => "=SUM(number1, [number2], ...)\nContoh: =SUM(A1:A10)"
                 ],
@@ -103,7 +102,7 @@ class ExcelmateSeeder extends Seeder
                 'title' => 'Fungsi AVERAGE', 'slug' => 'fungsi-average',
                 'intro' => 'Menghitung nilai rata-rata dari sekumpulan data.',
                 'content' => [
-                    'apa_itu' => "AVERAGE menjumlahkan semua angka lalu membaginya dengan jumlah data. Berguna untuk mencari rata-rata nilai ujian atau penjualan.",
+                    'apa_itu' => "AVERAGE menjumlahkan semua angka lalu membaginya dengan jumlah data.",
                     'mengapa' => "Memberikan gambaran umum tentang performa data tanpa harus menghitung manual.",
                     'sintaks' => "=AVERAGE(number1, [number2], ...)\nContoh: =AVERAGE(B2:B10)"
                 ],
@@ -138,16 +137,15 @@ class ExcelmateSeeder extends Seeder
                     'sintaks' => "=IF(logical_test, value_if_true, value_if_false)\nContoh: =IF(A1>=75, \"Lulus\", \"Gagal\")"
                 ],
             ],
-
-            // --- LEVEL 3 ---
+            // LEVEL 3
             [
                 'category_id' => $catL3->id, 'learning_level_id' => $lvlMenengah->id, 'order' => 11,
                 'title' => 'SUMIF dan SUMIFS', 'slug' => 'fungsi-sumif-sumifs',
                 'intro' => 'Menjumlahkan data berdasarkan kriteria tertentu.',
                 'content' => [
-                    'apa_itu' => "SUMIF menjumlahkan data hanya jika memenuhi satu kriteria. SUMIFS bisa digunakan untuk banyak kriteria sekaligus.",
-                    'mengapa' => "Sangat berguna saat ingin menghitung total penjualan khusus untuk produk tertentu saja.",
-                    'sintaks' => "=SUMIF(range_kriteria, kriteria, range_jumlah)\nContoh: =SUMIF(A1:A10, \"Apel\", B1:B10)"
+                    'apa_itu' => "SUMIF digunakan untuk menjumlahkan data hanya pada baris yang memenuhi syarat (kriteria) tertentu. Bayangkan kamu punya data penjualan berbagai buah, dan kamu hanya ingin menghitung total harga khusus untuk buah 'Apel' saja.\n\nSUMIFS adalah versi lebih canggih dari SUMIF, di mana kamu bisa memberikan lebih dari satu kriteria.",
+                    'mengapa' => "SUM biasa akan menjumlahkan semua angka. Jika kamu perlu laporan spesifik (misal: total gaji hanya untuk departemen HR), SUMIF/SUMIFS adalah cara tercepat.",
+                    'sintaks' => "SUMIF (Satu Kriteria):\n=SUMIF(range_kriteria, kriteria, range_jumlah)\n\nSUMIFS (Banyak Kriteria):\n=SUMIFS(range_jumlah, range_kriteria1, kriteria1, range_kriteria2, kriteria2, ...)\n\nContoh SUMIF:\n=SUMIF(A1:A10, \"Apel\", B1:B10)"
                 ],
             ],
             [
@@ -190,16 +188,15 @@ class ExcelmateSeeder extends Seeder
                     'sintaks' => "=LEFT(A1, 3) // Ambil 3 huruf dari kiri\n=CONCAT(A1, B1) // Gabungkan isi A1 dan B1"
                 ],
             ],
-
-            // --- LEVEL 4 ---
+            // LEVEL 4
             [
                 'category_id' => $catL4->id, 'learning_level_id' => $lvlLanjutan->id, 'order' => 16,
                 'title' => 'VLOOKUP, HLOOKUP, XLOOKUP', 'slug' => 'fungsi-lookup',
-                'intro' => 'Mencari data dari tabel lain (seperti mencari harga dari daftar barang).',
+                'intro' => 'Mencari data dari tabel referensi. Sangat berguna untuk menggabungkan data dari dua tabel berbeda.',
                 'content' => [
-                    'apa_itu' => "Fungsi Lookup mencari sebuah nilai di tabel referensi dan mengembalikan nilai lain yang berpasangan dengannya.",
-                    'mengapa' => "Sangat sering dipakai di dunia kerja untuk menggabungkan dua tabel data yang berbeda.",
-                    'sintaks' => "=VLOOKUP(nilai_dicari, tabel_referensi, nomor_kolom, FALSE)"
+                    'apa_itu' => "VLOOKUP (Vertical Lookup) mencari nilai di kolom paling kiri sebuah tabel, lalu mengembalikan nilai dari kolom lain di baris yang sama. Bayangkan kamu punya daftar harga barang di tabel referensi, dan kamu ingin mencari harga sebuah barang hanya dengan mengetik namanya.\n\nHLOOKUP melakukan hal yang sama, tapi secara horizontal (baris).\n\nXLOOKUP adalah versi modern yang lebih fleksibel (Excel 365).",
+                    'mengapa' => "Sangat sering dipakai di dunia kerja untuk menggabungkan dua tabel data yang berbeda, seperti menggabungkan data penjualan dengan data master produk.",
+                    'sintaks' => "VLOOKUP:\n=VLOOKUP(nilai_dicari, tabel_referensi, nomor_kolom, FALSE)\n\nHLOOKUP:\n=HLOOKUP(nilai_dicari, tabel_referensi, nomor_baris, FALSE)\n\nContoh:\n=VLOOKUP(D2, A2:B10, 2, FALSE)\nArtinya: Cari nilai di D2, di kolom pertama tabel A2:B10, lalu ambil nilai dari kolom ke-2."
                 ],
             ],
             [
@@ -207,9 +204,9 @@ class ExcelmateSeeder extends Seeder
                 'title' => 'Data Tools Dasar', 'slug' => 'data-tools',
                 'intro' => 'Menggunakan Sorting, Filter, Conditional Formatting, dan Data Validation.',
                 'content' => [
-                    'apa_itu' => "Sorting mengurutkan data. Filter menyaring data yang ingin dilihat. Conditional Formatting mewarnai cell otomatis. Data Validation membatasi isi cell.",
-                    'mengapa' => "Membuat analisis data menjadi jauh lebih cepat dan visual.",
-                    'sintaks' => "Semua fitur ini ada di Tab Home dan Data pada Ribbon Excel."
+                    'apa_itu' => "Data Tools adalah fitur-fitur di Excel untuk mengelola dan menganalisis data:\n\n1. Sorting: Mengurutkan data (A-Z atau Z-A, terkecil-terbesar).\n2. Filter: Menyaring data agar hanya menampilkan baris yang memenuhi kriteria tertentu.\n3. Conditional Formatting: Mewarnai cell secara otomatis berdasarkan aturan (misal: nilai < 70 jadi merah).\n4. Data Validation: Membatasi jenis data yang boleh dimasukkan ke dalam cell.",
+                    'mengapa' => "Membuat analisis data menjadi jauh lebih cepat dan visual. Kamu bisa menemukan data penting dalam hitungan detik.",
+                    'sintaks' => "Semua fitur ini ada di Tab Home dan Data pada Ribbon Excel.\n\n- Sorting: Tab Data > Sort\n- Filter: Tab Data > Filter (Ctrl+Shift+L)\n- Conditional Formatting: Tab Home > Conditional Formatting\n- Data Validation: Tab Data > Data Validation"
                 ],
             ],
             [
@@ -217,74 +214,63 @@ class ExcelmateSeeder extends Seeder
                 'title' => 'PivotTable & Dashboard', 'slug' => 'pivottable-dashboard',
                 'intro' => 'Merangkum ribuan data menjadi tabel ringkas dan grafik interaktif.',
                 'content' => [
-                    'apa_itu' => "PivotTable adalah fitur sakti untuk merangkum data (misal: total penjualan per kota). Chart adalah grafik visual. Dashboard adalah kumpulan grafik yang diletakkan dalam satu layar.",
-                    'mengapa' => "Dibutuhkan oleh manajer atau analis untuk mengambil keputusan bisnis.",
-                    'sintaks' => "Pilih data > Insert > PivotTable > Pilih field yang ingin dianalisis."
+                    'apa_itu' => "PivotTable adalah fitur sakti Excel untuk merangkum data dalam jumlah besar menjadi tabel ringkas. Kamu bisa mengelompokkan data berdasarkan kategori, menjumlahkan, mencari rata-rata, dan sebagainya hanya dengan drag-and-drop.\n\nDashboard adalah kumpulan grafik (Chart) yang diletakkan dalam satu layar untuk memberikan gambaran menyeluruh tentang data.",
+                    'mengapa' => "Dibutuhkan oleh manajer atau analis untuk mengambil keputusan bisnis berdasarkan data (Data-Driven Decision Making).",
+                    'sintaks' => "Langkah membuat PivotTable:\n1. Pilih seluruh data.\n2. Klik Insert > PivotTable.\n3. Pilih lokasi (New Worksheet).\n4. Drag field ke area Rows, Columns, Values, atau Filters."
                 ],
             ],
         ];
 
-        // ==========================================
-        // 4. LOOPING UNTUK INSERT DATA & EXERCISES
-        // ==========================================
         foreach ($lessonsData as $data) {
             $lesson = Lesson::create($data);
             LessonExample::create([
-                'lesson_id' => $lesson->id,
-                'title' => 'Contoh Penerapan ' . $lesson->title,
-                'case_description' => 'Perhatikan contoh penggunaan fungsi ini dalam kehidupan sehari-hari.',
-                'data_table' => [['Data 1', '100'], ['Data 2', '200'], ['Data 3', '300']],
-                'question' => 'Bagaimana cara mengaplikasikannya?',
-                'formula_used' => 'Lihat bagian sintaks.',
-                'steps' => ['Pilih cell hasil.', 'Ketik tanda =.', 'Ketik nama fungsi.', 'Blok rentang data.', 'Tekan Enter.'],
-                'final_result' => 'Data berhasil diolah.',
+                'lesson_id' => $lesson->id, 'title' => 'Contoh Penerapan ' . $lesson->title,
+                'case_description' => 'Perhatikan contoh penggunaan fungsi ini.',
+                'data_table' => [['Data 1', '100'], ['Data 2', '200']],
+                'question' => 'Bagaimana cara mengaplikasikannya?', 'formula_used' => 'Lihat sintaks.',
+                'steps' => ['Langkah 1', 'Langkah 2'], 'final_result' => 'Selesai.',
             ]);
             for ($i = 1; $i <= 5; $i++) {
-                $ex = Exercise::create(['lesson_id' => $lesson->id, 'question' => 'Soal ' . $i . ': Terkait materi ' . $lesson->title, 'type' => 'multiple_choice', 'order' => $i]);
-                ExerciseOption::create(['exercise_id' => $ex->id, 'label' => 'A', 'text' => 'Jawaban Benar', 'is_correct' => true]);
-                ExerciseOption::create(['exercise_id' => $ex->id, 'label' => 'B', 'text' => 'Jawaban Salah', 'is_correct' => false]);
+                $ex = Exercise::create(['lesson_id' => $lesson->id, 'question' => 'Soal ' . $i, 'type' => 'multiple_choice', 'order' => $i]);
+                ExerciseOption::create(['exercise_id' => $ex->id, 'label' => 'A', 'text' => 'Benar', 'is_correct' => true]);
+                ExerciseOption::create(['exercise_id' => $ex->id, 'label' => 'B', 'text' => 'Salah', 'is_correct' => false]);
             }
         }
 
-        // ==========================================
-        // 5. KAMUS RUMUS (23 RUMUS LENGKAP DENGAN VISUAL)
-        // ==========================================
+        // 5. KAMUS RUMUS (23 Rumus)
         $formulas = [
-            // LEVEL 1-2
-            ['name' => 'SUM', 'slug' => 'sum', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan semua angka dalam satu atau lebih rentang.', 'syntax' => '=SUM(number1, [number2], ...)', 'ex' => '=SUM(B1:B3)', 'case' => "Kamu memiliki daftar belanja. Kamu ingin tahu total uang yang harus dibayar dengan menjumlahkan B1 sampai B3.", 'res' => "Total belanja adalah Rp45.000.", 'before' => [['Beras', '15000'], ['Minyak', '20000'], ['Gula', '10000'], ['Total', '=SUM(B1:B3)']], 'after' => [['Beras', '15000'], ['Minyak', '20000'], ['Gula', '10000'], ['Total', '45000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'AVERAGE', 'slug' => 'average', 'cat' => 'Statistik', 'desc' => 'Menghitung nilai rata-rata dari sekumpulan data.', 'syntax' => '=AVERAGE(number1, [number2], ...)', 'ex' => '=AVERAGE(B1:B3)', 'case' => "Nilai ujian 3 siswa: 80, 90, dan 70. Kamu ingin mencari nilai rata-ratanya.", 'res' => "Rata-rata nilai adalah 80.", 'before' => [['Siswa A', '80'], ['Siswa B', '90'], ['Siswa C', '70'], ['Rata-rata', '=AVERAGE(B1:B3)']], 'after' => [['Siswa A', '80'], ['Siswa B', '90'], ['Siswa C', '70'], ['Rata-rata', '80']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'MAX', 'slug' => 'max', 'cat' => 'Statistik', 'desc' => 'Mencari nilai tertinggi dari sekumpulan data.', 'syntax' => '=MAX(number1, [number2], ...)', 'ex' => '=MAX(B1:B3)', 'case' => "Mencari penjualan tertinggi dari data 3 hari.", 'res' => "Nilai tertinggi adalah 200000.", 'before' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Max', '=MAX(B1:B3)']], 'after' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Max', '200000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'MIN', 'slug' => 'min', 'cat' => 'Statistik', 'desc' => 'Mencari nilai terendah dari sekumpulan data.', 'syntax' => '=MIN(number1, [number2], ...)', 'ex' => '=MIN(B1:B3)', 'case' => "Mencari penjualan terendah dari data 3 hari.", 'res' => "Nilai terendah adalah 100000.", 'before' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Min', '=MIN(B1:B3)']], 'after' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Min', '100000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'COUNT', 'slug' => 'count', 'cat' => 'Statistik', 'desc' => 'Menghitung jumlah cell yang berisi angka.', 'syntax' => '=COUNT(value1, [value2], ...)', 'ex' => '=COUNT(B1:B4)', 'case' => "Menghitung berapa banyak siswa yang sudah mengumpulkan nilai.", 'res' => "Ada 3 siswa yang sudah dinilai.", 'before' => [['Budi', '80'], ['Andi', '90'], ['Siti', '(kosong)'], ['Ani', '70'], ['Jumlah', '=COUNT(B1:B4)']], 'after' => [['Budi', '80'], ['Andi', '90'], ['Siti', '(kosong)'], ['Ani', '70'], ['Jumlah', '3']], 'hl_before' => ['B5'], 'hl_after' => ['B5']],
-            ['name' => 'COUNTA', 'slug' => 'counta', 'cat' => 'Statistik', 'desc' => 'Menghitung jumlah cell yang tidak kosong (termasuk teks).', 'syntax' => '=COUNTA(value1, [value2], ...)', 'ex' => '=COUNTA(A1:A4)', 'case' => "Menghitung berapa banyak nama siswa yang sudah diisi.", 'res' => "Ada 4 nama yang terisi.", 'before' => [['Budi', ''], ['Andi', ''], ['Siti', ''], ['Ani', ''], ['Total Nama', '=COUNTA(A1:A4)']], 'after' => [['Budi', ''], ['Andi', ''], ['Siti', ''], ['Ani', ''], ['Total Nama', '4']], 'hl_before' => ['B5'], 'hl_after' => ['B5']],
-            ['name' => 'IF', 'slug' => 'if', 'cat' => 'Logika', 'desc' => 'Mengecek kondisi dan mengembalikan nilai jika benar/salah.', 'syntax' => '=IF(logical_test, value_if_true, value_if_false)', 'ex' => '=IF(B2>=75, "Lulus", "Gagal")', 'case' => "Nilai Andi ada di sel B2 (80). Tampilkan 'Lulus' jika >= 75.", 'res' => "Karena B2 berisi 80, maka hasilnya 'Lulus'.", 'before' => [['Nama', 'Nilai', 'Status'], ['Andi', '80', '=IF(B2>=75, "Lulus", "Gagal")']], 'after' => [['Nama', 'Nilai', 'Status'], ['Andi', '80', 'Lulus']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
-            ['name' => 'SUMIF', 'slug' => 'sumif', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan data berdasarkan satu kriteria.', 'syntax' => '=SUMIF(range, criteria, [sum_range])', 'ex' => '=SUMIF(A1:A3, "Apel", B1:B3)', 'case' => "Kamu hanya ingin menjumlahkan total harga untuk buah 'Apel' saja.", 'res' => "Total harga Apel adalah 15000.", 'before' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Total Apel', '=SUMIF(A1:A3, "Apel", B1:B3)']], 'after' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Total Apel', '15000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'SUMIFS', 'slug' => 'sumifs', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan data berdasarkan banyak kriteria.', 'syntax' => '=SUMIFS(sum_range, criteria_range1, criteria1, ...)', 'ex' => '=SUMIFS(C1:C3, A1:A3, "Apel", B1:B3, ">50")', 'case' => "Menjumlahkan penjualan Apel yang harganya di atas 50rb.", 'res' => "Total penjualan Apel > 50rb adalah 60000.", 'before' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Total Spesifik', '=SUMIFS(C1:C3, A1:A3, "Apel", C1:C3, ">50")']], 'after' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Total Spesifik', '50000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'COUNTIF', 'slug' => 'countif', 'cat' => 'Statistik', 'desc' => 'Menghitung jumlah data berdasarkan satu kriteria.', 'syntax' => '=COUNTIF(range, criteria)', 'ex' => '=COUNTIF(B1:B3, "Laki-laki")', 'case' => "Menghitung ada berapa banyak siswa laki-laki di daftar.", 'res' => "Ada 2 siswa laki-laki.", 'before' => [['Nama', 'JK'], ['Budi', 'Laki-laki'], ['Siti', 'Perempuan'], ['Andi', 'Laki-laki'], ['Total L', '=COUNTIF(B1:B3, "Laki-laki")']], 'after' => [['Nama', 'JK'], ['Budi', 'Laki-laki'], ['Siti', 'Perempuan'], ['Andi', 'Laki-laki'], ['Total L', '2']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'COUNTIFS', 'slug' => 'countifs', 'cat' => 'Statistik', 'desc' => 'Menghitung jumlah data berdasarkan banyak kriteria.', 'syntax' => '=COUNTIFS(criteria_range1, criteria1, ...)', 'ex' => '=COUNTIFS(A1:A3, "Apel", B1:B3, ">50")', 'case' => "Menghitung penjualan Apel yang harganya di atas 50rb.", 'res' => "Ada 1 transaksi.", 'before' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Jumlah Transaksi', '=COUNTIFS(A1:A3, "Apel", C1:C3, ">50")']], 'after' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Jumlah Transaksi', '1']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'AVERAGEIF', 'slug' => 'averageif', 'cat' => 'Statistik', 'desc' => 'Menghitung rata-rata berdasarkan satu kriteria.', 'syntax' => '=AVERAGEIF(range, criteria, [average_range])', 'ex' => '=AVERAGEIF(A1:A3, "Apel", B1:B3)', 'case' => "Mencari rata-rata harga dari buah 'Apel' saja.", 'res' => "Rata-rata harga Apel adalah 7500.", 'before' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Rata Apel', '=AVERAGEIF(A1:A3, "Apel", B1:B3)']], 'after' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Rata Apel', '7500']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'AND', 'slug' => 'and', 'cat' => 'Logika', 'desc' => 'Mengembalikan TRUE jika semua kondisi terpenuhi.', 'syntax' => '=AND(logical1, [logical2], ...)', 'ex' => '=AND(A2>10, B2=TRUE)', 'case' => "Toko memberi diskon jika belanja > 10rb (A2) DAN member aktif (B2 = TRUE).", 'res' => "Karena kedua kondisi benar, hasilnya TRUE (Dapat Diskon).", 'before' => [['Belanja', 'Member', 'Status'], ['15000', 'TRUE', '=AND(A2>10, B2=TRUE)']], 'after' => [['Belanja', 'Member', 'Status'], ['15000', 'TRUE', 'TRUE']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
-            ['name' => 'OR', 'slug' => 'or', 'cat' => 'Logika', 'desc' => 'Mengembalikan TRUE jika salah satu kondisi terpenuhi.', 'syntax' => '=OR(logical1, [logical2], ...)', 'ex' => '=OR(A2>50, B2="VIP")', 'case' => "Dapat hadiah jika belanja > 50rb ATAU status VIP.", 'res' => "Karena belanja 60000 (>50rb), hasilnya TRUE.", 'before' => [['Belanja', 'Status', 'Hadiah'], ['60000', 'Biasa', '=OR(A2>50, B2="VIP")']], 'after' => [['Belanja', 'Status', 'Hadiah'], ['60000', 'Biasa', 'TRUE']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
-            ['name' => 'LEFT', 'slug' => 'left', 'cat' => 'Teks', 'desc' => 'Mengambil sejumlah karakter dari sisi kiri teks.', 'syntax' => '=LEFT(text, [num_chars])', 'ex' => '=LEFT(A2, 3)', 'case' => "Mengambil 3 huruf pertama dari kode barang 'EXCEL-001'.", 'res' => "Hasilnya 'EXC'.", 'before' => [['Kode Barang', 'Hasil'], ['EXCEL-001', '=LEFT(A2, 3)']], 'after' => [['Kode Barang', 'Hasil'], ['EXCEL-001', 'EXC']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
-            ['name' => 'RIGHT', 'slug' => 'right', 'cat' => 'Teks', 'desc' => 'Mengambil sejumlah karakter dari sisi kanan teks.', 'syntax' => '=RIGHT(text, [num_chars])', 'ex' => '=RIGHT(A2, 3)', 'case' => "Mengambil 3 karakter terakhir dari kode 'EXCEL-001'.", 'res' => "Hasilnya '001'.", 'before' => [['Kode Barang', 'Hasil'], ['EXCEL-001', '=RIGHT(A2, 3)']], 'after' => [['Kode Barang', 'Hasil'], ['EXCEL-001', '001']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
-            ['name' => 'MID', 'slug' => 'mid', 'cat' => 'Teks', 'desc' => 'Mengambil karakter dari tengah teks.', 'syntax' => '=MID(text, start_num, num_chars)', 'ex' => '=MID(A2, 2, 4)', 'case' => "Mengambil 4 huruf dari tengah kata 'Indonesia' mulai huruf ke-3.", 'res' => "Hasilnya 'done'.", 'before' => [['Kata', 'Hasil'], ['Indonesia', '=MID(A2, 3, 4)']], 'after' => [['Kata', 'Hasil'], ['Indonesia', 'done']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
-            ['name' => 'LEN', 'slug' => 'len', 'cat' => 'Teks', 'desc' => 'Menghitung jumlah karakter dalam teks.', 'syntax' => '=LEN(text)', 'ex' => '=LEN(A2)', 'case' => "Mengecek jumlah karakter kata 'ExcelMate'.", 'res' => "Hasilnya 9.", 'before' => [['Kata', 'Jumlah Karakter'], ['ExcelMate', '=LEN(A2)']], 'after' => [['Kata', 'Jumlah Karakter'], ['ExcelMate', '9']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
-            ['name' => 'CONCAT', 'slug' => 'concat', 'cat' => 'Teks', 'desc' => 'Menggabungkan beberapa teks menjadi satu.', 'syntax' => '=CONCAT(text1, [text2], ...)', 'ex' => '=CONCAT(A2, " ", B2)', 'case' => "Menggabungkan nama depan dan belakang dengan spasi.", 'res' => "Hasilnya 'Budi Santoso'.", 'before' => [['Nama Depan', 'Nama Belakang', 'Nama Lengkap'], ['Budi', 'Santoso', '=CONCAT(A2, " ", B2)']], 'after' => [['Nama Depan', 'Nama Belakang', 'Nama Lengkap'], ['Budi', 'Santoso', 'Budi Santoso']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
-            ['name' => 'VLOOKUP', 'slug' => 'vlookup', 'cat' => 'Lookup', 'desc' => 'Mencari data di kolom pertama tabel dan mengembalikan nilai dari kolom lain.', 'syntax' => '=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])', 'ex' => '=VLOOKUP(D1, A1:B3, 2, FALSE)', 'case' => "Mencari harga buah 'Jeruk' dari tabel daftar harga.", 'res' => "Hasilnya 7000.", 'before' => [['Apel', '5000', '', 'Jeruk', '=VLOOKUP(D1, A1:B3, 2, FALSE)'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'after' => [['Apel', '5000', '', 'Jeruk', '7000'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'hl_before' => ['E1'], 'hl_after' => ['E1']],
-            ['name' => 'HLOOKUP', 'slug' => 'hlookup', 'cat' => 'Lookup', 'desc' => 'Mencari data di baris pertama tabel dan mengembalikan nilai dari baris lain.', 'syntax' => '=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])', 'ex' => '=HLOOKUP(A1, A1:D5, 3, FALSE)', 'case' => "Mencari target bulan 'Maret' dari tabel horizontal.", 'res' => "Hasilnya 800.", 'before' => [['Bulan', 'Jan', 'Feb', 'Maret'], ['Target', '100', '200', '=HLOOKUP("Maret", A1:D2, 2, FALSE)']], 'after' => [['Bulan', 'Jan', 'Feb', 'Maret'], ['Target', '100', '200', '800']], 'hl_before' => ['D2'], 'hl_after' => ['D2']],
-            ['name' => 'XLOOKUP', 'slug' => 'xlookup', 'cat' => 'Lookup', 'desc' => 'Versi modern VLOOKUP yang lebih fleksibel (Excel 365).', 'syntax' => '=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])', 'ex' => '=XLOOKUP(D1, A1:A3, B1:B3)', 'case' => "Mencari harga 'Jeruk' dengan XLOOKUP (lebih aman).", 'res' => "Hasilnya 7000.", 'before' => [['Apel', '5000', '', 'Jeruk', '=XLOOKUP(D1, A1:A3, B1:B3)'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'after' => [['Apel', '5000', '', 'Jeruk', '7000'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'hl_before' => ['E1'], 'hl_after' => ['E1']],
-            ['name' => 'INDEX', 'slug' => 'index', 'cat' => 'Lookup', 'desc' => 'Mengembalikan nilai dari posisi baris dan kolom tertentu.', 'syntax' => '=INDEX(array, row_num, [column_num])', 'ex' => '=INDEX(B1:B3, 2)', 'case' => "Mengambil nilai pada baris ke-2 dari kolom B (harga Jeruk).", 'res' => "Hasilnya 7000.", 'before' => [['Apel', '5000'], ['Jeruk', '7000'], ['Mangga', '8000'], ['Hasil', '=INDEX(B1:B3, 2)']], 'after' => [['Apel', '5000'], ['Jeruk', '7000'], ['Mangga', '8000'], ['Hasil', '7000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
-            ['name' => 'MATCH', 'slug' => 'match', 'cat' => 'Lookup', 'desc' => 'Mencari posisi suatu nilai dalam sebuah rentang.', 'syntax' => '=MATCH(lookup_value, lookup_array, [match_type])', 'ex' => '=MATCH("Jeruk", A1:A3, 0)', 'case' => "Mencari di urutan ke berapa kata 'Jeruk' berada.", 'res' => "Hasilnya 2 (karena Jeruk ada di baris ke-2).", 'before' => [['Buah'], ['Apel'], ['Jeruk'], ['Mangga'], ['Posisi Jeruk', '=MATCH("Jeruk", A1:A3, 0)']], 'after' => [['Buah'], ['Apel'], ['Jeruk'], ['Mangga'], ['Posisi Jeruk', '2']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'SUM', 'slug' => 'sum', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan semua angka.', 'syntax' => '=SUM(number1, [number2], ...)', 'ex' => '=SUM(B1:B3)', 'case' => "Kamu memiliki daftar belanja. Kamu ingin tahu total uang yang harus dibayar dengan menjumlahkan B1 sampai B3.", 'res' => "Total belanja adalah Rp45.000.", 'before' => [['Beras', '15000'], ['Minyak', '20000'], ['Gula', '10000'], ['Total', '=SUM(B1:B3)']], 'after' => [['Beras', '15000'], ['Minyak', '20000'], ['Gula', '10000'], ['Total', '45000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'AVERAGE', 'slug' => 'average', 'cat' => 'Statistik', 'desc' => 'Menghitung rata-rata.', 'syntax' => '=AVERAGE(number1, [number2], ...)', 'ex' => '=AVERAGE(B1:B3)', 'case' => "Nilai ujian 3 siswa: 80, 90, dan 70. Kamu ingin mencari nilai rata-ratanya.", 'res' => "Rata-rata nilai adalah 80.", 'before' => [['Siswa A', '80'], ['Siswa B', '90'], ['Siswa C', '70'], ['Rata-rata', '=AVERAGE(B1:B3)']], 'after' => [['Siswa A', '80'], ['Siswa B', '90'], ['Siswa C', '70'], ['Rata-rata', '80']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'MAX', 'slug' => 'max', 'cat' => 'Statistik', 'desc' => 'Mencari nilai tertinggi.', 'syntax' => '=MAX(number1, [number2], ...)', 'ex' => '=MAX(B1:B3)', 'case' => "Mencari penjualan tertinggi dari data 3 hari.", 'res' => "Nilai tertinggi adalah 200000.", 'before' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Max', '=MAX(B1:B3)']], 'after' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Max', '200000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'MIN', 'slug' => 'min', 'cat' => 'Statistik', 'desc' => 'Mencari nilai terendah.', 'syntax' => '=MIN(number1, [number2], ...)', 'ex' => '=MIN(B1:B3)', 'case' => "Mencari penjualan terendah dari data 3 hari.", 'res' => "Nilai terendah adalah 100000.", 'before' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Min', '=MIN(B1:B3)']], 'after' => [['Senin', '100000'], ['Selasa', '200000'], ['Rabu', '150000'], ['Min', '100000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'COUNT', 'slug' => 'count', 'cat' => 'Statistik', 'desc' => 'Menghitung jumlah cell berisi angka.', 'syntax' => '=COUNT(value1, [value2], ...)', 'ex' => '=COUNT(B1:B4)', 'case' => "Menghitung berapa banyak siswa yang sudah mengumpulkan nilai.", 'res' => "Ada 3 siswa yang sudah dinilai.", 'before' => [['Budi', '80'], ['Andi', '90'], ['Siti', '(kosong)'], ['Ani', '70'], ['Jumlah', '=COUNT(B1:B4)']], 'after' => [['Budi', '80'], ['Andi', '90'], ['Siti', '(kosong)'], ['Ani', '70'], ['Jumlah', '3']], 'hl_before' => ['B5'], 'hl_after' => ['B5']],
+            ['name' => 'COUNTA', 'slug' => 'counta', 'cat' => 'Statistik', 'desc' => 'Menghitung cell tidak kosong.', 'syntax' => '=COUNTA(value1, [value2], ...)', 'ex' => '=COUNTA(A1:A4)', 'case' => "Menghitung berapa banyak nama siswa yang sudah diisi.", 'res' => "Ada 4 nama yang terisi.", 'before' => [['Budi', ''], ['Andi', ''], ['Siti', ''], ['Ani', ''], ['Total Nama', '=COUNTA(A1:A4)']], 'after' => [['Budi', ''], ['Andi', ''], ['Siti', ''], ['Ani', ''], ['Total Nama', '4']], 'hl_before' => ['B5'], 'hl_after' => ['B5']],
+            ['name' => 'IF', 'slug' => 'if', 'cat' => 'Logika', 'desc' => 'Mengecek kondisi.', 'syntax' => '=IF(logical_test, value_if_true, value_if_false)', 'ex' => '=IF(B2>=75, "Lulus", "Gagal")', 'case' => "Nilai Andi ada di sel B2 (80). Tampilkan 'Lulus' jika >= 75.", 'res' => "Karena B2 berisi 80, maka hasilnya 'Lulus'.", 'before' => [['Nama', 'Nilai', 'Status'], ['Andi', '80', '=IF(B2>=75, "Lulus", "Gagal")']], 'after' => [['Nama', 'Nilai', 'Status'], ['Andi', '80', 'Lulus']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
+            ['name' => 'SUMIF', 'slug' => 'sumif', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan dengan kriteria.', 'syntax' => '=SUMIF(range, criteria, [sum_range])', 'ex' => '=SUMIF(A1:A3, "Apel", B1:B3)', 'case' => "Kamu hanya ingin menjumlahkan total harga untuk buah 'Apel' saja.", 'res' => "Total harga Apel adalah 15000.", 'before' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Total Apel', '=SUMIF(A1:A3, "Apel", B1:B3)']], 'after' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Total Apel', '15000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'SUMIFS', 'slug' => 'sumifs', 'cat' => 'Matematika', 'desc' => 'Menjumlahkan dengan banyak kriteria.', 'syntax' => '=SUMIFS(sum_range, criteria_range1, criteria1, ...)', 'ex' => '=SUMIFS(C1:C3, A1:A3, "Apel", B1:B3, ">50")', 'case' => "Menjumlahkan penjualan Apel yang harganya di atas 50rb.", 'res' => "Total penjualan Apel > 50rb adalah 60000.", 'before' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Total Spesifik', '=SUMIFS(C1:C3, A1:A3, "Apel", C1:C3, ">50")']], 'after' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Total Spesifik', '50000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'COUNTIF', 'slug' => 'countif', 'cat' => 'Statistik', 'desc' => 'Menghitung data dengan kriteria.', 'syntax' => '=COUNTIF(range, criteria)', 'ex' => '=COUNTIF(B1:B3, "Laki-laki")', 'case' => "Menghitung ada berapa banyak siswa laki-laki di daftar.", 'res' => "Ada 2 siswa laki-laki.", 'before' => [['Nama', 'JK'], ['Budi', 'Laki-laki'], ['Siti', 'Perempuan'], ['Andi', 'Laki-laki'], ['Total L', '=COUNTIF(B1:B3, "Laki-laki")']], 'after' => [['Nama', 'JK'], ['Budi', 'Laki-laki'], ['Siti', 'Perempuan'], ['Andi', 'Laki-laki'], ['Total L', '2']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'COUNTIFS', 'slug' => 'countifs', 'cat' => 'Statistik', 'desc' => 'Menghitung data dengan banyak kriteria.', 'syntax' => '=COUNTIFS(criteria_range1, criteria1, ...)', 'ex' => '=COUNTIFS(A1:A3, "Apel", B1:B3, ">50")', 'case' => "Menghitung penjualan Apel yang harganya di atas 50rb.", 'res' => "Ada 1 transaksi.", 'before' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Jumlah Transaksi', '=COUNTIFS(A1:A3, "Apel", C1:C3, ">50")']], 'after' => [['Apel', '50000', '50000'], ['Jeruk', '70000', '70000'], ['Apel', '10000', '10000'], ['Jumlah Transaksi', '1']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'AVERAGEIF', 'slug' => 'averageif', 'cat' => 'Statistik', 'desc' => 'Menghitung rata-rata dengan kriteria.', 'syntax' => '=AVERAGEIF(range, criteria, [average_range])', 'ex' => '=AVERAGEIF(A1:A3, "Apel", B1:B3)', 'case' => "Mencari rata-rata harga dari buah 'Apel' saja.", 'res' => "Rata-rata harga Apel adalah 7500.", 'before' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Rata Apel', '=AVERAGEIF(A1:A3, "Apel", B1:B3)']], 'after' => [['Apel', '5000'], ['Jeruk', '7000'], ['Apel', '10000'], ['Rata Apel', '7500']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'AND', 'slug' => 'and', 'cat' => 'Logika', 'desc' => 'Mengembalikan TRUE jika semua kondisi benar.', 'syntax' => '=AND(logical1, [logical2], ...)', 'ex' => '=AND(A2>10, B2=TRUE)', 'case' => "Toko memberi diskon jika belanja > 10rb (A2) DAN member aktif (B2 = TRUE).", 'res' => "Karena kedua kondisi benar, hasilnya TRUE (Dapat Diskon).", 'before' => [['Belanja', 'Member', 'Status'], ['15000', 'TRUE', '=AND(A2>10, B2=TRUE)']], 'after' => [['Belanja', 'Member', 'Status'], ['15000', 'TRUE', 'TRUE']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
+            ['name' => 'OR', 'slug' => 'or', 'cat' => 'Logika', 'desc' => 'Mengembalikan TRUE jika salah satu kondisi benar.', 'syntax' => '=OR(logical1, [logical2], ...)', 'ex' => '=OR(A2>50, B2="VIP")', 'case' => "Dapat hadiah jika belanja > 50rb ATAU status VIP.", 'res' => "Karena belanja 60000 (>50rb), hasilnya TRUE.", 'before' => [['Belanja', 'Status', 'Hadiah'], ['60000', 'Biasa', '=OR(A2>50, B2="VIP")']], 'after' => [['Belanja', 'Status', 'Hadiah'], ['60000', 'Biasa', 'TRUE']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
+            ['name' => 'LEFT', 'slug' => 'left', 'cat' => 'Teks', 'desc' => 'Mengambil karakter dari kiri.', 'syntax' => '=LEFT(text, [num_chars])', 'ex' => '=LEFT(A2, 3)', 'case' => "Mengambil 3 huruf pertama dari kode barang 'EXCEL-001'.", 'res' => "Hasilnya 'EXC'.", 'before' => [['Kode Barang', 'Hasil'], ['EXCEL-001', '=LEFT(A2, 3)']], 'after' => [['Kode Barang', 'Hasil'], ['EXCEL-001', 'EXC']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
+            ['name' => 'RIGHT', 'slug' => 'right', 'cat' => 'Teks', 'desc' => 'Mengambil karakter dari kanan.', 'syntax' => '=RIGHT(text, [num_chars])', 'ex' => '=RIGHT(A2, 3)', 'case' => "Mengambil 3 karakter terakhir dari kode 'EXCEL-001'.", 'res' => "Hasilnya '001'.", 'before' => [['Kode Barang', 'Hasil'], ['EXCEL-001', '=RIGHT(A2, 3)']], 'after' => [['Kode Barang', 'Hasil'], ['EXCEL-001', '001']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
+            ['name' => 'MID', 'slug' => 'mid', 'cat' => 'Teks', 'desc' => 'Mengambil karakter dari tengah.', 'syntax' => '=MID(text, start_num, num_chars)', 'ex' => '=MID(A2, 2, 4)', 'case' => "Mengambil 4 huruf dari tengah kata 'Indonesia' mulai huruf ke-3.", 'res' => "Hasilnya 'done'.", 'before' => [['Kata', 'Hasil'], ['Indonesia', '=MID(A2, 3, 4)']], 'after' => [['Kata', 'Hasil'], ['Indonesia', 'done']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
+            ['name' => 'LEN', 'slug' => 'len', 'cat' => 'Teks', 'desc' => 'Menghitung jumlah karakter.', 'syntax' => '=LEN(text)', 'ex' => '=LEN(A2)', 'case' => "Mengecek jumlah karakter kata 'ExcelMate'.", 'res' => "Hasilnya 9.", 'before' => [['Kata', 'Jumlah Karakter'], ['ExcelMate', '=LEN(A2)']], 'after' => [['Kata', 'Jumlah Karakter'], ['ExcelMate', '9']], 'hl_before' => ['B2'], 'hl_after' => ['B2']],
+            ['name' => 'CONCAT', 'slug' => 'concat', 'cat' => 'Teks', 'desc' => 'Menggabungkan teks.', 'syntax' => '=CONCAT(text1, [text2], ...)', 'ex' => '=CONCAT(A2, " ", B2)', 'case' => "Menggabungkan nama depan dan belakang dengan spasi.", 'res' => "Hasilnya 'Budi Santoso'.", 'before' => [['Nama Depan', 'Nama Belakang', 'Nama Lengkap'], ['Budi', 'Santoso', '=CONCAT(A2, " ", B2)']], 'after' => [['Nama Depan', 'Nama Belakang', 'Nama Lengkap'], ['Budi', 'Santoso', 'Budi Santoso']], 'hl_before' => ['C2'], 'hl_after' => ['C2']],
+            ['name' => 'VLOOKUP', 'slug' => 'vlookup', 'cat' => 'Lookup', 'desc' => 'Mencari data di tabel referensi.', 'syntax' => '=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])', 'ex' => '=VLOOKUP(D1, A1:B3, 2, FALSE)', 'case' => "Mencari harga buah 'Jeruk' dari tabel daftar harga.", 'res' => "Hasilnya 7000.", 'before' => [['Apel', '5000', '', 'Jeruk', '=VLOOKUP(D1, A1:B3, 2, FALSE)'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'after' => [['Apel', '5000', '', 'Jeruk', '7000'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'hl_before' => ['E1'], 'hl_after' => ['E1']],
+            ['name' => 'HLOOKUP', 'slug' => 'hlookup', 'cat' => 'Lookup', 'desc' => 'Mencari data secara horizontal.', 'syntax' => '=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])', 'ex' => '=HLOOKUP(A1, A1:D5, 3, FALSE)', 'case' => "Mencari target bulan 'Maret' dari tabel horizontal.", 'res' => "Hasilnya 800.", 'before' => [['Bulan', 'Jan', 'Feb', 'Maret'], ['Target', '100', '200', '=HLOOKUP("Maret", A1:D2, 2, FALSE)']], 'after' => [['Bulan', 'Jan', 'Feb', 'Maret'], ['Target', '100', '200', '800']], 'hl_before' => ['D2'], 'hl_after' => ['D2']],
+            ['name' => 'XLOOKUP', 'slug' => 'xlookup', 'cat' => 'Lookup', 'desc' => 'Versi modern VLOOKUP.', 'syntax' => '=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])', 'ex' => '=XLOOKUP(D1, A1:A3, B1:B3)', 'case' => "Mencari harga 'Jeruk' dengan XLOOKUP (lebih aman).", 'res' => "Hasilnya 7000.", 'before' => [['Apel', '5000', '', 'Jeruk', '=XLOOKUP(D1, A1:A3, B1:B3)'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'after' => [['Apel', '5000', '', 'Jeruk', '7000'], ['Jeruk', '7000', '', '', ''], ['Mangga', '8000', '', '', '']], 'hl_before' => ['E1'], 'hl_after' => ['E1']],
+            ['name' => 'INDEX', 'slug' => 'index', 'cat' => 'Lookup', 'desc' => 'Mengembalikan nilai dari posisi tertentu.', 'syntax' => '=INDEX(array, row_num, [column_num])', 'ex' => '=INDEX(B1:B3, 2)', 'case' => "Mengambil nilai pada baris ke-2 dari kolom B (harga Jeruk).", 'res' => "Hasilnya 7000.", 'before' => [['Apel', '5000'], ['Jeruk', '7000'], ['Mangga', '8000'], ['Hasil', '=INDEX(B1:B3, 2)']], 'after' => [['Apel', '5000'], ['Jeruk', '7000'], ['Mangga', '8000'], ['Hasil', '7000']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
+            ['name' => 'MATCH', 'slug' => 'match', 'cat' => 'Lookup', 'desc' => 'Mencari posisi suatu nilai.', 'syntax' => '=MATCH(lookup_value, lookup_array, [match_type])', 'ex' => '=MATCH("Jeruk", A1:A3, 0)', 'case' => "Mencari di urutan ke berapa kata 'Jeruk' berada.", 'res' => "Hasilnya 2 (karena Jeruk ada di baris ke-2).", 'before' => [['Buah'], ['Apel'], ['Jeruk'], ['Mangga'], ['Posisi Jeruk', '=MATCH("Jeruk", A1:A3, 0)']], 'after' => [['Buah'], ['Apel'], ['Jeruk'], ['Mangga'], ['Posisi Jeruk', '2']], 'hl_before' => ['B4'], 'hl_after' => ['B4']],
         ];
 
         foreach ($formulas as $f) {
             Formula::create([
                 'name' => $f['name'], 'slug' => $f['slug'], 'category' => $f['cat'],
                 'description' => $f['desc'], 'syntax' => $f['syntax'], 'example' => $f['ex'],
-                'study_case' => $f['case'] ?? null,
-                'study_result' => $f['res'] ?? null,
-                'case_table_before' => $f['before'] ?? null,
-                'case_table_after' => $f['after'] ?? null,
+                'study_case' => $f['case'] ?? null, 'study_result' => $f['res'] ?? null,
+                'case_table_before' => $f['before'] ?? null, 'case_table_after' => $f['after'] ?? null,
                 'result' => 'Hasil perhitungan', 'excel_versions' => 'Semua versi',
             ]);
         }

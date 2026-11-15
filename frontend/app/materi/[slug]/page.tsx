@@ -8,7 +8,7 @@ import {
   Lightbulb
 } from 'lucide-react';
 import Spreadsheet from '@/components/Spreadsheet';
-import SpreadsheetVisual from '@/components/SpreadsheetVisual'; // ✅ Sudah Benar
+import SpreadsheetVisual from '@/components/SpreadsheetVisual';
 import ExercisePlayer from '@/components/ExercisePlayer';
 import Note from '@/components/ui/Note';
 import ExcelInterfaceVisual from '@/components/ExcelInterfaceVisual';
@@ -17,6 +17,8 @@ import KeyboardVisual from '@/components/KeyboardVisual';
 import NumberFormatVisual from '@/components/NumberFormatVisual';
 import OperasiMatematikaVisual from '@/components/OperasiMatematikaVisual';
 import FormulaVisual from '@/components/FormulaVisual';
+import DataToolsVisual from '@/components/DataToolsVisual';
+import PivotTutorial from '@/components/PivotTutorial';
 
 const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
 
@@ -32,9 +34,6 @@ export default function DetailMateriPage() {
 
   if (!lesson) return <div className="text-center py-20 font-bold animate-pulse">Memuat materi...</div>;
 
-  // ==========================================
-  // IKON HERO
-  // ==========================================
   const getHeroIcon = () => {
     if (slug === 'pengenalan-antarmuka-excel') return '👋';
     if (slug === 'workbook-worksheet-cell') return '📁';
@@ -46,18 +45,27 @@ export default function DetailMateriPage() {
     if (slug === 'fungsi-max-min') return '🔝';
     if (slug === 'fungsi-count') return '🔢';
     if (slug === 'fungsi-if') return '🔀';
+    if (slug === 'fungsi-sumif-sumifs') return '➕';
+    if (slug === 'fungsi-countif') return '🔣';
+    if (slug === 'fungsi-averageif') return '📉';
+    if (slug === 'fungsi-and-or') return '🧠';
+    if (slug === 'fungsi-teks') return '🔤';
+    if (slug === 'fungsi-lookup') return '🔍';
+    if (slug === 'data-tools') return '🛠️';
+    if (slug === 'pivottable-dashboard') return '📊';
     return '📚';
   };
 
-  // ==========================================
-  // VISUAL KONSEP (KANAN)
-  // ==========================================
+  const formulaSlugs = [
+    'fungsi-sum', 'fungsi-average', 'fungsi-max-min', 'fungsi-count', 
+    'fungsi-if', 'fungsi-sumif-sumifs', 'fungsi-countif', 'fungsi-averageif', 
+    'fungsi-and-or', 'fungsi-teks', 'fungsi-lookup'
+  ];
+
   const getConceptVisual = () => {
-    // Sembunyikan visual kanan untuk materi rumus agar tidak tumpang tindih
-    if (['fungsi-sum', 'fungsi-average', 'fungsi-max-min', 'fungsi-count', 'fungsi-if'].includes(slug as string)) {
+    if (formulaSlugs.includes(slug as string)) {
       return null; 
     }
-
     if (slug === 'operasi-matematika') {
       return (
         <div className="bg-gray-800 text-mint p-4 rounded-xl font-mono text-center border-2 border-ink shadow-neo">
@@ -68,8 +76,6 @@ export default function DetailMateriPage() {
         </div>
       );
     }
-
-    // Default untuk materi lain
     return (
       <SpreadsheetVisual 
         data={[['Contoh', 'Data'], ['Baris 1', '100'], ['Baris 2', '200']]}
@@ -78,11 +84,7 @@ export default function DetailMateriPage() {
     );
   };
 
-  // ==========================================
-  // LOGIKA INTERAKTIF "BAGIAN PENTING"
-  // ==========================================
   const renderInteractiveSection = () => {
-    // 1. Pengenalan
     if (slug === 'pengenalan-antarmuka-excel') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto space-y-6">
@@ -102,7 +104,6 @@ export default function DetailMateriPage() {
       );
     }
 
-    // 2. Workbook, Worksheet, Cell & Range
     if (slug === 'workbook-worksheet-cell') {
       return (
         <div className="space-y-8 max-w-3xl mx-auto">
@@ -111,15 +112,10 @@ export default function DetailMateriPage() {
               <span className="bg-blue border-2 border-ink rounded-lg px-3 py-1 font-black text-lg">1</span>
               <h3 className="text-xl font-black">Cell (Sel)</h3>
             </div>
-            <p className="text-gray-700 mb-4">
-              <strong>Cell</strong> adalah kotak kecil tempat kamu mengetik data. Cell diberi nama berdasarkan pertemuan <strong>Kolom (Huruf)</strong> dan <strong>Baris (Angka)</strong>.
-            </p>
+            <p className="text-gray-700 mb-4"><strong>Cell</strong> adalah kotak kecil tempat kamu mengetik data.</p>
             <div className="grid md:grid-cols-2 gap-4 items-center">
               <WorksheetVisual highlightCells={['B2']} highlightColor="blue" label="Cell = B2" />
-              <div className="bg-blue border-2 border-ink rounded-xl p-4">
-                <p className="font-bold mb-1">Contoh Cell:</p>
-                <p>Cell <strong>B2</strong> artinya pertemuan Kolom B dan Baris 2.</p>
-              </div>
+              <div className="bg-blue border-2 border-ink rounded-xl p-4"><p>Cell <strong>B2</strong> artinya pertemuan Kolom B dan Baris 2.</p></div>
             </div>
           </div>
           <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6">
@@ -127,15 +123,10 @@ export default function DetailMateriPage() {
               <span className="bg-mint border-2 border-ink rounded-lg px-3 py-1 font-black text-lg">2</span>
               <h3 className="text-xl font-black">Range (Rentang)</h3>
             </div>
-            <p className="text-gray-700 mb-4">
-              <strong>Range</strong> adalah kumpulan beberapa Cell. Ditulis dengan tanda titik dua (:).
-            </p>
+            <p className="text-gray-700 mb-4"><strong>Range</strong> adalah kumpulan beberapa Cell.</p>
             <div className="grid md:grid-cols-2 gap-4 items-center">
               <WorksheetVisual highlightCells={['A1','A2','A3','B1','B2','B3']} highlightColor="green" label="Range = A1:B3" />
-              <div className="bg-mint border-2 border-ink rounded-xl p-4">
-                <p className="font-bold mb-1">Contoh Range:</p>
-                <p>Range <strong>A1:B3</strong> artinya kumpulan cell dari A1 sampai B3 (ada 6 cell).</p>
-              </div>
+              <div className="bg-mint border-2 border-ink rounded-xl p-4"><p>Range <strong>A1:B3</strong> artinya kumpulan cell dari A1 sampai B3.</p></div>
             </div>
           </div>
           <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6">
@@ -143,9 +134,7 @@ export default function DetailMateriPage() {
               <span className="bg-yellow border-2 border-ink rounded-lg px-3 py-1 font-black text-lg">3</span>
               <h3 className="text-xl font-black">Workbook & Worksheet</h3>
             </div>
-            <p className="text-gray-700 mb-4">
-              <strong>Workbook</strong> adalah 1 file Excel. Di dalamnya bisa ada banyak <strong>Worksheet</strong> (lembar kerja).
-            </p>
+            <p className="text-gray-700 mb-4"><strong>Workbook</strong> adalah 1 file Excel. Di dalamnya bisa ada banyak <strong>Worksheet</strong>.</p>
             <div className="border-2 border-ink rounded-xl overflow-hidden">
               <div className="bg-gray-100 border-b-2 border-ink flex px-2 pt-2 gap-1 text-sm font-bold">
                 <button onClick={() => setActivePart('sheet1')} className={`px-4 py-2 border-t-2 border-l-2 border-r-2 border-ink rounded-t-lg ${activePart === 'sheet1' || !activePart ? 'bg-white text-green-700' : 'bg-gray-200 text-gray-500'}`}>Sheet1</button>
@@ -163,7 +152,6 @@ export default function DetailMateriPage() {
       );
     }
 
-    // 3. Input Edit Hapus
     if (slug === 'input-edit-hapus-data') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
@@ -173,7 +161,6 @@ export default function DetailMateriPage() {
       );
     }
 
-    // 4. Format Cell
     if (slug === 'format-cell') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
@@ -183,7 +170,6 @@ export default function DetailMateriPage() {
       );
     }
 
-    // 5. Operasi Matematika
     if (slug === 'operasi-matematika') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
@@ -194,8 +180,24 @@ export default function DetailMateriPage() {
       );
     }
 
-    // 6. RUMUS INTERAKTIF (SUM, AVERAGE, MAX/MIN, COUNT, IF)
-    if (['fungsi-sum', 'fungsi-average', 'fungsi-max-min', 'fungsi-count', 'fungsi-if'].includes(slug as string)) {
+    if (slug === 'data-tools') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <h3 className="text-2xl font-black mb-6 text-center">Simulasi Data Tools</h3>
+          <DataToolsVisual />
+        </div>
+      );
+    }
+
+    if (slug === 'pivottable-dashboard') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <PivotTutorial />
+        </div>
+      );
+    }
+
+    if (formulaSlugs.includes(slug as string)) {
       return (
         <div className="max-w-3xl mx-auto">
           <FormulaVisual slug={slug as string} />
@@ -203,7 +205,6 @@ export default function DetailMateriPage() {
       );
     }
 
-    // 7. Default (Rumus Lainnya)
     return (
       <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
         <div className="mb-6">
@@ -231,33 +232,19 @@ export default function DetailMateriPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-16 pb-24 pt-8">
-      
-      {/* SECTION 1 — HERO MATERI */}
       <section className="text-center md:text-left flex flex-col md:flex-row gap-8 items-center justify-between">
         <div className="flex-1 space-y-4">
           <div className="flex flex-wrap gap-2 justify-center md:justify-start">
             <span className="bg-mint border-2 border-ink rounded-full px-4 py-1 text-sm font-bold shadow-neo-sm">{lesson.level?.name}</span>
             <span className="bg-lavender border-2 border-ink rounded-full px-4 py-1 text-sm font-bold shadow-neo-sm">{lesson.category?.name}</span>
           </div>
-          
-          <h1 className="text-4xl md:text-6xl font-black text-ink leading-tight">
-            {lesson.title}
-          </h1>
-          
-          <p className="text-lg text-gray-700 max-w-xl mx-auto md:mx-0">
-            {lesson.intro}
-          </p>
-          
+          <h1 className="text-4xl md:text-6xl font-black text-ink leading-tight">{lesson.title}</h1>
+          <p className="text-lg text-gray-700 max-w-xl mx-auto md:mx-0">{lesson.intro}</p>
           <div className="flex flex-wrap gap-6 pt-4 justify-center md:justify-start">
-            <div className="flex items-center gap-2 text-sm font-bold text-gray-600">
-              <Clock size={18} /> Estimasi: 10 Menit
-            </div>
-            <div className="flex items-center gap-2 text-sm font-bold text-gray-600">
-              <Target size={18} /> Tujuan: Menguasai Materi
-            </div>
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-600"><Clock size={18} /> Estimasi: 10 Menit</div>
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-600"><Target size={18} /> Tujuan: Menguasai Materi</div>
           </div>
         </div>
-
         <div className="relative w-48 h-48 md:w-64 md:h-64 shrink-0 block">
           <div className="absolute inset-0 bg-yellow border-2 border-ink rounded-3xl shadow-neo rotate-6"></div>
           <div className="absolute inset-0 bg-white border-2 border-ink rounded-3xl shadow-neo flex items-center justify-center -rotate-3">
@@ -268,45 +255,32 @@ export default function DetailMateriPage() {
 
       <hr className="border-t-2 border-ink/10" />
 
-      {/* SECTION 2 — MEMAHAMI KONSEP */}
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
           <h2 className="text-3xl font-black text-ink mb-6">Memahami Konsep</h2>
-          <div className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
-            {lesson.content?.apa_itu}
-          </div>
-          
-          <Note type="info" title="Mengapa ini penting?">
-            <div className="whitespace-pre-line">{lesson.content?.mengapa}</div>
-          </Note>
+          <div className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">{lesson.content?.apa_itu}</div>
+          <Note type="info" title="Mengapa ini penting?"><div className="whitespace-pre-line">{lesson.content?.mengapa}</div></Note>
         </div>
-
         {getConceptVisual() && (
-          <div className="space-y-4">
-            {getConceptVisual()}
-          </div>
+          <div className="space-y-4">{getConceptVisual()}</div>
         )}
       </section>
 
       <hr className="border-t-2 border-ink/10" />
 
-      {/* SECTION 3 — BAGIAN PENTING */}
       <section className="space-y-8">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="text-3xl font-black text-ink mb-2">Bagian Penting</h2>
           <p className="text-gray-600">Pahami penjelasan di bawah ini.</p>
         </div>
-        
         {renderInteractiveSection()}
       </section>
 
       <hr className="border-t-2 border-ink/10" />
 
-      {/* SECTION 4 — PRAKTIK */}
       <section className="space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-black text-ink mb-6">Saatnya Praktik!</h2>
-          
           <div className="inline-flex bg-gray-200 border-2 border-ink rounded-xl p-1 shadow-neo">
             <button onClick={() => setMode('belajar')} className={`px-4 md:px-6 py-2 rounded-lg font-bold transition-all flex items-center gap-2 ${mode === 'belajar' ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}>
               <BookOpen size={18} /> <span className="hidden md:inline">Mode Belajar</span><span className="md:hidden">Belajar</span>
@@ -316,30 +290,27 @@ export default function DetailMateriPage() {
             </button>
           </div>
         </div>
-
         <div className="mt-8">
           {mode === 'belajar' ? (
             <div className="space-y-6">
-              <div className="text-center mb-8">
-                <h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2">
-                  <Calculator /> Guided Practice
-                </h3>
-              </div>
-              <Spreadsheet lessonSlug={slug as string} />
+              <div className="text-center mb-8"><h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2"><Calculator /> Guided Practice</h3></div>
+              {slug !== 'data-tools' && slug !== 'pivottable-dashboard' ? (
+                <Spreadsheet lessonSlug={slug as string} />
+              ) : (
+                <div className="bg-yellow border-2 border-ink rounded-2xl p-8 text-center shadow-neo">
+                  <p className="font-bold text-lg">✅ Simulasi interaktif untuk materi ini sudah ada di bagian "Bagian Penting" di atas.</p>
+                  <p className="text-sm mt-2">Silakan gulir ke atas untuk mencoba simulasi {slug === 'pivottable-dashboard' ? 'PivotTable' : 'Data Tools'}.</p>
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-6">
-              <div className="text-center mb-8">
-                <h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2">
-                  <PlayCircle /> Uji Pemahamanmu
-                </h3>
-              </div>
+              <div className="text-center mb-8"><h3 className="text-xl font-bold text-ink flex items-center justify-center gap-2"><PlayCircle /> Uji Pemahamanmu</h3></div>
               <ExercisePlayer onComplete={() => alert('Latihan Selesai!')} />
             </div>
           )}
         </div>
       </section>
-
     </div>
   );
 }
