@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
+import Link from 'next/link';
 import { 
   BookOpen, Calculator, PlayCircle, Clock, Target, 
-  Lightbulb
+  Lightbulb, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import Spreadsheet from '@/components/Spreadsheet';
 import SpreadsheetVisual from '@/components/SpreadsheetVisual';
-import ExercisePlayer from '@/components/ExercisePlayer'; // Bisa dihapus jika sudah pakai QuestionPlayer
 import QuestionPlayer from '@/components/QuestionPlayer';
 import Note from '@/components/ui/Note';
 import ExcelInterfaceVisual from '@/components/ExcelInterfaceVisual';
@@ -37,13 +37,18 @@ export default function DetailMateriPage() {
   const { slug } = useParams();
   const [lesson, setLesson] = useState<any>(null);
   const [tips, setTips] = useState<any[]>([]);
-  const [questions, setQuestions] = useState<any[]>([]); // State untuk bank soal
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [prevLesson, setPrevLesson] = useState<any>(null);
+  const [nextLesson, setNextLesson] = useState<any>(null);
   const [mode, setMode] = useState<'belajar' | 'latihan'>('belajar');
   const [activePart, setActivePart] = useState<string | null>(null);
 
-  // Ambil data materi, tips, dan soal
   useEffect(() => {
-    api.get(`/lessons/${slug}`).then(res => setLesson(res.data.data)).catch(console.error);
+    api.get(`/lessons/${slug}`).then(res => {
+      setLesson(res.data.data);
+      setPrevLesson(res.data.prev);
+      setNextLesson(res.data.next);
+    }).catch(console.error);
     api.get(`/lessons/${slug}/tips`).then(res => setTips(res.data.data)).catch(console.error);
     api.get(`/lessons/${slug}/questions`).then(res => setQuestions(res.data.data)).catch(console.error);
   }, [slug]);
@@ -79,9 +84,7 @@ export default function DetailMateriPage() {
   ];
 
   const getConceptVisual = () => {
-    if (formulaSlugs.includes(slug as string)) {
-      return null; 
-    }
+    if (formulaSlugs.includes(slug as string)) return null; 
     if (slug === 'operasi-matematika') {
       return (
         <div className="bg-gray-800 text-mint p-4 rounded-xl font-mono text-center border-2 border-ink shadow-neo">
@@ -168,98 +171,17 @@ export default function DetailMateriPage() {
       );
     }
 
-    if (slug === 'mengatur-workbook-worksheet') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <WorkbookVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'input-edit-hapus-data') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-black mb-6 text-center">Simulasi Tombol Keyboard</h3>
-          <KeyboardVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'format-cell') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-black mb-6 text-center">Simulasi Format Angka</h3>
-          <NumberFormatVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'operasi-matematika') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
-          <h3 className="text-2xl font-black mb-2 text-center">Kalkulator Excel Interaktif</h3>
-          <p className="text-center text-gray-500 mb-6">Klik tombol operator untuk melihat cara kerjanya.</p>
-          <OperasiMatematikaVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'data-tools' || slug === 'sorting-filtering') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <h3 className="text-2xl font-black mb-6 text-center">Simulasi Data Tools</h3>
-          <SortingFilteringVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'conditional-formatting') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <ConditionalFormattingVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'pivottable-dashboard') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <PivotTutorial />
-        </div>
-      );
-    }
-
-    if (slug === 'cell-reference') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <CellReferenceVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'fungsi-tanggal-waktu') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <DateTimeVisual />
-        </div>
-      );
-    }
-
-    if (slug === 'fungsi-iferror') {
-      return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <IfErrorVisual />
-        </div>
-      );
-    }
-
-    if (formulaSlugs.includes(slug as string)) {
-      return (
-        <div className="max-w-3xl mx-auto">
-          <FormulaVisual slug={slug as string} />
-        </div>
-      );
-    }
+    if (slug === 'mengatur-workbook-worksheet') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><WorkbookVisual /></div>;
+    if (slug === 'input-edit-hapus-data') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto"><h3 className="text-2xl font-black mb-6 text-center">Simulasi Tombol Keyboard</h3><KeyboardVisual /></div>;
+    if (slug === 'format-cell') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto"><h3 className="text-2xl font-black mb-6 text-center">Simulasi Format Angka</h3><NumberFormatVisual /></div>;
+    if (slug === 'operasi-matematika') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto"><h3 className="text-2xl font-black mb-2 text-center">Kalkulator Excel Interaktif</h3><p className="text-center text-gray-500 mb-6">Klik tombol operator untuk melihat cara kerjanya.</p><OperasiMatematikaVisual /></div>;
+    if (slug === 'data-tools' || slug === 'sorting-filtering') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><h3 className="text-2xl font-black mb-6 text-center">Simulasi Data Tools</h3><SortingFilteringVisual /></div>;
+    if (slug === 'conditional-formatting') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><ConditionalFormattingVisual /></div>;
+    if (slug === 'pivottable-dashboard') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><PivotTutorial /></div>;
+    if (slug === 'cell-reference') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><CellReferenceVisual /></div>;
+    if (slug === 'fungsi-tanggal-waktu') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><DateTimeVisual /></div>;
+    if (slug === 'fungsi-iferror') return <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto"><IfErrorVisual /></div>;
+    if (formulaSlugs.includes(slug as string)) return <div className="max-w-3xl mx-auto"><FormulaVisual slug={slug as string} /></div>;
 
     return (
       <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
@@ -269,7 +191,6 @@ export default function DetailMateriPage() {
             {lesson.content?.sintaks.split('\n')[0] || `=${lesson.title.split(' ')[1] || 'RUMUS'}(...)`}
           </div>
         </div>
-        
         <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6">
           <p className="text-center text-gray-700 mb-4">
             Rumus <strong>{lesson.title}</strong> digunakan untuk: 
@@ -360,15 +281,10 @@ export default function DetailMateriPage() {
                   <Calculator /> Guided Practice
                 </h3>
               </div>
-              {slug === 'pivottable-dashboard' ? (
-                <PivotSimulator />
-              ) : slug === 'conditional-formatting' ? (
-                <ConditionalFormattingGuidedPractice />
-              ) : slug === 'excel-table' ? (
-                <TableGuidedPractice />
-              ) : (
-                <Spreadsheet lessonSlug={slug as string} />
-              )}
+              {slug === 'pivottable-dashboard' ? <PivotSimulator /> : 
+               slug === 'conditional-formatting' ? <ConditionalFormattingGuidedPractice /> : 
+               slug === 'excel-table' ? <TableGuidedPractice /> : 
+               <Spreadsheet lessonSlug={slug as string} />}
             </div>
           ) : (
             <div className="space-y-6">
@@ -381,6 +297,32 @@ export default function DetailMateriPage() {
             </div>
           )}
         </div>
+      </section>
+
+      {/* NAVIGASI MATERI SEBELUMNYA / SELANJUTNYA */}
+      <hr className="border-t-2 border-ink/10" />
+      <section className="grid md:grid-cols-2 gap-4">
+        {prevLesson ? (
+          <Link href={`/materi/${prevLesson.slug}`}>
+            <div className="bg-white border-2 border-ink rounded-xl shadow-neo p-4 hover:bg-gray-50 transition-all h-full flex flex-col justify-center">
+              <div className="flex items-center gap-2 text-gray-500 text-sm font-bold mb-1">
+                <ChevronLeft size={16} /> Materi Sebelumnya
+              </div>
+              <p className="font-black text-lg">{prevLesson.title}</p>
+            </div>
+          </Link>
+        ) : <div />}
+        
+        {nextLesson ? (
+          <Link href={`/materi/${nextLesson.slug}`}>
+            <div className="bg-mint border-2 border-ink rounded-xl shadow-neo p-4 hover:bg-green-100 transition-all h-full flex flex-col justify-center text-right">
+              <div className="flex items-center justify-end gap-2 text-gray-700 text-sm font-bold mb-1">
+                Materi Selanjutnya <ChevronRight size={16} />
+              </div>
+              <p className="font-black text-lg">{nextLesson.title}</p>
+            </div>
+          </Link>
+        ) : <div />}
       </section>
     </div>
   );
