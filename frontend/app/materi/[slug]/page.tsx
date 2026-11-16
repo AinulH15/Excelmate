@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
 import { 
   BookOpen, Calculator, PlayCircle, Clock, Target, 
-  Lightbulb, ChevronLeft, ChevronRight
+  Lightbulb, ChevronLeft, ChevronRight, Trophy, Sparkles
 } from 'lucide-react';
 import Spreadsheet from '@/components/Spreadsheet';
 import SpreadsheetVisual from '@/components/SpreadsheetVisual';
@@ -33,11 +33,13 @@ import TableGuidedPractice from '@/components/TableGuidedPractice';
 import TableVisualGuide from '@/components/TableVisualGuide';
 import BorderVisualGuide from '@/components/BorderVisualGuide';
 import MergeCellVisualGuide from '@/components/MergeCellVisualGuide';
+import TableBorderMergePractice from '@/components/TableBorderMergePractice';
 
 const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
 
 export default function DetailMateriPage() {
   const { slug } = useParams();
+  const router = useRouter();
   const [lesson, setLesson] = useState<any>(null);
   const [tips, setTips] = useState<any[]>([]);
   const [questions, setQuestions] = useState<any[]>([]);
@@ -45,6 +47,10 @@ export default function DetailMateriPage() {
   const [nextLesson, setNextLesson] = useState<any>(null);
   const [mode, setMode] = useState<'belajar' | 'latihan'>('belajar');
   const [activePart, setActivePart] = useState<string | null>(null);
+  
+  // State untuk Popup Selamat
+  const [showCongrats, setShowCongrats] = useState(false);
+  const [pendingNextSlug, setPendingNextSlug] = useState<string | null>(null);
 
   useEffect(() => {
     api.get(`/lessons/${slug}`).then(res => {
@@ -87,9 +93,7 @@ export default function DetailMateriPage() {
   ];
 
   const getConceptVisual = () => {
-    if (formulaSlugs.includes(slug as string)) {
-      return null; 
-    }
+    if (formulaSlugs.includes(slug as string)) return null; 
     if (slug === 'operasi-matematika') {
       return (
         <div className="bg-gray-800 text-mint p-4 rounded-xl font-mono text-center border-2 border-ink shadow-neo">
@@ -108,7 +112,29 @@ export default function DetailMateriPage() {
     );
   };
 
+  // Handler untuk tombol "Materi Selanjutnya"
+  const handleNextClick = () => {
+    if (!nextLesson) return;
+    setPendingNextSlug(nextLesson.slug);
+    setShowCongrats(true);
+  };
+
+  const confirmNext = () => {
+    if (pendingNextSlug) {
+      router.push(`/materi/${pendingNextSlug}`);
+    }
+    setShowCongrats(false);
+  };
+
   const renderInteractiveSection = () => {
+    if (slug === 'membuat-tabel-border') {
+      return (
+        <div className="max-w-4xl mx-auto">
+          <TableBorderMergePractice />
+        </div>
+      );
+    }
+
     if (slug === 'pengenalan-antarmuka-excel') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto space-y-6">
@@ -261,26 +287,6 @@ export default function DetailMateriPage() {
       );
     }
 
-    // === BAGIAN PENTING: MEMBUAT TABEL, BORDER, MERGE CELL ===
-    if (slug === 'membuat-tabel-border') {
-      return (
-        <div className="space-y-12 max-w-4xl mx-auto">
-          <section>
-            <h3 className="text-2xl font-black mb-4 text-center">Tutorial 1: Membuat Excel Table</h3>
-            <TableVisualGuide />
-          </section>
-          <section>
-            <h3 className="text-2xl font-black mb-4 text-center">Tutorial 2: Mengatur Border</h3>
-            <BorderVisualGuide />
-          </section>
-          <section>
-            <h3 className="text-2xl font-black mb-4 text-center">Tutorial 3: Merge Cell</h3>
-            <MergeCellVisualGuide />
-          </section>
-        </div>
-      );
-    }
-
     if (formulaSlugs.includes(slug as string)) {
       return (
         <div className="max-w-3xl mx-auto">
@@ -297,7 +303,6 @@ export default function DetailMateriPage() {
             {lesson.content?.sintaks.split('\n')[0] || `=${lesson.title.split(' ')[1] || 'RUMUS'}(...)`}
           </div>
         </div>
-        
         <div className="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6">
           <p className="text-center text-gray-700 mb-4">
             Rumus <strong>{lesson.title}</strong> digunakan untuk: 
@@ -314,9 +319,61 @@ export default function DetailMateriPage() {
     );
   };
 
+  const renderPracticeSection = () => {
+    if (slug === 'membuat-tabel-border') {
+      return (
+        <div className="space-y-12 max-w-4xl mx-auto">
+          <section>
+            <h3 className="text-2xl font-black mb-4 text-center">Praktik 1: Membuat Excel Table</h3>
+            <TableVisualGuide />
+          </section>
+          <section>
+            <h3 className="text-2xl font-black mb-4 text-center">Praktik 2: Mengatur Border</h3>
+            <BorderVisualGuide />
+          </section>
+          <section>
+            <h3 className="text-2xl font-black mb-4 text-center">Praktik 3: Merge Cell</h3>
+            <MergeCellVisualGuide />
+          </section>
+        </div>
+      );
+    }
+
+    if (mode === 'belajar') {
+      if (slug === 'pivottable-dashboard') return <PivotSimulator />;
+      if (slug === 'conditional-formatting') return <ConditionalFormattingGuidedPractice />;
+      if (slug === 'excel-table') return <TableGuidedPractice />;
+      return <Spreadsheet lessonSlug={slug as string} />;
+    }
+    
+    return null;
+  };
+
   return (
     <div className="max-w-5xl mx-auto space-y-16 pb-24 pt-8">
-      {/* HERO */}
+      {/* POPUP SELAMAT */}
+      {showCongrats && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white border-2 border-ink rounded-3xl shadow-neo p-8 max-w-sm w-full text-center animate-in zoom-in duration-200">
+            <div className="bg-yellow border-2 border-ink rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+              <Trophy size={48} className="text-ink" />
+            </div>
+            <h2 className="text-3xl font-black mb-2">Selamat! 🎉</h2>
+            <p className="text-gray-700 mb-6">
+              Kamu telah menyelesaikan level ini! Terus semangat belajar Excel ya!
+            </p>
+            <div className="flex flex-col gap-2">
+              <button onClick={confirmNext} className="bg-mint border-2 border-ink rounded-xl py-3 font-bold shadow-neo hover:bg-green-100 flex items-center justify-center gap-2">
+                <Sparkles size={18} /> Lanjut ke Materi Selanjutnya
+              </button>
+              <button onClick={() => setShowCongrats(false)} className="text-sm font-bold text-gray-500 hover:text-ink">
+                Tetap di Halaman Ini
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section className="text-center md:text-left flex flex-col md:flex-row gap-8 items-center justify-between">
         <div className="flex-1 space-y-4">
           <div className="flex flex-wrap gap-2 justify-center md:justify-start">
@@ -340,7 +397,6 @@ export default function DetailMateriPage() {
 
       <hr className="border-t-2 border-ink/10" />
 
-      {/* MEMAHAMI KONSEP */}
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
           <h2 className="text-3xl font-black text-ink mb-6">Memahami Konsep</h2>
@@ -352,7 +408,6 @@ export default function DetailMateriPage() {
         )}
       </section>
 
-      {/* TIPS */}
       {tips.length > 0 && (
         <section className="space-y-8">
           <TipsCard tips={tips} />
@@ -361,7 +416,6 @@ export default function DetailMateriPage() {
 
       <hr className="border-t-2 border-ink/10" />
 
-      {/* BAGIAN PENTING */}
       <section className="space-y-8">
         <div className="text-center max-w-2xl mx-auto">
           <h2 className="text-3xl font-black text-ink mb-2">Bagian Penting</h2>
@@ -372,7 +426,6 @@ export default function DetailMateriPage() {
 
       <hr className="border-t-2 border-ink/10" />
 
-      {/* PRAKTIK */}
       <section className="space-y-8">
         <div className="text-center">
           <h2 className="text-3xl font-black text-ink mb-6">Saatnya Praktik!</h2>
@@ -393,10 +446,7 @@ export default function DetailMateriPage() {
                   <Calculator /> Guided Practice
                 </h3>
               </div>
-              {slug === 'pivottable-dashboard' ? <PivotSimulator /> : 
-               slug === 'conditional-formatting' ? <ConditionalFormattingGuidedPractice /> : 
-               slug === 'excel-table' ? <TableGuidedPractice /> : 
-               <Spreadsheet lessonSlug={slug as string} />}
+              {renderPracticeSection()}
             </div>
           ) : (
             <div className="space-y-6">
@@ -411,8 +461,9 @@ export default function DetailMateriPage() {
         </div>
       </section>
 
-      {/* NAVIGASI MATERI */}
       <hr className="border-t-2 border-ink/10" />
+      
+      {/* NAVIGASI MATERI */}
       <section className="grid md:grid-cols-2 gap-4">
         {prevLesson ? (
           <Link href={`/materi/${prevLesson.slug}`}>
@@ -426,14 +477,14 @@ export default function DetailMateriPage() {
         ) : <div />}
         
         {nextLesson ? (
-          <Link href={`/materi/${nextLesson.slug}`}>
+          <div onClick={handleNextClick} className="cursor-pointer">
             <div className="bg-mint border-2 border-ink rounded-xl shadow-neo p-4 hover:bg-green-100 transition-all h-full flex flex-col justify-center text-right">
               <div className="flex items-center justify-end gap-2 text-gray-700 text-sm font-bold mb-1">
                 Materi Selanjutnya <ChevronRight size={16} />
               </div>
               <p className="font-black text-lg">{nextLesson.title}</p>
             </div>
-          </Link>
+          </div>
         ) : <div />}
       </section>
     </div>

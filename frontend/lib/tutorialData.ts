@@ -122,40 +122,24 @@ export const tutorialData: Record<string, any[]> = {
   // ==========================================
   // LEVEL 2: RUMUS & FUNGSI DASAR
   // ==========================================
- 'fungsi-sum': [
-  {
-    id: 1,
-    title: "Pahami Tujuan Praktik",
-    instruction: "Kita akan menghitung total penjualan dari data di kolom C. Tujuan praktik ini adalah menjumlahkan nilai dari C2 sampai C6 menggunakan fungsi SUM.",
-    targetCell: null,
-    expectedValue: null,
-    hint: "Baca tujuan di atas, lalu klik 'Selanjutnya'.",
-  },
-  {
-    id: 2,
-    title: "Pilih Sel Hasil",
-    instruction: "Klik cell **C7** untuk menempatkan hasil penjumlahan.",
-    targetCell: "C7",
-    expectedValue: null,
-    hint: "Klik cell C7 (baris kosong di bawah data).",
-  },
-  {
-    id: 3,
-    title: "Tulis Rumus SUM",
-    instruction: "Ketik rumus `=SUM(C2:C6)` di cell C7, lalu tekan Enter.",
-    targetCell: "C7",
-    expectedValue: "=SUM(C2:C6)",
-    hint: "Ketik =SUM(C2:C6) di cell C7.",
-  },
-  {
-    id: 4,
-    title: "Selesai!",
-    instruction: "Total penjualan berhasil dihitung. Kamu telah menyelesaikan praktik SUM.",
-    targetCell: null,
-    expectedValue: null,
-    hint: "Lihat hasil di cell C7.",
-  },
-],
+  'fungsi-sum': [
+    {
+      id: 1,
+      title: "Isi Data Angka",
+      instruction: "Ketik angka bebas secara berurutan di sel **A1** sampai **A5**. (Contoh: ketik 1 di A1, tekan Enter, ketik 2 di A2, tekan Enter, sampai A5).",
+      targetCell: "A5",
+      expectedValue: "", // Kosong berarti sistem hanya cek apakah A5 ada isinya
+      hint: "Setelah mengetik angka di A5, pastikan kamu menekan Enter agar tombol 'Lanjut' muncul."
+    },
+    {
+      id: 2,
+      title: "Gunakan Rumus SUM",
+      instruction: "Sekarang, **klik sel A7** (sel kosong di bawahnya). Setelah kursor di A7, ketik rumus: `=SUM(A1:A5)` lalu tekan Enter.",
+      targetCell: "A7",
+      expectedValue: "=SUM(A1:A5)",
+      hint: "Jangan ketik rumus di A5 ya. Klik dulu A7, baru ketik =SUM(A1:A5)."
+    }
+  ],
 
   'fungsi-average': [
     {

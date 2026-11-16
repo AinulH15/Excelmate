@@ -30,13 +30,26 @@ export default function InteractiveTutorial({
 
   const isLastStep = currentStep === steps.length - 1;
 
+  // ==========================================
+  // LOGIKA VALIDASI (DIPERBAIKI)
+  // ==========================================
   useEffect(() => {
     if (!step.targetCell) {
       setIsStepValid(true);
       return;
     }
-    const cellValue = data[step.targetCell] || '';
-    setIsStepValid(cellValue.toLowerCase() === step.expectedValue?.toLowerCase());
+    
+    const cellValue = (data[step.targetCell] || '').toString().trim();
+
+    if (!step.expectedValue) {
+      // KONDISI 1: Jika expectedValue kosong, cukup cek apakah sel target ada isinya
+      setIsStepValid(cellValue !== '');
+    } else {
+      // KONDISI 2: Jika ada expectedValue, cek kecocokan (abaikan spasi & besar-kecil)
+      const cleanCellValue = cellValue.replace(/\s/g, '').toLowerCase();
+      const cleanExpectedValue = step.expectedValue.replace(/\s/g, '').toLowerCase();
+      setIsStepValid(cleanCellValue === cleanExpectedValue);
+    }
   }, [data, step]);
 
   const handleNext = () => {
