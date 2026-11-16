@@ -6,20 +6,11 @@ import InteractiveTutorial from './InteractiveTutorial';
 import { tutorialData } from '@/lib/tutorialData';
 
 const ROWS = 20;
-const COLS = 5; // A sampai E
+const COLS = 5;
 
-export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
-  // PERBAIKAN: Tambahkan anotasi tipe Record<string, string>
-  const initialPivotData: Record<string, string> = lessonSlug === 'pivottable-dashboard' ? {
-    'A1': 'Produk', 'B1': 'Karyawan', 'C1': 'Jumlah', 'D1': 'Harga', 'E1': 'Total',
-    'A2': 'Laptop', 'B2': 'Andi', 'C2': '1', 'D2': '5000000',
-    'A3': 'Mouse', 'B3': 'Budi', 'C3': '5', 'D3': '150000',
-    'A4': 'Laptop', 'B4': 'Andi', 'C4': '1', 'D4': '5000000',
-    'A5': 'Keyboard', 'B5': 'Citra', 'C5': '3', 'D5': '300000',
-    'A6': 'Mouse', 'B6': 'Budi', 'C6': '5', 'D6': '150000',
-  } : {};
-
-  const [data, setData] = useState<Record<string, string>>(initialPivotData);
+export default function Spreadsheet({ lessonSlug, initialData = {} }: { lessonSlug: string, initialData?: Record<string, string> }) {
+  // Satu deklarasi data saja
+  const [data, setData] = useState<Record<string, string>>(initialData);
   const [activeCell, setActiveCell] = useState<string>('A1');
   const [formulaInput, setFormulaInput] = useState<string>('');
   const [activeSheet, setActiveSheet] = useState('Sheet1');
@@ -198,7 +189,7 @@ export default function Spreadsheet({ lessonSlug }: { lessonSlug: string }) {
           <InteractiveTutorial 
             steps={currentSteps}
             data={data} 
-            onReset={() => { setData(initialPivotData); setActiveCell('A1'); setFormulaInput(''); setIsBold(false); setIsItalic(false); setBgColor('bg-white'); }} 
+            onReset={() => { setData(initialData); setActiveCell('A1'); setFormulaInput(''); setIsBold(false); setIsItalic(false); setBgColor('bg-white'); }} 
           />
         </div>
 

@@ -61,4 +61,10 @@ class LessonController extends Controller
         $tips = $lesson->tips()->where('is_active', true)->get();
         return response()->json(['data' => $tips]);
     }
+    public function questions($slug)
+    {
+        $lesson = Lesson::where('slug', $slug)->firstOrFail();
+        $questions = $lesson->questions()->where('is_active', true)->get();
+        return response()->json(['data' => $questions]);
+    }
 }

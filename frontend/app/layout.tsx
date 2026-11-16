@@ -10,6 +10,9 @@ const nunito = Nunito({
 export const metadata = {
   title: 'ExcelMate - Belajar Excel Seru!',
   description: 'Platform belajar Microsoft Excel interaktif dari nol sampai mahir.',
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

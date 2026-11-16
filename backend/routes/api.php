@@ -26,3 +26,5 @@ Route::post('/exercises/finish', [ExerciseController::class, 'finish']);
 Route::get('/progress', [ProgressController::class, 'show']);
 
 Route::get('/lessons/{slug}/tips', [LessonController::class, 'tips']);
+
+Route::get('/lessons/{slug}/questions', [LessonController::class, 'questions']);

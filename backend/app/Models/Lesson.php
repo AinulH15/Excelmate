@@ -36,4 +36,8 @@ class Lesson extends Model
     {
         return $this->hasMany(Tip::class)->orderBy('sort_order');
     }
+    public function questions()
+    {
+        return $this->hasMany(Question::class)->orderBy('sort_order');
+    }
 }

@@ -9,7 +9,8 @@ import {
 } from 'lucide-react';
 import Spreadsheet from '@/components/Spreadsheet';
 import SpreadsheetVisual from '@/components/SpreadsheetVisual';
-import ExercisePlayer from '@/components/ExercisePlayer';
+import ExercisePlayer from '@/components/ExercisePlayer'; // Bisa dihapus jika sudah pakai QuestionPlayer
+import QuestionPlayer from '@/components/QuestionPlayer';
 import Note from '@/components/ui/Note';
 import ExcelInterfaceVisual from '@/components/ExcelInterfaceVisual';
 import WorksheetVisual from '@/components/WorksheetVisual';
@@ -21,6 +22,14 @@ import DataToolsVisual from '@/components/DataToolsVisual';
 import PivotTutorial from '@/components/PivotTutorial';
 import PivotSimulator from '@/components/PivotSimulator';
 import TipsCard from '@/components/TipsCard';
+import WorkbookVisual from '@/components/WorkbookVisual';
+import CellReferenceVisual from '@/components/CellReferenceVisual';
+import DateTimeVisual from '@/components/DateTimeVisual';
+import IfErrorVisual from '@/components/IfErrorVisual';
+import SortingFilteringVisual from '@/components/SortingFilteringVisual';
+import ConditionalFormattingVisual from '@/components/ConditionalFormattingVisual';
+import ConditionalFormattingGuidedPractice from '@/components/ConditionalFormattingGuidedPractice';
+import TableGuidedPractice from '@/components/TableGuidedPractice';
 
 const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
 
@@ -28,12 +37,15 @@ export default function DetailMateriPage() {
   const { slug } = useParams();
   const [lesson, setLesson] = useState<any>(null);
   const [tips, setTips] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<any[]>([]); // State untuk bank soal
   const [mode, setMode] = useState<'belajar' | 'latihan'>('belajar');
   const [activePart, setActivePart] = useState<string | null>(null);
 
+  // Ambil data materi, tips, dan soal
   useEffect(() => {
     api.get(`/lessons/${slug}`).then(res => setLesson(res.data.data)).catch(console.error);
     api.get(`/lessons/${slug}/tips`).then(res => setTips(res.data.data)).catch(console.error);
+    api.get(`/lessons/${slug}/questions`).then(res => setQuestions(res.data.data)).catch(console.error);
   }, [slug]);
 
   if (!lesson) return <div className="text-center py-20 font-bold animate-pulse">Memuat materi...</div>;
@@ -156,6 +168,14 @@ export default function DetailMateriPage() {
       );
     }
 
+    if (slug === 'mengatur-workbook-worksheet') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <WorkbookVisual />
+        </div>
+      );
+    }
+
     if (slug === 'input-edit-hapus-data') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-3xl mx-auto">
@@ -184,11 +204,19 @@ export default function DetailMateriPage() {
       );
     }
 
-    if (slug === 'data-tools') {
+    if (slug === 'data-tools' || slug === 'sorting-filtering') {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
           <h3 className="text-2xl font-black mb-6 text-center">Simulasi Data Tools</h3>
-          <DataToolsVisual />
+          <SortingFilteringVisual />
+        </div>
+      );
+    }
+
+    if (slug === 'conditional-formatting') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <ConditionalFormattingVisual />
         </div>
       );
     }
@@ -197,6 +225,30 @@ export default function DetailMateriPage() {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
           <PivotTutorial />
+        </div>
+      );
+    }
+
+    if (slug === 'cell-reference') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <CellReferenceVisual />
+        </div>
+      );
+    }
+
+    if (slug === 'fungsi-tanggal-waktu') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <DateTimeVisual />
+        </div>
+      );
+    }
+
+    if (slug === 'fungsi-iferror') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <IfErrorVisual />
         </div>
       );
     }
@@ -270,7 +322,6 @@ export default function DetailMateriPage() {
         )}
       </section>
 
-      {/* TIPS CARD DI SINI */}
       {tips.length > 0 && (
         <section className="space-y-8">
           <TipsCard tips={tips} />
@@ -311,6 +362,10 @@ export default function DetailMateriPage() {
               </div>
               {slug === 'pivottable-dashboard' ? (
                 <PivotSimulator />
+              ) : slug === 'conditional-formatting' ? (
+                <ConditionalFormattingGuidedPractice />
+              ) : slug === 'excel-table' ? (
+                <TableGuidedPractice />
               ) : (
                 <Spreadsheet lessonSlug={slug as string} />
               )}
@@ -322,7 +377,7 @@ export default function DetailMateriPage() {
                   <PlayCircle /> Uji Pemahamanmu
                 </h3>
               </div>
-              <ExercisePlayer onComplete={() => alert('Latihan Selesai!')} />
+              <QuestionPlayer questions={questions} onSubmit={(answers) => console.log(answers)} />
             </div>
           )}
         </div>

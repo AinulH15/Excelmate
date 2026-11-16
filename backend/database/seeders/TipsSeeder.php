@@ -29,6 +29,7 @@ class TipsSeeder extends Seeder
                 ['title' => 'Edit Cell', 'shortcut' => 'F2', 'desc' => 'Mengedit isi cell tanpa klik ganda.', 'steps' => ['Pilih cell', 'Tekan F2', 'Edit isinya.'], 'example' => 'Memperbaiki data', 'result' => 'Cell dalam mode edit.'],
                 ['title' => 'Baris Baru dalam Cell', 'shortcut' => 'Alt + Enter', 'desc' => 'Membuat baris baru di dalam satu cell.', 'steps' => ['Ketik teks', 'Tekan Alt + Enter', 'Lanjutkan mengetik.'], 'example' => 'Alamat lengkap multi-baris', 'result' => 'Teks dalam 2 baris.'],
                 ['title' => 'Isi Semua Cell Terpilih', 'shortcut' => 'Ctrl + Enter', 'desc' => 'Mengisi semua cell yang diblok dengan data yang sama.', 'steps' => ['Blok cell', 'Ketik data', 'Tekan Ctrl + Enter.'], 'example' => 'Mengisi seragam', 'result' => 'Semua cell terisi.'],
+                ['title' => 'Isi Cepat dengan Flash Fill', 'shortcut' => 'Ctrl + E', 'desc' => 'Mengisi pola data secara otomatis.', 'steps' => ['Ketik contoh di cell sebelah', 'Tekan Ctrl + E.'], 'example' => 'Membuat inisial nama', 'result' => 'Data terisi otomatis.'],
             ],
             'mengatur-workbook-worksheet' => [
                 ['title' => 'Pilih Kolom', 'shortcut' => 'Ctrl + Space', 'desc' => 'Memilih satu kolom penuh.', 'steps' => ['Klik cell di kolom', 'Tekan Ctrl + Space.'], 'example' => 'Format kolom', 'result' => 'Kolom terpilih.'],
@@ -45,6 +46,8 @@ class TipsSeeder extends Seeder
                 ['title' => 'Urutan Perhitungan', 'shortcut' => '()', 'desc' => 'Gunakan tanda kurung untuk prioritas.', 'steps' => ['Ketik =(', 'Masukkan rumus', 'Tutup ).'], 'example' => '=(2+3)*4', 'result' => 'Hasil 20.'],
                 ['title' => 'Pangkat', 'shortcut' => '^', 'desc' => 'Menghitung pangkat.', 'steps' => ['Ketik =angka^pangkat.'], 'example' => '=2^3', 'result' => 'Hasil 8.'],
             ],
+
+            // LEVEL 2
             'fungsi-sum' => [
                 ['title' => 'Hitung Otomatis dengan AutoSum', 'shortcut' => 'Alt + =', 'desc' => 'Tidak perlu mengetik rumus SUM dari awal.', 'steps' => ['Masukkan angka di B2:B4', 'Klik cell B5', 'Tekan Alt + =', 'Periksa range yang dipilih', 'Tekan Enter.'], 'example' => 'B2=10.000, B3=15.000, B4=20.000', 'result' => 'B5 = 45.000'],
                 ['title' => 'Gunakan Range', 'shortcut' => '=SUM(...)', 'desc' => 'Menjumlahkan satu rentang sekaligus.', 'steps' => ['Ketik =SUM(B2:B10)'], 'example' => '=SUM(B2:B10)', 'result' => 'Total seluruh B2 sampai B10.'],
@@ -83,6 +86,7 @@ class TipsSeeder extends Seeder
                 ['title' => 'Flash Fill', 'shortcut' => 'Ctrl + E', 'desc' => 'Otomatis mengisi pola teks.', 'steps' => ['Ketik contoh di cell sebelah', 'Tekan Ctrl + E.'], 'example' => 'Memisahkan nama depan', 'result' => 'Data terisi otomatis.'],
                 ['title' => 'Hapus Spasi Berlebih', 'shortcut' => '=TRIM(...)', 'desc' => 'Membersihkan spasi ganda.', 'steps' => ['Ketik =TRIM(A1)'], 'example' => '=TRIM(A1)', 'result' => 'Teks bersih.'],
             ],
+
             // LEVEL 3
             'cell-reference' => [
                 ['title' => 'Ganti Tipe Referensi', 'shortcut' => 'F4', 'desc' => 'Memutar antara A1, $A$1, A$1, $A1.', 'steps' => ['Saat mengetik rumus, tekan F4 pada referensi.'], 'example' => 'A1 -> $A$1', 'result' => 'Referensi berubah.'],
@@ -100,9 +104,13 @@ class TipsSeeder extends Seeder
                 ['title' => 'Tangani Error', 'shortcut' => '=IFERROR(...)', 'desc' => 'Menampilkan nilai alternatif saat error.', 'steps' => ['Bungkus rumus dengan IFERROR.'], 'example' => '=IFERROR(VLOOKUP(...),"Tidak ada")', 'result' => 'Error diganti teks.'],
                 ['title' => 'Tampilkan Rumus', 'shortcut' => 'Ctrl + `', 'desc' => 'Menampilkan semua rumus di sheet.', 'steps' => ['Tekan Ctrl + `.'], 'example' => 'Lihat rumus asli', 'result' => 'Semua rumus terlihat.'],
             ],
+
             // LEVEL 4
             'excel-table' => [
                 ['title' => 'Buat Tabel Cepat', 'shortcut' => 'Ctrl + T', 'desc' => 'Mengubah data menjadi Table.', 'steps' => ['Pilih data', 'Tekan Ctrl + T', 'Centang My table has headers.'], 'example' => 'Data penjualan', 'result' => 'Tabel terformat.'],
+            ],
+            'membuat-tabel-border' => [
+                ['title' => 'Border Cepat', 'shortcut' => 'Alt + H + B + A', 'desc' => 'Memberi border ke seluruh tabel.', 'steps' => ['Blok data', 'Tekan Alt + H + B + A.'], 'example' => 'Tabel berborder', 'result' => 'Semua cell bergaris.'],
             ],
             'sorting-filtering' => [
                 ['title' => 'Aktifkan Filter', 'shortcut' => 'Ctrl + Shift + L', 'desc' => 'Menambah tombol filter di header.', 'steps' => ['Pilih header tabel', 'Tekan Ctrl + Shift + L.'], 'example' => 'Filter data', 'result' => 'Tombol filter muncul.'],
@@ -119,6 +127,7 @@ class TipsSeeder extends Seeder
                 ['title' => 'Text to Columns', 'shortcut' => 'Data > Text to Columns', 'desc' => 'Memisahkan teks ke beberapa kolom.', 'steps' => ['Pilih kolom', 'Data > Text to Columns', 'Pilih Delimited.'], 'example' => 'Pisah Nama & Alamat', 'result' => 'Data terpisah.'],
                 ['title' => 'Flash Fill', 'shortcut' => 'Ctrl + E', 'desc' => 'Mengisi data mengikuti pola.', 'steps' => ['Ketik pola', 'Tekan Ctrl + E.'], 'example' => 'Ambil inisial nama', 'result' => 'Data terisi.'],
             ],
+
             // LEVEL 5
             'membuat-chart' => [
                 ['title' => 'Chart Cepat di Sheet', 'shortcut' => 'Alt + F1', 'desc' => 'Membuat chart di sheet yang sama.', 'steps' => ['Pilih data', 'Tekan Alt + F1.'], 'example' => 'Grafik penjualan', 'result' => 'Chart muncul.'],

@@ -122,40 +122,40 @@ export const tutorialData: Record<string, any[]> = {
   // ==========================================
   // LEVEL 2: RUMUS & FUNGSI DASAR
   // ==========================================
-  'fungsi-sum': [
-    {
-      id: 1,
-      title: "Memahami Tujuan",
-      instruction: "Hari ini kita akan belajar menghitung total penjualan menggunakan rumus SUM.",
-      targetCell: null,
-      expectedValue: null,
-      hint: "Baca penjelasan di atas, lalu klik 'Selanjutnya'.",
-    },
-    {
-      id: 2,
-      title: "Memasukkan Judul",
-      instruction: "Klik cell **A1**, ketik `Nama Barang` dan tekan Enter.",
-      targetCell: "A1",
-      expectedValue: "Nama Barang",
-      hint: "Klik A1, ketik Nama Barang, lalu Enter.",
-    },
-    {
-      id: 3,
-      title: "Memasukkan Angka",
-      instruction: "Klik cell **B1**, ketik `10000` dan tekan Enter.",
-      targetCell: "B1",
-      expectedValue: "10000",
-      hint: "Klik B1, ketik 10000, lalu Enter.",
-    },
-    {
-      id: 4,
-      title: "Menulis Rumus",
-      instruction: "Klik cell **B2**, ketik `=SUM(B1:B1)` lalu tekan Enter. Amati hasilnya.",
-      targetCell: "B2",
-      expectedValue: "=SUM(B1:B1)",
-      hint: "Ketik =SUM(B1:B1) di cell B2.",
-    },
-  ],
+ 'fungsi-sum': [
+  {
+    id: 1,
+    title: "Pahami Tujuan Praktik",
+    instruction: "Kita akan menghitung total penjualan dari data di kolom C. Tujuan praktik ini adalah menjumlahkan nilai dari C2 sampai C6 menggunakan fungsi SUM.",
+    targetCell: null,
+    expectedValue: null,
+    hint: "Baca tujuan di atas, lalu klik 'Selanjutnya'.",
+  },
+  {
+    id: 2,
+    title: "Pilih Sel Hasil",
+    instruction: "Klik cell **C7** untuk menempatkan hasil penjumlahan.",
+    targetCell: "C7",
+    expectedValue: null,
+    hint: "Klik cell C7 (baris kosong di bawah data).",
+  },
+  {
+    id: 3,
+    title: "Tulis Rumus SUM",
+    instruction: "Ketik rumus `=SUM(C2:C6)` di cell C7, lalu tekan Enter.",
+    targetCell: "C7",
+    expectedValue: "=SUM(C2:C6)",
+    hint: "Ketik =SUM(C2:C6) di cell C7.",
+  },
+  {
+    id: 4,
+    title: "Selesai!",
+    instruction: "Total penjualan berhasil dihitung. Kamu telah menyelesaikan praktik SUM.",
+    targetCell: null,
+    expectedValue: null,
+    hint: "Lihat hasil di cell C7.",
+  },
+],
 
   'fungsi-average': [
     {

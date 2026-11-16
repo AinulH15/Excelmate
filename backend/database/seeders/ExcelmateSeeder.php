@@ -73,6 +73,16 @@ class ExcelmateSeeder extends Seeder
             ],
             [
                 'category_id' => $catL1->id, 'learning_level_id' => $lvl1->id, 'order' => 5,
+                'title' => 'Membuat Border, Tabel, dan Merge Cell', 'slug' => 'membuat-tabel-border',
+                'intro' => 'Belajar membuat tabel rapi dengan border, merge cell, dan pengaturan tampilan.',
+                'content' => [
+                    'apa_itu' => "Tabel yang rapi terdiri dari border (garis tepi), merge cell (menggabungkan cell), dan pengaturan lebar kolom/baris. Border membuat data lebih mudah dibaca, sedangkan merge cell digunakan untuk judul tabel.",
+                    'mengapa' => "Tabel yang rapi akan membuat laporan lebih profesional dan mudah dipahami oleh pembaca.",
+                    'sintaks' => "Langkah membuat tabel:\n1. Blok data yang ingin dijadikan tabel.\n2. Klik tab Home > Borders > All Borders.\n3. Untuk judul tabel, blok beberapa cell (misal A1:C1) lalu klik Merge & Center.\n4. Atur lebar kolom dengan drag garis di header kolom."
+                ],
+            ],
+            [
+                'category_id' => $catL1->id, 'learning_level_id' => $lvl1->id, 'order' => 5,
                 'title' => 'Format Cell: Angka, Tanggal, Mata Uang, dan Persentase', 'slug' => 'format-cell',
                 'intro' => 'Mengatur format angka, mata uang, tanggal, dan persentase.',
                 'content' => [
@@ -91,10 +101,10 @@ class ExcelmateSeeder extends Seeder
                     'sintaks' => "Operator Excel:\n+ (Tambah)\n- (Kurang)\n* (Kali)\n/ (Bagi)\n^ (Pangkat)\n\nContoh: =10 + 5 * 2"
                 ],
             ],
-
+        
             // LEVEL 2
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 7,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 8,
                 'title' => 'SUM — Menjumlahkan Data', 'slug' => 'fungsi-sum',
                 'intro' => 'Menjumlahkan banyak angka sekaligus dengan cepat.',
                 'content' => [
@@ -104,7 +114,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 8,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 9,
                 'title' => 'AVERAGE — Menghitung Rata-rata', 'slug' => 'fungsi-average',
                 'intro' => 'Menghitung nilai rata-rata dari sekumpulan data.',
                 'content' => [
@@ -114,7 +124,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 9,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 10,
                 'title' => 'MAX dan MIN — Mencari Nilai Tertinggi dan Terendah', 'slug' => 'fungsi-max-min',
                 'intro' => 'Mencari nilai tertinggi (MAX) dan terendah (MIN).',
                 'content' => [
@@ -124,7 +134,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 10,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 11,
                 'title' => 'COUNT, COUNTA, dan COUNTBLANK', 'slug' => 'fungsi-count',
                 'intro' => 'Menghitung jumlah cell yang berisi angka, teks, atau kosong.',
                 'content' => [
@@ -134,7 +144,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 11,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 12,
                 'title' => 'IF — Membuat Kondisi Logika', 'slug' => 'fungsi-if',
                 'intro' => 'Membuat keputusan otomatis berdasarkan kondisi tertentu.',
                 'content' => [
@@ -144,7 +154,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 12,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 13,
                 'title' => 'AND, OR, dan IF Bertingkat', 'slug' => 'fungsi-and-or',
                 'intro' => 'Menggabungkan beberapa kondisi logika.',
                 'content' => [
@@ -154,7 +164,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 13,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 14,
                 'title' => 'SUMIF dan SUMIFS', 'slug' => 'fungsi-sumif-sumifs',
                 'intro' => 'Menjumlahkan data berdasarkan kriteria tertentu.',
                 'content' => [
@@ -164,7 +174,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 14,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 15,
                 'title' => 'COUNTIF dan COUNTIFS', 'slug' => 'fungsi-countif',
                 'intro' => 'Menghitung jumlah data berdasarkan kriteria tertentu.',
                 'content' => [
@@ -174,7 +184,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 15,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 16,
                 'title' => 'AVERAGEIF dan AVERAGEIFS', 'slug' => 'fungsi-averageif',
                 'intro' => 'Menghitung rata-rata data berdasarkan kriteria tertentu.',
                 'content' => [
@@ -184,7 +194,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 16,
+                'category_id' => $catL2->id, 'learning_level_id' => $lvl2->id, 'order' => 17,
                 'title' => 'Fungsi Teks: LEFT, RIGHT, MID, LEN, TRIM, dan CONCAT', 'slug' => 'fungsi-teks',
                 'intro' => 'Mengolah data teks seperti memotong dan menggabungkan.',
                 'content' => [
@@ -196,17 +206,17 @@ class ExcelmateSeeder extends Seeder
 
             // LEVEL 3
             [
-                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 17,
+                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 18,
                 'title' => 'Relative, Absolute, dan Mixed Cell Reference', 'slug' => 'cell-reference',
-                'intro' => 'Memahami perbedaan referensi sel relatif (A1), absolut ($A$1), dan campuran ($A1 / A$1).',
+                'intro' => 'Memahami perbedaan referensi sel relatif (A1), absolut ($A$1), dan campuran.',
                 'content' => [
-                    'apa_itu' => 'Relative (A1): Berubah saat copy-paste. Absolut (\$A\$1): Tetap saat copy-paste. Mixed (\$A1 atau A\$1): Hanya baris atau kolom yang tetap.',
-                    'mengapa' => 'Kunci untuk membuat rumus yang bisa di-copy ke seluruh tabel tanpa harus mengetik ulang.',
-                    'sintaks' => "Relative: =A1\nAbsolut: =\$A\$1\nMixed: =\$A1 atau =A\$1"
+                    'apa_itu' => "**Relative (A1)**: Alamat cell yang berubah saat rumus disalin. Jika kamu menyalin rumus dari D2 ke D3, referensi A1 akan berubah menjadi A2.\n\n**Absolute (\$A\$1)**: Alamat cell yang terkunci. Kolom dan baris tidak berubah saat rumus disalin.\n\n**Mixed (\$A1 atau A\$1)**: Hanya salah satu bagian yang terkunci.\n- \$A1: Kolom A terkunci, baris bisa berubah.\n- A\$1: Baris 1 terkunci, kolom bisa berubah.",
+                    'mengapa' => "Kunci untuk membuat rumus yang bisa di-copy ke seluruh tabel tanpa harus mengetik ulang. Jika tidak memahami ini, rumus kamu akan menghasilkan hasil yang salah saat disalin.",
+                    'sintaks' => "Relative: =C2*11%\nAbsolute: =C2*\$G\$1\nMixed: =\$C2*D\$1"
                 ],
             ],
             [
-                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 18,
+                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 19,
                 'title' => 'Fungsi Tanggal dan Waktu', 'slug' => 'fungsi-tanggal-waktu',
                 'intro' => 'Mengolah data tanggal dan waktu dengan TODAY, NOW, DAY, MONTH, YEAR, dll.',
                 'content' => [
@@ -216,7 +226,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 19,
+                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 20,
                 'title' => 'VLOOKUP, HLOOKUP, dan XLOOKUP', 'slug' => 'fungsi-lookup',
                 'intro' => 'Mencari data dari tabel referensi. Sangat berguna untuk menggabungkan data dari dua tabel berbeda.',
                 'content' => [
@@ -226,7 +236,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 20,
+                'category_id' => $catL3->id, 'learning_level_id' => $lvl3->id, 'order' => 21,
                 'title' => 'IFERROR dan Penanganan Kesalahan Formula', 'slug' => 'fungsi-iferror',
                 'intro' => 'Menangani error seperti #N/A, #DIV/0!, atau #VALUE! agar laporan tetap rapi.',
                 'content' => [
@@ -238,7 +248,7 @@ class ExcelmateSeeder extends Seeder
 
             // LEVEL 4
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 21,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 22,
                 'title' => 'Excel Table', 'slug' => 'excel-table',
                 'intro' => 'Mengubah data menjadi Table agar otomatis terformat dan mudah difilter.',
                 'content' => [
@@ -248,7 +258,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 22,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 23,
                 'title' => 'Sorting dan Filtering Data', 'slug' => 'sorting-filtering',
                 'intro' => 'Mengurutkan data dan menyaring data berdasarkan kriteria.',
                 'content' => [
@@ -258,7 +268,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 23,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 24,
                 'title' => 'Conditional Formatting', 'slug' => 'conditional-formatting',
                 'intro' => 'Mewarnai cell otomatis berdasarkan aturan tertentu.',
                 'content' => [
@@ -268,7 +278,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 24,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 25,
                 'title' => 'Data Validation dan Dropdown', 'slug' => 'data-validation',
                 'intro' => 'Membatasi input data dan membuat dropdown list.',
                 'content' => [
@@ -278,7 +288,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 25,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 26,
                 'title' => 'Data Cleaning: Remove Duplicates, Find & Replace, Text to Columns, dan Flash Fill', 'slug' => 'data-cleaning',
                 'intro' => 'Membersihkan data kotor agar siap dianalisis.',
                 'content' => [
@@ -290,7 +300,7 @@ class ExcelmateSeeder extends Seeder
 
             // LEVEL 5
             [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 26,
+                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 27,
                 'title' => 'Membuat Chart dan Grafik', 'slug' => 'membuat-chart',
                 'intro' => 'Mengubah data menjadi grafik visual (Column, Line, Pie, dll).',
                 'content' => [
@@ -300,7 +310,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 27,
+                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 28,
                 'title' => 'PivotTable dan PivotChart', 'slug' => 'pivottable-dashboard',
                 'intro' => 'Merangkum ribuan data menjadi tabel ringkas dan grafik interaktif.',
                 'content' => [
@@ -310,7 +320,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 28,
+                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 29,
                 'title' => 'Membuat Dashboard Sederhana', 'slug' => 'membuat-dashboard',
                 'intro' => 'Menggabungkan beberapa chart dan PivotTable menjadi satu layar dashboard.',
                 'content' => [
@@ -320,7 +330,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 29,
+                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 30,
                 'title' => 'Page Layout, Print Area, dan Pengaturan Cetak', 'slug' => 'page-layout-print',
                 'intro' => 'Mengatur tampilan halaman dan area yang akan dicetak.',
                 'content' => [
