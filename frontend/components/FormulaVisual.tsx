@@ -47,41 +47,15 @@ const formulaData: Record<string, { formula: string, explanations: Record<string
   },
   'fungsi-sumif-sumifs': {
     formula: '=SUMIF(B1:B10; "A"; C1:C10)',
-    explanations: {
-      '=': 'Awal rumus.',
-      'SUMIF': 'Menjumlahkan data dengan kriteria tertentu.',
-      'B1:B10': 'Range kriteria: Tempat mencari kata "A".',
-      ':': 'Tanda "sampai dengan". B1:B10 berarti dari B1 sampai B10.',
-      ';': 'Titik koma (;) adalah pemisah antar argumen fungsi.',
-      '"A"': 'Kriteria: Hanya jumlahkan jika isinya "A".',
-      'C1:C10': 'Sum Range: Kolom angka yang akan dijumlahkan.',
-      '(': 'Kurung buka.', ')': 'Kurung tutup.'
-    }
+    explanations: {}
   },
   'fungsi-countif': {
     formula: '=COUNTIF(A1:A10; ">50")',
-    explanations: {
-      '=': 'Awal rumus.',
-      'COUNTIF': 'Menghitung berapa banyak sel yang memenuhi kriteria.',
-      'A1:A10': 'Range data yang diperiksa.',
-      ':': 'Tanda "sampai dengan". A1:A10 berarti dari A1 sampai A10.',
-      ';': 'Titik koma (;) adalah pemisah antar argumen fungsi.',
-      '">50"': 'Kriteria: Hanya hitung angka yang lebih dari 50.',
-      '(': 'Kurung buka.', ')': 'Kurung tutup.'
-    }
+    explanations: {}
   },
   'fungsi-averageif': {
     formula: '=AVERAGEIF(B1:B10; "Laki-laki"; C1:C10)',
-    explanations: {
-      '=': 'Awal rumus.',
-      'AVERAGEIF': 'Mencari rata-rata dengan kriteria tertentu.',
-      'B1:B10': 'Range kriteria (kolom jenis kelamin).',
-      ':': 'Tanda "sampai dengan". B1:B10 berarti dari B1 sampai B10.',
-      ';': 'Titik koma (;) adalah pemisah antar argumen fungsi.',
-      '"Laki-laki"': 'Kriteria yang dicari.',
-      'C1:C10': 'Range angka yang akan dirata-ratakan.',
-      '(': 'Kurung buka.', ')': 'Kurung tutup.'
-    }
+    explanations: {}
   },
   'fungsi-and-or': {
     formula: '=IF(AND(A1>50; B1="Lulus"); "Ya"; "Tidak")',
@@ -89,28 +63,11 @@ const formulaData: Record<string, { formula: string, explanations: Record<string
   },
   'fungsi-teks': {
     formula: '=LEFT(A1; 3)',
-    explanations: {
-      '=': 'Awal rumus.',
-      'LEFT': 'Mengambil karakter dari kiri. (Gunakan RIGHT dari kanan, MID dari tengah).',
-      'A1': 'Teks asli yang ingin diambil.',
-      ';': 'Pemisah antar argumen fungsi (titik koma).',
-      '3': 'Jumlah karakter yang ingin diambil.',
-      '(': 'Kurung buka.', ')': 'Kurung tutup.'
-    }
+    explanations: {}
   },
   'fungsi-lookup': {
     formula: '=VLOOKUP(A2; B1:D10; 3; FALSE)',
-    explanations: {
-      '=': 'Awal rumus.',
-      'VLOOKUP': 'Mencari data secara vertikal. (Gunakan HLOOKUP untuk horizontal, XLOOKUP untuk versi modern).',
-      'A2': 'Lookup Value: Nilai yang dicari (misal: ID).',
-      ';': 'Pemisah antar argumen fungsi (titik koma).',
-      'B1:D10': 'Table Array: Tabel tempat mencari data. Tanda titik dua (:) berarti dari kolom B sampai D.',
-      ':': 'Tanda "sampai dengan". B1:D10 artinya area dari sel B1 sampai sel D10.',
-      '3': 'Col Index Num: Kolom ke-3 di tabel tersebut yang diambil hasilnya.',
-      'FALSE': 'Range Lookup: Gunakan FALSE untuk pencarian persis (Exact Match).',
-      '(': 'Kurung buka.', ')': 'Kurung tutup.'
-    }
+    explanations: {}
   }
 };
 
@@ -121,6 +78,11 @@ export default function FormulaVisual({ slug }: Props) {
   const [countMode, setCountMode] = useState<'COUNT' | 'COUNTA' | 'COUNTBLANK'>('COUNT');
   const [ifMode, setIfMode] = useState<'SIMPLE' | 'NESTED'>('SIMPLE');
   const [logicMode, setLogicMode] = useState<'AND' | 'OR' | 'NESTED'>('AND');
+  const [textMode, setTextMode] = useState<'LEFT' | 'RIGHT' | 'MID' | 'LEN' | 'TRIM' | 'CONCAT'>('LEFT');
+  const [sumIfMode, setSumIfMode] = useState<'SUMIF' | 'SUMIFS'>('SUMIF');
+  const [countIfMode, setCountIfMode] = useState<'COUNTIF' | 'COUNTIFS'>('COUNTIF');
+  const [averageIfMode, setAverageIfMode] = useState<'AVERAGEIF' | 'AVERAGEIFS'>('AVERAGEIF');
+  const [lookupMode, setLookupMode] = useState<'VLOOKUP' | 'HLOOKUP' | 'XLOOKUP'>('VLOOKUP');
 
   // ==========================================
   // CELL REFERENCE (Relative, Absolute, Mixed)
@@ -654,7 +616,27 @@ export default function FormulaVisual({ slug }: Props) {
       };
     }
 
+    // REGEX UNTUK MEMISAHKAN TEKS
     const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
+
+    // LOGIKA ALIAS UNTUK IF BERTINGKAT
+    let formattedParts = parts.map(p => ({ text: p, key: p }));
+
+    if (!isSimple) {
+      formattedParts = parts.map((part, index) => {
+        if (part === '>' || part === '>=') {
+          return { text: part, key: `Operator ${part}` };
+        }
+        if (part === '=' && index > 0) {
+            return { text: part, key: 'Operator =' };
+        }
+        return { text: part, key: part };
+      });
+      
+      currentExplanations['Operator >='] = 'Operator pembanding: "Lebih besar atau sama dengan".';
+      currentExplanations['Operator >'] = 'Operator pembanding: "Lebih besar dari".';
+      currentExplanations['Operator ='] = 'Operator pembanding: "Sama dengan". Bukan awal rumus.';
+    }
 
     return (
       <div className="space-y-8">
@@ -680,17 +662,17 @@ export default function FormulaVisual({ slug }: Props) {
 
           <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
             <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
-              {parts.map((part, index) => (
+              {formattedParts.map((part, index) => (
                 <span
                   key={index}
-                  onClick={() => setActivePart(part)}
+                  onClick={() => setActivePart(part.key)}
                   className={`cursor-pointer px-1 rounded transition-all duration-200 ${
-                    activePart === part 
+                    activePart === part.key 
                       ? 'bg-yellow-200 text-ink scale-110 font-bold ring-2 ring-ink' 
                       : 'hover:bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {part}
+                  {part.text}
                 </span>
               ))}
             </div>
@@ -779,7 +761,33 @@ export default function FormulaVisual({ slug }: Props) {
       };
     }
 
+    // REGEX UNTUK MEMISAHKAN TEKS
     const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
+
+    // LOGIKA ALIAS KHUSUS UNTUK AND/OR DAN NESTED
+    let formattedParts = parts.map(p => ({ text: p, key: p }));
+
+    if (isAnd || isOr) {
+      formattedParts = parts.map((part, index) => {
+        if (part === '=' && parts[index - 1] === 'B1') {
+          return { text: part, key: '= (Sama Dengan)' };
+        }
+        return { text: part, key: part };
+      });
+    } else if (isNested) {
+       formattedParts = parts.map((part, index) => {
+        if (part === '>' || part === '>=') {
+          return { text: part, key: `Operator ${part}` };
+        }
+        if (part === '=' && index > 0) {
+            return { text: part, key: 'Operator =' };
+        }
+        return { text: part, key: part };
+      });
+      currentExplanations['Operator >='] = 'Operator pembanding: "Lebih besar atau sama dengan".';
+      currentExplanations['Operator >'] = 'Operator pembanding: "Lebih besar dari".';
+      currentExplanations['Operator ='] = 'Operator pembanding: "Sama dengan". Bukan awal rumus.';
+    }
 
     return (
       <div className="space-y-8">
@@ -805,6 +813,237 @@ export default function FormulaVisual({ slug }: Props) {
                 className={`px-4 py-2 rounded-lg font-bold transition-all ${isNested ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
               >
                 IF Bertingkat
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
+              {formattedParts.map((part, index) => (
+                <span
+                  key={index}
+                  onClick={() => setActivePart(part.key)}
+                  className={`cursor-pointer px-1 rounded transition-all duration-200 ${
+                    activePart === part.key 
+                      ? 'bg-yellow-200 text-ink scale-110 font-bold ring-2 ring-ink' 
+                      : 'hover:bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {part.text}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 min-h-25 w-full">
+              {activePart && currentExplanations[activePart] ? (
+                <div className="p-5 bg-white border-2 border-dashed border-gray-300 rounded-xl text-center shadow-sm animate-in fade-in slide-in-from-top-2">
+                  <p className="text-pink-600 font-bold text-lg">{currentExplanations[activePart]}</p>
+                </div>
+              ) : (
+                <div className="p-5 text-center text-gray-400 font-medium border-2 border-transparent">
+                  👆 Klik pada bagian rumus di atas untuk melihat penjelasan.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
+            <p className="text-sm font-bold text-center">💡 Tips: Pahami perbedaan AND dan OR agar logikamu tidak terbalik.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // FUNGSI TEKS (LEFT, RIGHT, MID, LEN, TRIM, CONCAT)
+  // ==========================================
+  if (slug === 'fungsi-teks') {
+    let currentFormula = '';
+    let currentExplanations: Record<string, string> = {};
+
+    switch (textMode) {
+      case 'LEFT':
+        currentFormula = '=LEFT(A1; 3)';
+        currentExplanations = {
+          '=': 'Awal rumus.',
+          'LEFT': 'Mengambil karakter dari SISI KIRI teks.',
+          'A1': 'Teks asli yang ingin diambil.',
+          ';': 'Pemisah antar argumen fungsi (titik koma).',
+          '3': 'Jumlah karakter yang ingin diambil.',
+          '(': 'Kurung buka.', ')': 'Kurung tutup.'
+        };
+        break;
+      case 'RIGHT':
+        currentFormula = '=RIGHT(A1; 3)';
+        currentExplanations = {
+          '=': 'Awal rumus.',
+          'RIGHT': 'Mengambil karakter dari SISI KANAN teks.',
+          'A1': 'Teks asli yang ingin diambil.',
+          ';': 'Pemisah antar argumen fungsi (titik koma).',
+          '3': 'Jumlah karakter yang ingin diambil.',
+          '(': 'Kurung buka.', ')': 'Kurung tutup.'
+        };
+        break;
+      case 'MID':
+        currentFormula = '=MID(A1; 3; 2)';
+        currentExplanations = {
+          '=': 'Awal rumus.',
+          'MID': 'Mengambil karakter dari TENGAH teks.',
+          'A1': 'Teks asli yang ingin diambil.',
+          ';': 'Pemisah antar argumen fungsi (titik koma).',
+          '3': 'Start Number: Mulai mengambil dari karakter ke-3.',
+          '2': 'Jumlah karakter yang ingin diambil.',
+          '(': 'Kurung buka.', ')': 'Kurung tutup.'
+        };
+        break;
+      case 'LEN':
+        currentFormula = '=LEN(A1)';
+        currentExplanations = {
+          '=': 'Awal rumus.',
+          'LEN': 'Menghitung PANJANG (jumlah karakter) dari sebuah teks.',
+          'A1': 'Teks yang ingin dihitung panjangnya.',
+          '(': 'Kurung buka.', ')': 'Kurung tutup.'
+        };
+        break;
+      case 'TRIM':
+        currentFormula = '=TRIM(A1)';
+        currentExplanations = {
+          '=': 'Awal rumus.',
+          'TRIM': 'Menghapus spasi berlebih di awal, akhir, atau tengah teks.',
+          'A1': 'Teks yang ingin dibersihkan spasinya.',
+          '(': 'Kurung buka.', ')': 'Kurung tutup.'
+        };
+        break;
+      case 'CONCAT':
+        currentFormula = '=CONCAT(A1; B1)';
+        currentExplanations = {
+          '=': 'Awal rumus.',
+          'CONCAT': 'Menggabungkan beberapa teks menjadi satu.',
+          'A1': 'Teks pertama.',
+          ';': 'Pemisah antar argumen fungsi (titik koma).',
+          'B1': 'Teks kedua yang akan digabungkan.',
+          '(': 'Kurung buka.', ')': 'Kurung tutup.'
+        };
+        break;
+    }
+
+    const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
+
+    return (
+      <div className="space-y-8">
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8">
+          <h3 className="text-xl font-bold mb-6 text-center">Klik Bagian Rumusnya</h3>
+          
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-gray-200 border-2 border-ink rounded-xl p-1 shadow-neo-sm flex-wrap justify-center gap-1">
+              {['LEFT', 'RIGHT', 'MID', 'LEN', 'TRIM', 'CONCAT'].map((mode) => (
+                <button 
+                  key={mode}
+                  onClick={() => { setTextMode(mode as any); setActivePart(null); }}
+                  className={`px-3 py-2 rounded-lg font-bold text-sm transition-all ${textMode === mode ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
+              {parts.map((part, index) => (
+                <span
+                  key={index}
+                  onClick={() => setActivePart(part)}
+                  className={`cursor-pointer px-1 rounded transition-all duration-200 ${
+                    activePart === part 
+                      ? 'bg-yellow-200 text-ink scale-110 font-bold ring-2 ring-ink' 
+                      : 'hover:bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {part}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 min-h-25 w-full">
+              {activePart && currentExplanations[activePart] ? (
+                <div className="p-5 bg-white border-2 border-dashed border-gray-300 rounded-xl text-center shadow-sm animate-in fade-in slide-in-from-top-2">
+                  <p className="text-pink-600 font-bold text-lg">{currentExplanations[activePart]}</p>
+                </div>
+              ) : (
+                <div className="p-5 text-center text-gray-400 font-medium border-2 border-transparent">
+                  👆 Klik pada bagian rumus di atas untuk melihat penjelasan.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
+            <p className="text-sm font-bold text-center">💡 Tips: Pahami kegunaan masing-masing fungsi teks agar kamu bisa memanipulasi data dengan tepat.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // FUNGSI SUMIF / SUMIFS (DENGAN TOGGLE)
+  // ==========================================
+  if (slug === 'fungsi-sumif-sumifs') {
+    const isSumIf = sumIfMode === 'SUMIF';
+    
+    let currentFormula = '';
+    let currentExplanations: Record<string, string> = {};
+
+    if (isSumIf) {
+      currentFormula = '=SUMIF(B1:B10; "A"; C1:C10)';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'SUMIF': 'Menjumlahkan data dengan SATU kriteria saja.',
+        'B1:B10': 'Range kriteria: Tempat mencari kata "A".',
+        ':': 'Tanda "sampai dengan". B1:B10 berarti dari B1 sampai B10.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        '"A"': 'Kriteria: Hanya jumlahkan jika isinya "A".',
+        'C1:C10': 'Sum Range: Kolom angka yang akan dijumlahkan.',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    } else {
+      currentFormula = '=SUMIFS(C1:C10; B1:B10; "A"; D1:D10; "Lulus")';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'SUMIFS': 'Menjumlahkan data dengan LEBIH DARI SATU kriteria.',
+        'C1:C10': 'Sum Range: Kolom angka yang akan dijumlahkan.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        'B1:B10': 'Range kriteria 1: Tempat mencari kriteria pertama.',
+        '"A"': 'Kriteria 1: Hanya jika isinya "A".',
+        'D1:D10': 'Range kriteria 2: Tempat mencari kriteria kedua.',
+        '"Lulus"': 'Kriteria 2: Hanya jika isinya "Lulus".',
+        ':': 'Tanda "sampai dengan".',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    }
+
+    const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
+
+    return (
+      <div className="space-y-8">
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8">
+          <h3 className="text-xl font-bold mb-6 text-center">Klik Bagian Rumusnya</h3>
+          
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-gray-200 border-2 border-ink rounded-xl p-1 shadow-neo-sm flex-wrap justify-center">
+              <button 
+                onClick={() => { setSumIfMode('SUMIF'); setActivePart(null); }}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${isSumIf ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+              >
+                SUMIF (1 Kriteria)
+              </button>
+              <button 
+                onClick={() => { setSumIfMode('SUMIFS'); setActivePart(null); }}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${!isSumIf ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+              >
+                SUMIFS (Banyak Kriteria)
               </button>
             </div>
           </div>
@@ -840,7 +1079,7 @@ export default function FormulaVisual({ slug }: Props) {
           </div>
 
           <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
-            <p className="text-sm font-bold text-center">💡 Tips: Pahami perbedaan AND dan OR agar logikamu tidak terbalik.</p>
+            <p className="text-sm font-bold text-center">💡 Tips: Gunakan SUMIFS jika kamu punya lebih dari 1 kriteria (misal: penjualan produk A di bulan Januari).</p>
           </div>
         </div>
       </div>
@@ -848,17 +1087,64 @@ export default function FormulaVisual({ slug }: Props) {
   }
 
   // ==========================================
-  // FUNGSI RUMUS INTERAKTIF LAINNYA (SUM, AVERAGE, DLL)
+  // FUNGSI COUNTIF / COUNTIFS (DENGAN TOGGLE)
   // ==========================================
-  if (formulaData[slug]) {
-    const data = formulaData[slug];
-    const parts = data.formula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [data.formula];
+  if (slug === 'fungsi-countif') {
+    const isCountIf = countIfMode === 'COUNTIF';
+    
+    let currentFormula = '';
+    let currentExplanations: Record<string, string> = {};
+
+    if (isCountIf) {
+      currentFormula = '=COUNTIF(A1:A10; ">50")';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'COUNTIF': 'Menghitung jumlah sel dengan SATU kriteria saja.',
+        'A1:A10': 'Range data yang diperiksa.',
+        ':': 'Tanda "sampai dengan". A1:A10 berarti dari A1 sampai A10.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        '">50"': 'Kriteria: Hanya hitung angka yang lebih dari 50.',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    } else {
+      currentFormula = '=COUNTIFS(B1:B10; "A"; D1:D10; "Lulus")';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'COUNTIFS': 'Menghitung jumlah sel dengan LEBIH DARI SATU kriteria.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        'B1:B10': 'Range kriteria 1: Tempat mencari kriteria pertama.',
+        '"A"': 'Kriteria 1: Hanya jika isinya "A".',
+        'D1:D10': 'Range kriteria 2: Tempat mencari kriteria kedua.',
+        '"Lulus"': 'Kriteria 2: Hanya jika isinya "Lulus".',
+        ':': 'Tanda "sampai dengan".',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    }
+
+    const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
 
     return (
       <div className="space-y-8">
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8">
           <h3 className="text-xl font-bold mb-6 text-center">Klik Bagian Rumusnya</h3>
           
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-gray-200 border-2 border-ink rounded-xl p-1 shadow-neo-sm flex-wrap justify-center">
+              <button 
+                onClick={() => { setCountIfMode('COUNTIF'); setActivePart(null); }}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${isCountIf ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+              >
+                COUNTIF (1 Kriteria)
+              </button>
+              <button 
+                onClick={() => { setCountIfMode('COUNTIFS'); setActivePart(null); }}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${!isCountIf ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+              >
+                COUNTIFS (Banyak Kriteria)
+              </button>
+            </div>
+          </div>
+
           <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
             <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
               {parts.map((part, index) => (
@@ -877,9 +1163,9 @@ export default function FormulaVisual({ slug }: Props) {
             </div>
 
             <div className="mt-6 min-h-25 w-full">
-              {activePart && data.explanations[activePart] ? (
+              {activePart && currentExplanations[activePart] ? (
                 <div className="p-5 bg-white border-2 border-dashed border-gray-300 rounded-xl text-center shadow-sm animate-in fade-in slide-in-from-top-2">
-                  <p className="text-pink-600 font-bold text-lg">{data.explanations[activePart]}</p>
+                  <p className="text-pink-600 font-bold text-lg">{currentExplanations[activePart]}</p>
                 </div>
               ) : (
                 <div className="p-5 text-center text-gray-400 font-medium border-2 border-transparent">
@@ -890,7 +1176,212 @@ export default function FormulaVisual({ slug }: Props) {
           </div>
 
           <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
-            <p className="text-sm font-bold text-center">💡 Tips: Pahami setiap bagian rumus agar kamu tidak kebingungan saat mengetiknya di Excel.</p>
+            <p className="text-sm font-bold text-center">💡 Tips: Gunakan COUNTIFS jika kamu ingin menghitung dengan lebih dari 1 syarat (misal: menghitung siswa laki-laki yang lulus).</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // FUNGSI AVERAGEIF / AVERAGEIFS (DENGAN TOGGLE)
+  // ==========================================
+  if (slug === 'fungsi-averageif') {
+    const isAverageIf = averageIfMode === 'AVERAGEIF';
+    
+    let currentFormula = '';
+    let currentExplanations: Record<string, string> = {};
+
+    if (isAverageIf) {
+      currentFormula = '=AVERAGEIF(B1:B10; "Laki-laki"; C1:C10)';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'AVERAGEIF': 'Mencari rata-rata dengan SATU kriteria saja.',
+        'B1:B10': 'Range kriteria: Tempat mencari kata "Laki-laki".',
+        ':': 'Tanda "sampai dengan". B1:B10 berarti dari B1 sampai B10.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        '"Laki-laki"': 'Kriteria: Hanya hitung rata-rata jika isinya "Laki-laki".',
+        'C1:C10': 'Average Range: Kolom angka yang akan dirata-ratakan.',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    } else {
+      currentFormula = '=AVERAGEIFS(C1:C10; B1:B10; "Laki-laki"; D1:D10; "Lulus")';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'AVERAGEIFS': 'Mencari rata-rata dengan LEBIH DARI SATU kriteria.',
+        'C1:C10': 'Average Range: Kolom angka yang akan dirata-ratakan.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        'B1:B10': 'Range kriteria 1: Tempat mencari kriteria pertama.',
+        '"Laki-laki"': 'Kriteria 1: Hanya jika isinya "Laki-laki".',
+        'D1:D10': 'Range kriteria 2: Tempat mencari kriteria kedua.',
+        '"Lulus"': 'Kriteria 2: Hanya jika isinya "Lulus".',
+        ':': 'Tanda "sampai dengan".',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    }
+
+    const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
+
+    return (
+      <div className="space-y-8">
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8">
+          <h3 className="text-xl font-bold mb-6 text-center">Klik Bagian Rumusnya</h3>
+          
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-gray-200 border-2 border-ink rounded-xl p-1 shadow-neo-sm flex-wrap justify-center">
+              <button 
+                onClick={() => { setAverageIfMode('AVERAGEIF'); setActivePart(null); }}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${isAverageIf ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+              >
+                AVERAGEIF (1 Kriteria)
+              </button>
+              <button 
+                onClick={() => { setAverageIfMode('AVERAGEIFS'); setActivePart(null); }}
+                className={`px-6 py-2 rounded-lg font-bold transition-all ${!isAverageIf ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+              >
+                AVERAGEIFS (Banyak Kriteria)
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
+              {parts.map((part, index) => (
+                <span
+                  key={index}
+                  onClick={() => setActivePart(part)}
+                  className={`cursor-pointer px-1 rounded transition-all duration-200 ${
+                    activePart === part 
+                      ? 'bg-yellow-200 text-ink scale-110 font-bold ring-2 ring-ink' 
+                      : 'hover:bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {part}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 min-h-25 w-full">
+              {activePart && currentExplanations[activePart] ? (
+                <div className="p-5 bg-white border-2 border-dashed border-gray-300 rounded-xl text-center shadow-sm animate-in fade-in slide-in-from-top-2">
+                  <p className="text-pink-600 font-bold text-lg">{currentExplanations[activePart]}</p>
+                </div>
+              ) : (
+                <div className="p-5 text-center text-gray-400 font-medium border-2 border-transparent">
+                  👆 Klik pada bagian rumus di atas untuk melihat penjelasan.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
+            <p className="text-sm font-bold text-center">💡 Tips: Gunakan AVERAGEIFS jika kamu ingin mencari rata-rata dengan lebih dari 1 syarat.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ==========================================
+  // FUNGSI LOOKUP (VLOOKUP, HLOOKUP, XLOOKUP)
+  // ==========================================
+  if (slug === 'fungsi-lookup') {
+    let currentFormula = '';
+    let currentExplanations: Record<string, string> = {};
+
+    if (lookupMode === 'VLOOKUP') {
+      currentFormula = '=VLOOKUP(A2; B1:D10; 3; FALSE)';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'VLOOKUP': 'Mencari data secara VERTIKAL (per kolom).',
+        'A2': 'Lookup Value: Nilai yang dicari (misal: ID).',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        'B1:D10': 'Table Array: Tabel tempat mencari data. Titik dua (:) berarti dari B1 sampai D10.',
+        ':': 'Tanda "sampai dengan".',
+        '3': 'Col Index Num: Kolom ke-3 di tabel tersebut yang diambil hasilnya.',
+        'FALSE': 'Range Lookup: Gunakan FALSE untuk pencarian PERSIS.',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    } else if (lookupMode === 'HLOOKUP') {
+      currentFormula = '=HLOOKUP(A5; B1:D10; 3; FALSE)';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'HLOOKUP': 'Mencari data secara HORIZONTAL (per baris).',
+        'A5': 'Lookup Value: Nilai yang dicari (misal: ID).',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        'B1:D10': 'Table Array: Tabel tempat mencari data. Titik dua (:) berarti dari B1 sampai D10.',
+        ':': 'Tanda "sampai dengan".',
+        '3': 'Row Index Num: Baris ke-3 di tabel tersebut yang diambil hasilnya.',
+        'FALSE': 'Range Lookup: Gunakan FALSE untuk pencarian PERSIS.',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    } else {
+      currentFormula = '=XLOOKUP(A2; B1:B10; D1:D10)';
+      currentExplanations = {
+        '=': 'Awal rumus.',
+        'XLOOKUP': 'Fungsi modern untuk mencari data (bisa vertikal/horizontal).',
+        'A2': 'Lookup Value: Nilai yang dicari.',
+        ';': 'Pemisah antar argumen fungsi (titik koma).',
+        'B1:B10': 'Lookup Array: Kolom/baris tempat mencari nilai.',
+        ':': 'Tanda "sampai dengan".',
+        'D1:D10': 'Return Array: Kolom/baris yang berisi hasil yang ingin diambil.',
+        '(': 'Kurung buka.', ')': 'Kurung tutup.'
+      };
+    }
+
+    const parts = currentFormula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [currentFormula];
+
+    return (
+      <div className="space-y-8">
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8">
+          <h3 className="text-xl font-bold mb-6 text-center">Klik Bagian Rumusnya</h3>
+          
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-gray-200 border-2 border-ink rounded-xl p-1 shadow-neo-sm flex-wrap justify-center gap-1">
+              {['VLOOKUP', 'HLOOKUP', 'XLOOKUP'].map((mode) => (
+                <button 
+                  key={mode}
+                  onClick={() => { setLookupMode(mode as any); setActivePart(null); }}
+                  className={`px-4 py-2 rounded-lg font-bold text-sm transition-all ${lookupMode === mode ? 'bg-white shadow-sm text-ink' : 'text-gray-500 hover:text-ink'}`}
+                >
+                  {mode}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
+              {parts.map((part, index) => (
+                <span
+                  key={index}
+                  onClick={() => setActivePart(part)}
+                  className={`cursor-pointer px-1 rounded transition-all duration-200 ${
+                    activePart === part 
+                      ? 'bg-yellow-200 text-ink scale-110 font-bold ring-2 ring-ink' 
+                      : 'hover:bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {part}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 min-h-25 w-full">
+              {activePart && currentExplanations[activePart] ? (
+                <div className="p-5 bg-white border-2 border-dashed border-gray-300 rounded-xl text-center shadow-sm animate-in fade-in slide-in-from-top-2">
+                  <p className="text-pink-600 font-bold text-lg">{currentExplanations[activePart]}</p>
+                </div>
+              ) : (
+                <div className="p-5 text-center text-gray-400 font-medium border-2 border-transparent">
+                  👆 Klik pada bagian rumus di atas untuk melihat penjelasan.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
+            <p className="text-sm font-bold text-center">💡 Tips: XLOOKUP adalah fungsi paling fleksibel dan modern, tapi VLOOKUP/HLOOKUP masih sering dipakai di dunia kerja.</p>
           </div>
         </div>
       </div>

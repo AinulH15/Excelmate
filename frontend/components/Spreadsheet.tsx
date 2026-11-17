@@ -6,10 +6,9 @@ import InteractiveTutorial from './InteractiveTutorial';
 import { tutorialData } from '@/lib/tutorialData';
 
 const ROWS = 20;
-const COLS = 5;
+const COLS = 7; // A sampai G
 
 export default function Spreadsheet({ lessonSlug, initialData = {} }: { lessonSlug: string, initialData?: Record<string, string> }) {
-  // Satu deklarasi data saja
   const [data, setData] = useState<Record<string, string>>(initialData);
   const [activeCell, setActiveCell] = useState<string>('A1');
   const [formulaInput, setFormulaInput] = useState<string>('');
@@ -46,10 +45,10 @@ export default function Spreadsheet({ lessonSlug, initialData = {} }: { lessonSl
   };
 
   const getCellStyle = (cellId: string) => {
+    // HANYA BERI WARNA BIRU JIKA SEDANG DIKLIK (AKTIF)
     if (cellId === activeCell) return 'bg-blue-100 ring-2 ring-inset ring-blue-500 z-10';
     
-    const currentStep = currentSteps?.find((s: any) => s.targetCell === cellId);
-    if (currentStep) return 'bg-yellow-100 ring-2 ring-yellow-500 z-10';
+    // LOGIKA WARNA KUNING DIHAPUS
 
     const formats = [];
     if (isBold) formats.push('font-bold');
@@ -97,7 +96,7 @@ export default function Spreadsheet({ lessonSlug, initialData = {} }: { lessonSl
         ))}
       </div>
 
-      {/* 3. RIBBON TOOLBAR (Dinamis berdasarkan tab) */}
+      {/* 3. RIBBON TOOLBAR */}
       <div className="bg-gray-50 border-b-2 border-gray-300 px-2 py-2 flex flex-wrap gap-4 items-start text-xs text-gray-700 h-20 overflow-y-auto">
         {activeTab === 'Home' && (
           <>
@@ -183,7 +182,7 @@ export default function Spreadsheet({ lessonSlug, initialData = {} }: { lessonSl
         />
       </div>
 
-      {/* 5. LAYOUT UTAMA (Tutorial Kiri, Grid Kanan) */}
+      {/* 5. LAYOUT UTAMA */}
       <div className="flex-1 flex overflow-hidden">
         <div className="w-1/3 border-r-2 border-gray-300 overflow-y-auto p-2 bg-gray-50">
           <InteractiveTutorial 

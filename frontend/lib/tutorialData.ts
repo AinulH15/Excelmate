@@ -345,21 +345,38 @@ export const tutorialData: Record<string, any[]> = {
   'fungsi-lookup': [
     {
       id: 1,
-      title: "Membuat Tabel Referensi",
-      instruction: "Isi **A1**=`Apel`, **B1**=`5000`. Lalu **A2**=`Jeruk`, **B2**=`7000`.",
-      targetCell: "A1",
-      expectedValue: "Apel",
-      hint: "Buat tabel daftar harga.",
+      title: "Menyiapkan Data",
+      instruction: "Isi tabel berikut:\n**A1**=`ID`, **B1**=`Nama`, **C1**=`Nilai`.\n**A2**=`1`, **B2**=`Andi`, **C2**=`80`.\n**A3**=`2`, **B3**=`Budi`, **C3**=`90`.",
+      targetCell: "C3",
+      expectedValue: "90",
+      hint: "Isi tabel di A1 sampai C3.",
     },
     {
       id: 2,
       title: "Mencari Data (VLOOKUP)",
-      instruction: "Klik **D1** ketik `Jeruk`. Lalu klik **E1**, ketik `=VLOOKUP(D1, A1:B2, 2, FALSE)` lalu Enter. (Mencari harga Jeruk).",
-      targetCell: "E1",
-      expectedValue: "=VLOOKUP(D1, A1:B2, 2, FALSE)",
-      hint: "Ketik rumus VLOOKUP di E1.",
+      instruction: "Sekarang kita cari nama dari ID 2. Ketik di **E1**=`Cari ID:`, **F1**=`2`.\nLalu klik **E2**, ketik rumus `=VLOOKUP(F1;A1:C3;2;FALSE)` lalu Enter.",
+      targetCell: "E2",
+      expectedValue: "=VLOOKUP(F1;A1:C3;2;FALSE)", // Spasi dihilangkan
+      hint: "Ketik =VLOOKUP(F1;A1:C3;2;FALSE) di E2.",
+    },
+    {
+      id: 3,
+      title: "Mencari Data (HLOOKUP)",
+      instruction: "Sekarang kita coba HLOOKUP. Ketik di **A5**=`1`, **B5**=`2`, **C5**=`3`.\nLalu di **A6**=`Apel`, **B6**=`Jeruk`, **C6**=`Mangga`.\n\nLalu klik **E5**, ketik `=HLOOKUP(3;A5:C6;2;FALSE)` lalu Enter.",
+      targetCell: "E5",
+      expectedValue: "=HLOOKUP(3;A5:C6;2;FALSE)", // Spasi dihilangkan
+      hint: "Ketik =HLOOKUP(3;A5:C6;2;FALSE) di E5.",
+    },
+    {
+      id: 4,
+      title: "Mencari Data (XLOOKUP)",
+      instruction: "Terakhir, kita coba XLOOKUP. Klik **E7**, ketik `=XLOOKUP(2;A2:A3;B2:B3)` lalu Enter. (Mencari nama dari ID 2 di tabel atas).",
+      targetCell: "E7",
+      expectedValue: "=XLOOKUP(2;A2:A3;B2:B3)", // Spasi dihilangkan
+      hint: "Ketik =XLOOKUP(2;A2:A3;B2:B3) di E7.",
     }
   ],
+
 
   'data-tools': [
     {
