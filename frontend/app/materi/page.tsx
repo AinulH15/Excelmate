@@ -7,7 +7,7 @@ import { Search, ChevronRight, BookOpen } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
+import api from "@/lib/api";
 
 export default function MateriPage() {
   const [lessons, setLessons] = useState<any[]>([]);

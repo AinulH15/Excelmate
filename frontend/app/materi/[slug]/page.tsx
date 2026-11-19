@@ -39,7 +39,7 @@ import DataValidationPractice from '@/components/DataValidationPractice';
 import ChartVisualGuide from '@/components/ChartVisualGuide';
 import PivotToggle from '@/components/PivotToggle';
 
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
+import api from "@/lib/api";
 
 export default function DetailMateriPage() {
   const { slug } = useParams();

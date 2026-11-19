@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Search, Zap, Lightbulb, Keyboard } from 'lucide-react';
 import Card from '@/components/ui/Card';
 
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
+import api from "@/lib/api";
 
 export default function TipsPage() {
   const [tips, setTips] = useState<any[]>([]);

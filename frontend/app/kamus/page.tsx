@@ -9,7 +9,7 @@ import Button from '@/components/ui/Button';
 import SpreadsheetVisual from '@/components/SpreadsheetVisual';
 import { formulaToLessonSlug } from '@/lib/formulaMapping';
 
-const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
+import api from "@/lib/api";
 
 export default function KamusPage() {
   const [formulas, setFormulas] = useState<any[]>([]);
