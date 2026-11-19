@@ -96,7 +96,7 @@ export default function DetailMateriPage() {
 
     return (
       <Image 
-        src={`/icon/${imgNumber}.jfif`} 
+        src={`/icon/${imgNumber}.png`} 
         alt={`Ikon Materi ${lesson.title}`}
         width={250} 
         height={250} 
