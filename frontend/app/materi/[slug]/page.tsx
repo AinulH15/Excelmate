@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
+import Image from 'next/image'; // <-- IMPORT IMAGE DITAMBAHKAN
 import { 
   BookOpen, Calculator, PlayCircle, Clock, Target, 
   Lightbulb, ChevronLeft, ChevronRight, Trophy, Sparkles
@@ -19,7 +20,7 @@ import NumberFormatVisual from '@/components/NumberFormatVisual';
 import OperasiMatematikaVisual from '@/components/OperasiMatematikaVisual';
 import FormulaVisual from '@/components/FormulaVisual';
 import DataToolsVisual from '@/components/DataToolsVisual';
-import PivotTutorial from '@/components/PivotTutorial';
+import PivotChartVisual from '@/components/PivotChartVisual';
 import PivotSimulator from '@/components/PivotSimulator';
 import TipsCard from '@/components/TipsCard';
 import WorkbookVisual from '@/components/WorkbookVisual';
@@ -29,11 +30,14 @@ import IfErrorVisual from '@/components/IfErrorVisual';
 import SortingFilteringVisual from '@/components/SortingFilteringVisual';
 import ConditionalFormattingVisual from '@/components/ConditionalFormattingVisual';
 import ConditionalFormattingGuidedPractice from '@/components/ConditionalFormattingGuidedPractice';
-import TableGuidedPractice from '@/components/TableGuidedPractice';
 import TableVisualGuide from '@/components/TableVisualGuide';
 import BorderVisualGuide from '@/components/BorderVisualGuide';
 import MergeCellVisualGuide from '@/components/MergeCellVisualGuide';
 import TableBorderMergePractice from '@/components/TableBorderMergePractice';
+import DataValidationVisual from '@/components/DataValidationVisual';
+import DataValidationPractice from '@/components/DataValidationPractice';
+import ChartVisualGuide from '@/components/ChartVisualGuide';
+import PivotToggle from '@/components/PivotToggle';
 
 const api = axios.create({ baseURL: 'http://127.0.0.1:8000/api' });
 
@@ -64,26 +68,41 @@ export default function DetailMateriPage() {
 
   if (!lesson) return <div className="text-center py-20 font-bold animate-pulse">Memuat materi...</div>;
 
+  // --- FUNGSI GET HERO ICON YANG SUDAH DIUBAH KE GAMBAR ---
   const getHeroIcon = () => {
-    if (slug === 'pengenalan-antarmuka-excel') return '👋';
-    if (slug === 'workbook-worksheet-cell') return '📁';
-    if (slug === 'input-edit-hapus-data') return '⌨️';
-    if (slug === 'format-cell') return '🎨';
-    if (slug === 'operasi-matematika') return '🧮';
-    if (slug === 'fungsi-sum') return '📊';
-    if (slug === 'fungsi-average') return '📈';
-    if (slug === 'fungsi-max-min') return '🔝';
-    if (slug === 'fungsi-count') return '🔢';
-    if (slug === 'fungsi-if') return '🔀';
-    if (slug === 'fungsi-sumif-sumifs') return '➕';
-    if (slug === 'fungsi-countif') return '🔣';
-    if (slug === 'fungsi-averageif') return '📉';
-    if (slug === 'fungsi-and-or') return '🧠';
-    if (slug === 'fungsi-teks') return '🔤';
-    if (slug === 'fungsi-lookup') return '🔍';
-    if (slug === 'data-tools') return '🛠️';
-    if (slug === 'pivottable-dashboard') return '📊';
-    return '📚';
+    let imgNumber = '1'; // Default
+
+    if (slug === 'pengenalan-antarmuka-excel') imgNumber = '1';
+    else if (slug === 'workbook-worksheet-cell') imgNumber = '2';
+    else if (slug === 'mengatur-workbook-worksheet') imgNumber = '3';
+    else if (slug === 'input-edit-hapus-data') imgNumber = '4';
+    else if (slug === 'format-cell') imgNumber = '5';
+    else if (slug === 'operasi-matematika') imgNumber = '6';
+    else if (slug === 'fungsi-sum') imgNumber = '7';
+    else if (slug === 'fungsi-average') imgNumber = '8';
+    else if (slug === 'fungsi-max-min') imgNumber = '9';
+    else if (slug === 'fungsi-count') imgNumber = '10';
+    else if (slug === 'fungsi-if') imgNumber = '11';
+    else if (slug === 'fungsi-sumif-sumifs') imgNumber = '12';
+    else if (slug === 'fungsi-countif') imgNumber = '13';
+    else if (slug === 'fungsi-averageif') imgNumber = '14';
+    else if (slug === 'fungsi-and-or') imgNumber = '15';
+    else if (slug === 'fungsi-teks') imgNumber = '16';
+    else if (slug === 'fungsi-lookup') imgNumber = '17';
+    else if (slug === 'data-tools') imgNumber = '18';
+    else if (slug === 'pivottable-dashboard') imgNumber = '19';
+    else if (slug === 'data-validation') imgNumber = '20';
+    else if (slug === 'membuat-chart') imgNumber = '21';
+
+    return (
+      <Image 
+        src={`/icon/${imgNumber}.jfif`} 
+        alt={`Ikon Materi ${lesson.title}`}
+        width={250} 
+        height={250} 
+        className="w-full h-full object-contain p-4 md:p-6 drop-shadow-md" 
+      />
+    );
   };
 
   const formulaSlugs = [
@@ -112,7 +131,6 @@ export default function DetailMateriPage() {
     );
   };
 
-  // Handler untuk tombol "Materi Selanjutnya"
   const handleNextClick = () => {
     if (!nextLesson) return;
     setPendingNextSlug(nextLesson.slug);
@@ -257,9 +275,7 @@ export default function DetailMateriPage() {
 
     if (slug === 'pivottable-dashboard') {
       return (
-        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
-          <PivotTutorial />
-        </div>
+           <PivotToggle />
       );
     }
 
@@ -283,6 +299,22 @@ export default function DetailMateriPage() {
       return (
         <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
           <IfErrorVisual />
+        </div>
+      );
+    }
+
+    if (slug === 'data-validation') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <DataValidationVisual />
+        </div>
+      );
+    }
+
+    if (slug === 'membuat-chart') {
+      return (
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8 max-w-4xl mx-auto">
+          <ChartVisualGuide />
         </div>
       );
     }
@@ -342,7 +374,7 @@ export default function DetailMateriPage() {
     if (mode === 'belajar') {
       if (slug === 'pivottable-dashboard') return <PivotSimulator />;
       if (slug === 'conditional-formatting') return <ConditionalFormattingGuidedPractice />;
-      if (slug === 'excel-table') return <TableGuidedPractice />;
+      if (slug === 'data-validation') return <DataValidationPractice />;
       return <Spreadsheet lessonSlug={slug as string} />;
     }
     
@@ -387,10 +419,12 @@ export default function DetailMateriPage() {
             <div className="flex items-center gap-2 text-sm font-bold text-gray-600"><Target size={18} /> Tujuan: Menguasai Materi</div>
           </div>
         </div>
+        
+        {/* BAGIAN INI SUDAH DIUBAH: overflow-hidden ditambahkan agar gambar tidak bocor keluar card */}
         <div className="relative w-48 h-48 md:w-64 md:h-64 shrink-0 block">
           <div className="absolute inset-0 bg-yellow border-2 border-ink rounded-3xl shadow-neo rotate-6"></div>
-          <div className="absolute inset-0 bg-white border-2 border-ink rounded-3xl shadow-neo flex items-center justify-center -rotate-3">
-            <span className="text-7xl md:text-8xl">{getHeroIcon()}</span>
+          <div className="absolute inset-0 bg-white border-2 border-ink rounded-3xl shadow-neo flex items-center justify-center -rotate-3 overflow-hidden">
+            {getHeroIcon()}
           </div>
         </div>
       </section>

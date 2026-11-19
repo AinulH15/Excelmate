@@ -1,4 +1,5 @@
 export const tutorialData: Record<string, any[]> = {
+
   // ==========================================
   // TUTORIAL DEFAULT (HALAMAN UTAMA)
   // ==========================================
@@ -39,7 +40,7 @@ export const tutorialData: Record<string, any[]> = {
       instruction: "Sekarang klik cell **A2**, ketik `Excel`, lalu tekan Enter.",
       targetCell: "A2",
       expectedValue: "Excel",
-      hint: "Klik cell A2, ketik Excel, lalu Enter.",
+      hint: "Klik cell A2, ketik Excel, lalu tekan Enter.",
     }
   ],
 
@@ -128,7 +129,7 @@ export const tutorialData: Record<string, any[]> = {
       title: "Isi Data Angka",
       instruction: "Ketik angka bebas secara berurutan di sel **A1** sampai **A5**. (Contoh: ketik 1 di A1, tekan Enter, ketik 2 di A2, tekan Enter, sampai A5).",
       targetCell: "A5",
-      expectedValue: "", // Kosong berarti sistem hanya cek apakah A5 ada isinya
+      expectedValue: "",
       hint: "Setelah mengetik angka di A5, pastikan kamu menekan Enter agar tombol 'Lanjut' muncul."
     },
     {
@@ -337,6 +338,120 @@ export const tutorialData: Record<string, any[]> = {
       expectedValue: "=LEFT(A1, 5)",
       hint: "Ketik =LEFT(A1, 5) di B1.",
     }
+  ],  // ==========================================
+  // FUNGSI IFERROR
+  // ==========================================
+  'fungsi-iferror': [
+    {
+      id: 1,
+      title: "Mengatasi Error #N/A",
+      instruction: "Error **#N/A** muncul saat data tidak ditemukan. Ketik `=IFERROR(VLOOKUP(\"Andi\",A1:B2,2,FALSE),\"Tidak Ditemukan\")` di cell **D1** lalu Enter.",
+      targetCell: "D1",
+      expectedValue: "=IFERROR(VLOOKUP(\"Andi\",A1:B2,2,FALSE),\"Tidak Ditemukan\")",
+      hint: "Ketik rumus VLOOKUP yang dibungkus IFERROR di D1.",
+    },
+    {
+      id: 2,
+      title: "Mengatasi Error #DIV/0!",
+      instruction: "Error **#DIV/0!** muncul saat membagi dengan nol. Ketik `=IFERROR(10/0,\"Error Pembagian\")` di cell **D2** lalu Enter.",
+      targetCell: "D2",
+      expectedValue: "=IFERROR(10/0,\"Error Pembagian\")",
+      hint: "Ketik rumus pembagian yang dibungkus IFERROR di D2.",
+    },
+    {
+      id: 3,
+      title: "Mengatasi Error #VALUE!",
+      instruction: "Error **#VALUE!** muncul saat tipe data salah. Ketik `=IFERROR(\"Teks\"*2,\"Tipe Data Salah\")` di cell **D3** lalu Enter.",
+      targetCell: "D3",
+      expectedValue: "=IFERROR(\"Teks\"*2,\"Tipe Data Salah\")",
+      hint: "Ketik rumus perkalian teks yang dibungkus IFERROR di D3.",
+    }
+  ],
+
+  // ==========================================
+  // SORTING & FILTERING
+  // ==========================================
+  'sorting-filtering': [
+    {
+      id: 1,
+      title: "Menyiapkan Data Mentah",
+      instruction: "Sebelum bisa melakukan *Sorting* atau *Filtering*, kita butuh data. Ketik `Nama` di **A1**, lalu `Andi` di **A2**, `Budi` di **A3**, dan `Citra` di **A4**.",
+      targetCell: "A4",
+      expectedValue: "Citra",
+      hint: "Isi kolom A dari baris 1 sampai 4 dengan teks tersebut.",
+    },
+    {
+      id: 2,
+      title: "Mengisi Data Angka",
+      instruction: "Sekarang kita isi nilainya. Ketik `Nilai` di **B1**, lalu `80` di **B2**, `95` di **B3**, dan `70` di **B4**.",
+      targetCell: "B4",
+      expectedValue: "70",
+      hint: "Isi kolom B dari baris 1 sampai 4.",
+    },
+    {
+      id: 3,
+      title: "Simulasi Sorting (Mengurutkan)",
+      instruction: "Di Excel asli, untuk mengurutkan nilai dari terkecil ke terbesar, kamu harus memblok area **B2:B4**, lalu klik tab **Data** > **Sort Smallest to Largest**. Klik tombol di bawah untuk mensimulasikan blok area tersebut.",
+      targetCell: null,
+      expectedValue: null,
+      highlightRange: "B2:B4",
+      hint: "Klik tombol 'Blok Area B2:B4' di bawah instruksi ini.",
+    },
+    {
+      id: 4,
+      title: "Simulasi Filtering (Menyaring)",
+      instruction: "Untuk menyaring data (misal hanya menampilkan nilai di atas 80), di Excel asli kamu bisa memblok judul tabel **A1:B4**, klik **Data** > **Filter** (atau Ctrl+Shift+L), lalu klik panah di kolom Nilai dan pilih *Number Filters* > *Greater Than...*.",
+      targetCell: null,
+      expectedValue: null,
+      highlightRange: "A1:B4",
+      hint: "Klik tombol 'Blok Tabel A1:B4' di bawah instruksi ini.",
+    }
+  ],
+
+  // ==========================================
+  // DATA VALIDATION
+  // ==========================================
+  'data-validation': [
+    {
+      id: 1,
+      title: "Persiapan Latihan",
+      instruction: "Kita akan mencoba membuat *Dropdown List* pada kolom **Nama Produk**. Perhatikan tabel di sebelah kanan, sudah ada data penjualan toko ATK.",
+      targetCell: null,
+      expectedValue: null,
+      hint: "Klik 'Lanjut' untuk mulai.",
+    },
+    {
+      id: 2,
+      title: "Pilih Cell Target",
+      instruction: "Klik cell **C17** (baris paling bawah, kolom Nama Produk). Ini adalah cell kosong yang akan kita beri aturan *Data Validation*.",
+      targetCell: "C17",
+      expectedValue: "",
+      hint: "Klik cell C17.",
+    },
+    {
+      id: 3,
+      title: "Buka Data Validation",
+      instruction: "Di Excel asli, buka tab **Data** > **Data Validation**. Di simulasi ini, kita akan mensimulasikan fitur tersebut.",
+      targetCell: null,
+      expectedValue: null,
+      hint: "Klik Lanjut.",
+    },
+    {
+      id: 4,
+      title: "Atur List Dropdown",
+      instruction: "Pada jendela Data Validation, pilih **Allow: List**. Lalu isi kolom **Source** dengan: `Pulpen;Buku Tulis;Penghapus;Pensil;Map`. Klik OK.",
+      targetCell: null,
+      expectedValue: null,
+      hint: "Ini akan membuat pilihan dropdown di cell C17.",
+    },
+    {
+      id: 5,
+      title: "Uji Coba Dropdown",
+      instruction: "Sekarang klik cell **C17**. Akan muncul panah kecil di sebelah kanan. Klik panah tersebut dan pilih **Pensil**.",
+      targetCell: "C17",
+      expectedValue: "Pensil",
+      hint: "Pilih Pensil dari daftar dropdown.",
+    },
   ],
 
   // ==========================================
@@ -356,7 +471,7 @@ export const tutorialData: Record<string, any[]> = {
       title: "Mencari Data (VLOOKUP)",
       instruction: "Sekarang kita cari nama dari ID 2. Ketik di **E1**=`Cari ID:`, **F1**=`2`.\nLalu klik **E2**, ketik rumus `=VLOOKUP(F1;A1:C3;2;FALSE)` lalu Enter.",
       targetCell: "E2",
-      expectedValue: "=VLOOKUP(F1;A1:C3;2;FALSE)", // Spasi dihilangkan
+      expectedValue: "=VLOOKUP(F1;A1:C3;2;FALSE)",
       hint: "Ketik =VLOOKUP(F1;A1:C3;2;FALSE) di E2.",
     },
     {
@@ -364,7 +479,7 @@ export const tutorialData: Record<string, any[]> = {
       title: "Mencari Data (HLOOKUP)",
       instruction: "Sekarang kita coba HLOOKUP. Ketik di **A5**=`1`, **B5**=`2`, **C5**=`3`.\nLalu di **A6**=`Apel`, **B6**=`Jeruk`, **C6**=`Mangga`.\n\nLalu klik **E5**, ketik `=HLOOKUP(3;A5:C6;2;FALSE)` lalu Enter.",
       targetCell: "E5",
-      expectedValue: "=HLOOKUP(3;A5:C6;2;FALSE)", // Spasi dihilangkan
+      expectedValue: "=HLOOKUP(3;A5:C6;2;FALSE)",
       hint: "Ketik =HLOOKUP(3;A5:C6;2;FALSE) di E5.",
     },
     {
@@ -372,11 +487,10 @@ export const tutorialData: Record<string, any[]> = {
       title: "Mencari Data (XLOOKUP)",
       instruction: "Terakhir, kita coba XLOOKUP. Klik **E7**, ketik `=XLOOKUP(2;A2:A3;B2:B3)` lalu Enter. (Mencari nama dari ID 2 di tabel atas).",
       targetCell: "E7",
-      expectedValue: "=XLOOKUP(2;A2:A3;B2:B3)", // Spasi dihilangkan
+      expectedValue: "=XLOOKUP(2;A2:A3;B2:B3)",
       hint: "Ketik =XLOOKUP(2;A2:A3;B2:B3) di E7.",
     }
   ],
-
 
   'data-tools': [
     {
@@ -395,48 +509,127 @@ export const tutorialData: Record<string, any[]> = {
       expectedValue: "100",
       hint: "Ketik 100 di B1.",
     }
-  ],
-
+  ],  // ==========================================
+  // PIVOT TABLE DASHBOARD
+  // ==========================================
   'pivottable-dashboard': [
     {
       id: 1,
-      title: "Mengenal Data Mentah",
-      instruction: "Di spreadsheet ini, kamu melihat data penjualan mentah. Ada banyak transaksi dengan produk berulang. Tugas kita adalah merangkumnya.",
-      targetCell: null,
-      expectedValue: null,
-      hint: "Perhatikan data di kolom A sampai E. Produk apa saja yang muncul?",
+      title: "Memilih Data Mentah",
+      instruction: "Pertama, blok seluruh data mentah dari **A1** sampai **G31**. (Di simulasi ini, kamu hanya perlu klik cell A1 lalu klik Lanjut).",
+      targetCell: "A1",
+      expectedValue: "Tanggal",
+      hint: "Klik cell A1 di spreadsheet.",
     },
     {
       id: 2,
-      title: "Menyiapkan Ringkasan",
-      instruction: "Ketik `Produk` di cell **A10**, lalu tekan Enter.",
-      targetCell: "A10",
-      expectedValue: "Produk",
-      hint: "Klik cell A10, ketik Produk, lalu Enter.",
+      title: "Membuat PivotChart",
+      instruction: "Setelah data diblok, bayangkan kamu mengklik **Insert > PivotChart**. Lalu klik **OK** pada pop-up yang muncul.",
+      targetCell: "B1",
+      expectedValue: "No Transaksi",
+      hint: "Klik Lanjut untuk masuk ke area kerja PivotChart.",
     },
     {
       id: 3,
-      title: "Menyiapkan Total",
-      instruction: "Ketik `Total` di cell **B10**, lalu tekan Enter.",
-      targetCell: "B10",
-      expectedValue: "Total",
-      hint: "Klik cell B10, ketik Total, lalu Enter.",
+      title: "Memasukkan Field",
+      instruction: "Di PivotTable Field List sebelah kanan, centang **Nama Produk** dan **Total Penjualan** untuk membuat Chart-nya.",
+      targetCell: "C1",
+      expectedValue: "Nama Produk",
+      hint: "Di Excel asli, kamu akan menyeret field ke area Axis dan Values.",
+    }
+  ],
+
+  // ==========================================
+  // PIVOT CHART SIMULATION (MENGGUNAKAN SPREADSHEET)
+  // ==========================================
+  'pivotchart-simulation': [
+    {
+      id: 1,
+      title: "1. Insert PivotChart",
+      instruction: `
+        <div class="space-y-4">
+          <p>Pertama, blok seluruh data mentahmu, misalnya dari <strong>A1</strong> sampai <strong>G31</strong>.</p>
+          <p>Lalu buka tab <strong>Insert</strong> di Ribbon dan klik tombol <strong>PivotChart</strong>.</p>
+          <img src="/pivot1.png" alt="Insert PivotChart" class="w-full rounded-lg border-2 border-ink mt-4" />
+        </div>
+      `,
+      targetCell: "A1",
+      expectedValue: "Tanggal",
+      hint: "Klik cell A1 di spreadsheet."
+    },
+    {
+      id: 2,
+      title: "2. Pop-up Create PivotChart",
+      instruction: `
+        <div class="space-y-4">
+          <p>Setelah memilih PivotChart, akan muncul kotak dialog <strong>Create PivotChart</strong>.</p>
+          <p>Perhatikan bagian <strong>Table/Range</strong>. Contoh <code>Sheet1!$A$1:$G$31</code> menunjukkan lokasi data yang akan digunakan.</p>
+          <p>Pastikan rentang data sudah benar, pilih worksheet baru jika diperlukan, lalu klik <strong>OK</strong>.</p>
+          <img src="/pivot2.png" alt="Pop-up Create PivotChart" class="w-full rounded-lg border-2 border-ink mt-4" />
+        </div>
+      `,
+      targetCell: "B1",
+      expectedValue: "No Transaksi",
+      hint: "Pastikan data pada spreadsheet sesuai, lalu klik Lanjut."
+    },
+    {
+      id: 3,
+      title: "3. Mengenal Area Kerja",
+      instruction: `
+        <div class="space-y-4">
+          <p>Setelah klik OK, Excel akan menampilkan area kerja PivotChart. Kenali dua bagian utamanya:</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Area Chart:</strong> tempat grafik ditampilkan setelah field dipilih.</li>
+            <li><strong>PivotTable Field List:</strong> daftar kolom yang berasal dari data mentah.</li>
+          </ul>
+          <img src="/pivot3.png" alt="Area kerja PivotChart" class="w-full rounded-lg border-2 border-ink mt-4" />
+        </div>
+      `,
+      targetCell: null,
+      expectedValue: null,
+      hint: "Perhatikan bagian-bagian area kerja PivotChart, lalu klik Lanjut."
     },
     {
       id: 4,
-      title: "Menyiapkan Kategori",
-      instruction: "Ketik `Laptop` di cell **A11**, lalu Enter.",
-      targetCell: "A11",
-      expectedValue: "Laptop",
-      hint: "Klik cell A11, ketik Laptop, lalu Enter.",
+      title: "4. Memilih Field untuk Grafik",
+      instruction: `
+        <div class="space-y-4">
+          <p>Pilih data yang ingin ditampilkan melalui <strong>PivotTable Field List</strong>.</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Nama Produk:</strong> menjadi kategori pada sumbu horizontal (<em>Axis / Categories</em>).</li>
+            <li><strong>Total Penjualan:</strong> menjadi nilai yang dihitung dan ditampilkan (<em>Values</em>).</li>
+          </ul>
+          <p>Centang kedua field tersebut atau seret ke area Axis dan Values.</p>
+          <img src="/pivot4.png" alt="Memilih field PivotChart" class="w-full rounded-lg border-2 border-ink mt-4" />
+          <p>Grafik akan terbentuk berdasarkan total penjualan setiap produk.</p>
+        </div>
+      `,
+      targetCell: null,
+      expectedValue: null,
+      hint: "Pelajari pemilihan field Nama Produk dan Total Penjualan, lalu klik Lanjut."
+    }
+  ],
+
+  // ==========================================
+  // MEMBUAT CHART
+  // ==========================================
+  'membuat-chart': [
+    {
+      id: 1,
+      title: "Menyiapkan Data",
+      instruction: "Ketik data singkat ini untuk membuat grafik: **A1**=`Produk`, **B1**=`Penjualan`. Lalu **A2**=`Apel`, **B2**=`100`. **A3**=`Jeruk`, **B3**=`200`. **A4**=`Mangga`, **B4**=`150`.",
+      targetCell: "B4",
+      expectedValue: "150",
+      hint: "Isi tabel dari A1 sampai B4.",
     },
     {
-      id: 5,
-      title: "Menghitung Total Laptop",
-      instruction: "Klik cell **B11**, ketik `=SUMIF(A2:A6, \"Laptop\", D2:D6)` lalu Enter. Ini akan menjumlahkan penjualan Laptop.",
-      targetCell: "B11",
-      expectedValue: "=SUMIF(A2:A6, \"Laptop\", D2:D6)",
-      hint: "Ketik =SUMIF(A2:A6, \"Laptop\", D2:D6) di B11.",
-    },
+      id: 2,
+      title: "Membuat Grafik",
+      instruction: "Di Excel asli, blok area **A1:B4**, lalu klik tab **Insert** dan pilih **Clustered Column**. Grafik akan langsung muncul di worksheet.",
+      targetCell: null,
+      expectedValue: null,
+      hint: "Klik 'Lanjut' untuk menyelesaikan latihan.",
+    }
   ],
+
 };

@@ -9,6 +9,34 @@ export const evaluateFormula = (formula: string, data: Record<string, string>): 
     // Tandai apakah rumus ini memakai fungsi lookup (hasilnya boleh berupa teks)
     const isLookup = /(VLOOKUP|HLOOKUP|XLOOKUP)\(/.test(expression);
 
+    // ==========================================
+    // 0. IFERROR — bungkus seluruh evaluasi
+    // ==========================================
+    const ifErrorMatch = expression.match(/^IFERROR\((.+)\)$/);
+    if (ifErrorMatch) {
+      const inner = ifErrorMatch[1];
+      // Pisahkan argumen pertama (rumus) dan kedua (fallback) dengan koma terakhir di level kurung 0
+      let depth = 0;
+      let splitIndex = -1;
+      for (let i = 0; i < inner.length; i++) {
+        if (inner[i] === '(') depth++;
+        else if (inner[i] === ')') depth--;
+        else if ((inner[i] === ',' || inner[i] === ';') && depth === 0) splitIndex = i;
+      }
+      if (splitIndex === -1) return '#ERROR!';
+      const innerFormula = inner.substring(0, splitIndex).trim();
+      const fallbackRaw = inner.substring(splitIndex + 1).trim();
+
+      // Evaluasi rumus dalam
+      const innerResult = evaluateFormula('=' + innerFormula, data);
+
+      // Jika hasilnya error (#N/A, #DIV/0!, #VALUE!, #ERROR!), pakai fallback
+      if (typeof innerResult === 'string' && innerResult.startsWith('#')) {
+        return fallbackRaw.replace(/^"(.*)"$/, '$1');
+      }
+      return innerResult;
+    }
+
     // Helper: Mengubah referensi sel (A1) menjadi angka atau string
     const getCellValue = (cellRef: string): string | number => {
       const val = data[cellRef] || '';
@@ -71,7 +99,7 @@ export const evaluateFormula = (formula: string, data: Record<string, string>): 
     // VLOOKUP
     expression = expression.replace(/VLOOKUP\(([^)]+)\)/g, (_, argsStr) => {
       const args = parseArgs(argsStr);
-      const lookupValue = resolveArg(args[0]); // ← diganti
+      const lookupValue = resolveArg(args[0]);
       const tableRange = args[1];
       const colIndex = parseInt(args[2]) - 1;
 
@@ -96,7 +124,7 @@ export const evaluateFormula = (formula: string, data: Record<string, string>): 
     // HLOOKUP
     expression = expression.replace(/HLOOKUP\(([^)]+)\)/g, (_, argsStr) => {
       const args = parseArgs(argsStr);
-      const lookupValue = resolveArg(args[0]); // ← diganti
+      const lookupValue = resolveArg(args[0]);
       const tableRange = args[1];
       const rowIndex = parseInt(args[2]) - 1;
 
@@ -124,7 +152,7 @@ export const evaluateFormula = (formula: string, data: Record<string, string>): 
     // XLOOKUP
     expression = expression.replace(/XLOOKUP\(([^)]+)\)/g, (_, argsStr) => {
       const args = parseArgs(argsStr);
-      const lookupValue = resolveArg(args[0]); // ← diganti
+      const lookupValue = resolveArg(args[0]);
       const lookupRange = args[1];
       const returnRange = args[2];
 
@@ -168,6 +196,10 @@ export const evaluateFormula = (formula: string, data: Record<string, string>): 
     // ==========================================
     if (/^[0-9+\-*/().\s]+$/.test(expression)) {
       const result = new Function(`return ${expression}`)();
+
+      // Tangani pembagian dengan nol
+      if (!isFinite(result)) return '#DIV/0!';
+
       return result.toString();
     }
 

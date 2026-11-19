@@ -28,7 +28,7 @@ class ExcelmateSeeder extends Seeder
         $catL4 = Category::create(['name' => 'Pengolahan & Pembersihan Data', 'slug' => 'pengolahan-data', 'color' => 'pink', 'icon' => 'BarChart']);
         $catL5 = Category::create(['name' => 'Analisis & Penyajian Data', 'slug' => 'analisis-data', 'color' => 'yellow', 'icon' => 'PieChart']);
 
-        // 3. LESSONS DATA (29 Materi)
+        // 3. LESSONS DATA (26 Materi)
         $lessonsData = [
             // LEVEL 1
             [
@@ -82,7 +82,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL1->id, 'learning_level_id' => $lvl1->id, 'order' => 5,
+                'category_id' => $catL1->id, 'learning_level_id' => $lvl1->id, 'order' => 6,
                 'title' => 'Format Cell: Angka, Tanggal, Mata Uang, dan Persentase', 'slug' => 'format-cell',
                 'intro' => 'Mengatur format angka, mata uang, tanggal, dan persentase.',
                 'content' => [
@@ -92,7 +92,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL1->id, 'learning_level_id' => $lvl1->id, 'order' => 6,
+                'category_id' => $catL1->id, 'learning_level_id' => $lvl1->id, 'order' => 7,
                 'title' => 'Operasi Matematika dan Operator Excel', 'slug' => 'operasi-matematika',
                 'intro' => 'Melakukan perhitungan dasar (+, -, *, /, ^) di Excel.',
                 'content' => [
@@ -210,7 +210,7 @@ class ExcelmateSeeder extends Seeder
                 'title' => 'Relative, Absolute, dan Mixed Cell Reference', 'slug' => 'cell-reference',
                 'intro' => 'Memahami perbedaan referensi sel relatif (A1), absolut ($A$1), dan campuran.',
                 'content' => [
-                    'apa_itu' => "**Relative (A1)**: Alamat cell yang berubah saat rumus disalin. Jika kamu menyalin rumus dari D2 ke D3, referensi A1 akan berubah menjadi A2.\n\n**Absolute (\$A\$1)**: Alamat cell yang terkunci. Kolom dan baris tidak berubah saat rumus disalin.\n\n**Mixed (\$A1 atau A\$1)**: Hanya salah satu bagian yang terkunci.\n- \$A1: Kolom A terkunci, baris bisa berubah.\n- A\$1: Baris 1 terkunci, kolom bisa berubah.",
+                    'apa_itu' => "Relative (A1): Alamat cell yang berubah saat rumus disalin. Jika kamu menyalin rumus dari D2 ke D3, referensi A1 akan berubah menjadi A2.\n\nAbsolute (\$A\$1): Alamat cell yang terkunci. Kolom dan baris tidak berubah saat rumus disalin.\n\nMixed (\$A1 atau A\$1): Hanya salah satu bagian yang terkunci.\n- \$A1: Kolom A terkunci, baris bisa berubah.\n- A\$1: Baris 1 terkunci, kolom bisa berubah.",
                     'mengapa' => "Kunci untuk membuat rumus yang bisa di-copy ke seluruh tabel tanpa harus mengetik ulang. Jika tidak memahami ini, rumus kamu akan menghasilkan hasil yang salah saat disalin.",
                     'sintaks' => "Relative: =C2*11%\nAbsolute: =C2*\$G\$1\nMixed: =\$C2*D\$1"
                 ],
@@ -249,16 +249,6 @@ class ExcelmateSeeder extends Seeder
             // LEVEL 4
             [
                 'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 22,
-                'title' => 'Excel Table', 'slug' => 'excel-table',
-                'intro' => 'Mengubah data menjadi Table agar otomatis terformat dan mudah difilter.',
-                'content' => [
-                    'apa_itu' => 'Excel Table adalah fitur untuk mengonversi range data menjadi tabel terstruktur. Rumus dan format akan otomatis mengikuti saat data ditambah.',
-                    'mengapa' => 'Sangat memudahkan pengelolaan data yang terus bertambah.',
-                    'sintaks' => "Pilih data > Insert > Table (Ctrl+T)."
-                ],
-            ],
-            [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 23,
                 'title' => 'Sorting dan Filtering Data', 'slug' => 'sorting-filtering',
                 'intro' => 'Mengurutkan data dan menyaring data berdasarkan kriteria.',
                 'content' => [
@@ -268,7 +258,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 24,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 23,
                 'title' => 'Conditional Formatting', 'slug' => 'conditional-formatting',
                 'intro' => 'Mewarnai cell otomatis berdasarkan aturan tertentu.',
                 'content' => [
@@ -278,7 +268,7 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 25,
+                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 24,
                 'title' => 'Data Validation dan Dropdown', 'slug' => 'data-validation',
                 'intro' => 'Membatasi input data dan membuat dropdown list.',
                 'content' => [
@@ -287,20 +277,10 @@ class ExcelmateSeeder extends Seeder
                     'sintaks' => "Tab Data > Data Validation."
                 ],
             ],
-            [
-                'category_id' => $catL4->id, 'learning_level_id' => $lvl3->id, 'order' => 26,
-                'title' => 'Data Cleaning: Remove Duplicates, Find & Replace, Text to Columns, dan Flash Fill', 'slug' => 'data-cleaning',
-                'intro' => 'Membersihkan data kotor agar siap dianalisis.',
-                'content' => [
-                    'apa_itu' => 'Kumpulan fitur untuk membersihkan data: menghapus duplikat, mencari & mengganti, memisahkan teks ke kolom, dan mengisi data otomatis dengan pola.',
-                    'mengapa' => 'Data kotor menghasilkan analisis yang salah. Pembersihan adalah langkah wajib.',
-                    'sintaks' => "Tab Data > Remove Duplicates / Text to Columns.\nTab Home > Find & Select > Replace."
-                ],
-            ],
 
             // LEVEL 5
             [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 27,
+                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 25,
                 'title' => 'Membuat Chart dan Grafik', 'slug' => 'membuat-chart',
                 'intro' => 'Mengubah data menjadi grafik visual (Column, Line, Pie, dll).',
                 'content' => [
@@ -310,33 +290,13 @@ class ExcelmateSeeder extends Seeder
                 ],
             ],
             [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 28,
+                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 26,
                 'title' => 'PivotTable dan PivotChart', 'slug' => 'pivottable-dashboard',
                 'intro' => 'Merangkum ribuan data menjadi tabel ringkas dan grafik interaktif.',
                 'content' => [
                     'apa_itu' => 'PivotTable merangkum data besar menjadi tabel ringkas. PivotChart adalah versi grafik dari PivotTable.',
                     'mengapa' => 'Dibutuhkan oleh manajer atau analis untuk mengambil keputusan bisnis.',
                     'sintaks' => "Pilih data > Insert > PivotTable."
-                ],
-            ],
-            [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 29,
-                'title' => 'Membuat Dashboard Sederhana', 'slug' => 'membuat-dashboard',
-                'intro' => 'Menggabungkan beberapa chart dan PivotTable menjadi satu layar dashboard.',
-                'content' => [
-                    'apa_itu' => 'Dashboard adalah kumpulan grafik dan ringkasan data yang diletakkan dalam satu worksheet, memberikan gambaran menyeluruh tentang data.',
-                    'mengapa' => 'Memudahkan pengambilan keputusan karena semua informasi penting terlihat sekaligus.',
-                    'sintaks' => "Buat beberapa chart, atur layout, lalu gabungkan dengan slicer."
-                ],
-            ],
-            [
-                'category_id' => $catL5->id, 'learning_level_id' => $lvl4->id, 'order' => 30,
-                'title' => 'Page Layout, Print Area, dan Pengaturan Cetak', 'slug' => 'page-layout-print',
-                'intro' => 'Mengatur tampilan halaman dan area yang akan dicetak.',
-                'content' => [
-                    'apa_itu' => 'Page Layout mengatur orientasi kertas, margin, dan ukuran. Print Area menentukan bagian mana yang akan dicetak.',
-                    'mengapa' => 'Memastikan hasil cetak rapi dan tidak terpotong.',
-                    'sintaks' => "Tab Page Layout > Print Area > Set Print Area."
                 ],
             ],
         ];

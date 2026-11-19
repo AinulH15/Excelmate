@@ -43,7 +43,7 @@ export default function MateriPage() {
       {/* Header */}
       <div className="bg-lavender border-2 border-ink rounded-2xl shadow-neo p-10 text-center">
         <h1 className="text-4xl font-black mb-2">Kurikulum ExcelMate</h1>
-        <p className="text-lg">29 Materi terstruktur dari pemula hingga mahir.</p>
+        <p className="text-lg">26 Materi terstruktur dari pemula hingga mahir.</p>
       </div>
 
       {/* Search Bar */}

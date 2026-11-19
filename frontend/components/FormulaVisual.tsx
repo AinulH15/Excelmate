@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Lightbulb, Calendar, AlertCircle, Filter, Palette, LayoutDashboard, BarChart3, Table } from 'lucide-react';
 import SpreadsheetVisual from './SpreadsheetVisual';
+import PivotChartVisual from './PivotChartVisual';
 
 interface Props {
   slug: string;
@@ -32,42 +33,6 @@ const formulaData: Record<string, { formula: string, explanations: Record<string
       ':': 'Tanda titik dua (:) berarti "sampai dengan". A1:A5 berarti dari A1 sampai A5.',
       '(': 'Kurung buka argumen.', ')': 'Kurung tutup argumen.'
     }
-  },
-  'fungsi-max-min': {
-    formula: '=MAX(C1:C10)',
-    explanations: {}
-  },
-  'fungsi-count': {
-    formula: '=COUNT(A1:A10)',
-    explanations: {}
-  },
-  'fungsi-if': {
-    formula: '=IF(A1>75; "Lulus"; "Gagal")',
-    explanations: {}
-  },
-  'fungsi-sumif-sumifs': {
-    formula: '=SUMIF(B1:B10; "A"; C1:C10)',
-    explanations: {}
-  },
-  'fungsi-countif': {
-    formula: '=COUNTIF(A1:A10; ">50")',
-    explanations: {}
-  },
-  'fungsi-averageif': {
-    formula: '=AVERAGEIF(B1:B10; "Laki-laki"; C1:C10)',
-    explanations: {}
-  },
-  'fungsi-and-or': {
-    formula: '=IF(AND(A1>50; B1="Lulus"); "Ya"; "Tidak")',
-    explanations: {}
-  },
-  'fungsi-teks': {
-    formula: '=LEFT(A1; 3)',
-    explanations: {}
-  },
-  'fungsi-lookup': {
-    formula: '=VLOOKUP(A2; B1:D10; 3; FALSE)',
-    explanations: {}
   }
 };
 
@@ -83,6 +48,57 @@ export default function FormulaVisual({ slug }: Props) {
   const [countIfMode, setCountIfMode] = useState<'COUNTIF' | 'COUNTIFS'>('COUNTIF');
   const [averageIfMode, setAverageIfMode] = useState<'AVERAGEIF' | 'AVERAGEIFS'>('AVERAGEIF');
   const [lookupMode, setLookupMode] = useState<'VLOOKUP' | 'HLOOKUP' | 'XLOOKUP'>('VLOOKUP');
+
+  // ==========================================
+  // FUNGSI SUM & AVERAGE (BARU DITAMBAHKAN)
+  // ==========================================
+  if (slug === 'fungsi-sum' || slug === 'fungsi-average') {
+    const data = formulaData[slug];
+    // Memecah string rumus menjadi potongan-potongan kecil agar bisa diklik
+    const parts = data.formula.match(/(".*?"|[A-Z0-9]+:[A-Z0-9]+|[A-Z]+[0-9]*|[0-9]+|[=(),;:><+\-*/])/g) || [data.formula];
+
+    return (
+      <div className="space-y-8">
+        <div className="bg-white border-2 border-ink rounded-2xl shadow-neo p-6 md:p-8">
+          <h3 className="text-xl font-bold mb-6 text-center">Klik Bagian Rumusnya</h3>
+          
+          <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-1 md:gap-2 text-2xl md:text-3xl font-mono bg-white p-6 rounded-xl border-2 border-ink shadow-neo w-full">
+              {parts.map((part, index) => (
+                <span
+                  key={index}
+                  onClick={() => setActivePart(part)}
+                  className={`cursor-pointer px-1 rounded transition-all duration-200 ${
+                    activePart === part 
+                      ? 'bg-yellow-200 text-ink scale-110 font-bold ring-2 ring-ink' 
+                      : 'hover:bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  {part}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 min-h-25 w-full">
+              {activePart && data.explanations[activePart] ? (
+                <div className="p-5 bg-white border-2 border-dashed border-gray-300 rounded-xl text-center shadow-sm animate-in fade-in slide-in-from-top-2">
+                  <p className="text-pink-600 font-bold text-lg">{data.explanations[activePart]}</p>
+                </div>
+              ) : (
+                <div className="p-5 text-center text-gray-400 font-medium border-2 border-transparent">
+                  👆 Klik pada bagian rumus di atas untuk melihat penjelasan.
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-yellow border-2 border-ink rounded-xl p-3 mt-8">
+            <p className="text-sm font-bold text-center">💡 Tips: Pahami setiap bagian rumus agar kamu tidak kebingungan saat mengetiknya di Excel.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // ==========================================
   // CELL REFERENCE (Relative, Absolute, Mixed)
@@ -1387,6 +1403,12 @@ export default function FormulaVisual({ slug }: Props) {
       </div>
     );
   }
+// ==========================================
+// MATERI PIVOT TABLE & PIVOT CHART
+// ==========================================
+if (slug === 'membuat-pivottable-pivotchart' || slug === 'pivottable-dashboard') { // Sesuaikan slug-nya
+  return <PivotChartVisual />;
+}
 
   // Fallback: Jika tidak ada visual khusus, tampilkan default
   return null;
